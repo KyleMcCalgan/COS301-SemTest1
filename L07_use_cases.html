@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L07 — Use Cases | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Foundations</div>
+        <a class="nav-link" href="L01_software_engineering_intro.html">
+          <span class="nav-tag">L01</span>Intro to SE
+        </a>
+        <a class="nav-link" href="L02_software_process.html">
+          <span class="nav-tag">L02</span>Software Process Models
+        </a>
+        <a class="nav-link" href="L03_systems_and_uml.html">
+          <span class="nav-tag">L03</span>Systems &amp; UML
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Planning</div>
+        <a class="nav-link" href="L04_version_control.html">
+          <span class="nav-tag">L04</span>Version Control &amp; CI/CD
+        </a>
+        <a class="nav-link active" href="L07_use_cases.html">
+          <span class="nav-tag">L07</span>Use Cases
+        </a>
+        <a class="nav-link" href="L08_domain_modelling.html">
+          <span class="nav-tag">L08</span>Domain Modelling
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L07 &nbsp;·&nbsp; Planning</div>
+      <h1>Use Cases</h1>
+      <p class="hero-sub">Deriving use cases from requirements, UML notation, advanced relationships, and traceability</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#pipeline">Where Use Cases Fit in the Methodology</a></li>
+          <li><a href="#core-concepts">Core Concepts: Use Cases &amp; Actors</a></li>
+          <li><a href="#what-not">What Is NOT a Use Case?</a></li>
+          <li><a href="#notation">UML Use Case Diagram Notation</a></li>
+          <li><a href="#relationships">Advanced Relationships</a></li>
+          <li><a href="#guidelines">Guidelines &amp; Best Practices</a></li>
+          <li><a href="#scope">Scope, Allocation &amp; Traceability</a></li>
+          <li><a href="#exercise">ClickUP Exercise</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="pipeline">Where Use Cases Fit in the Methodology</h2>
+      <p>Deriving use cases is a planning activity that sits in a precise position within the development pipeline:</p>
+      <ol>
+        <li>Acquire preliminary requirements.</li>
+        <li><strong>Derive use cases</strong> ← you are here.</li>
+        <li>Allocate subsystems to development iterations.</li>
+        <li>Begin domain modelling.</li>
+      </ol>
+      <div class="callout key">
+        <div class="callout-label">Purpose of Use Cases</div>
+        <p>Use cases are derived directly from requirements to ensure the system satisfies the customer's <strong>business needs</strong> and to help plan the development and deployment schedule.</p>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="core-concepts">Core Concepts: Use Cases &amp; Actors</h2>
+
+      <h3>What is a Use Case?</h3>
+      <p>A use case represents a <strong>complete business process</strong>. To be valid, it must satisfy all four of the following criteria:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Criterion</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>It must be <strong>initiated by an actor</strong>.</td></tr>
+            <tr><td>2</td><td>It must <strong>accomplish a useful business task</strong> for that actor.</td></tr>
+            <tr><td>3</td><td>It must <strong>end with the actor</strong> explicitly or implicitly acknowledging the task is done.</td></tr>
+            <tr><td>4</td><td>It must be a <strong>true business process</strong> — not a step, sub-task, or system routine.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>What is an Actor?</h3>
+      <p>An actor denotes a <strong>specific business role</strong> played by entities or stakeholders. Key properties:</p>
+      <ul>
+        <li>Actors interact with the system and <strong>initiate use cases</strong>.</li>
+        <li>Actors are strictly <strong>external to the system</strong> — they are never part of the system itself.</li>
+        <li>Actors are often humans, but can also be hardware, another system, or an external component.</li>
+      </ul>
+
+      <div class="callout note">
+        <div class="callout-label">Primary vs. Secondary Actors</div>
+        <ul>
+          <li><strong>Primary Actors</strong> initiate the use case to achieve their own goal (e.g., "Customer places order").</li>
+          <li><strong>Secondary Actors</strong> provide a service to the system to help complete the goal (e.g., a payment gateway API).</li>
+        </ul>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="what-not">What Is NOT a Use Case?</h2>
+      <p>Routine system operations or individual steps are <strong>not</strong> use cases. The following are common invalid examples:</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Invalid Use Cases (Exam Trap)</div>
+        <ul>
+          <li>Checking authorization</li>
+          <li>Entering a password</li>
+          <li>Processing data</li>
+          <li>Opening a file</li>
+          <li>Clicking a menu item</li>
+          <li>Traversing a linked list</li>
+          <li>Starting a system</li>
+        </ul>
+        <p>These are all internal steps or system operations, not complete business processes initiated by an actor.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="notation">UML Use Case Diagram Notation</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Element</th><th>Visual Representation</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Use Case</strong></td>
+              <td>Oval containing the use case name</td>
+              <td>Placed inside the system boundary.</td>
+            </tr>
+            <tr>
+              <td><strong>Actor</strong></td>
+              <td>Stick figure</td>
+              <td>Always placed <em>outside</em> the system boundary — even malicious actors like "Hacker".</td>
+            </tr>
+            <tr>
+              <td><strong>System Boundary</strong></td>
+              <td>Rectangle enclosing use cases</td>
+              <td>System name at the top. Only use cases and their relationships belong inside.</td>
+            </tr>
+            <tr>
+              <td><strong>Association</strong></td>
+              <td>Solid line</td>
+              <td>Connects an actor to a use case. Actor–use case relationships are <em>always</em> associations.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout key">
+        <div class="callout-label">System Boundary Rule</div>
+        <p>Only use cases (and relationships between them) belong <strong>inside</strong> the system boundary box. <strong>All actors must remain outside</strong>, without exception.</p>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="relationships">Advanced Relationships</h2>
+      <p>To prevent diagrams from becoming overly complex, three advanced relationship types are used:</p>
+
+      <h3>Inheritance (Generalization)</h3>
+      <p>Indicates that one use case or actor is a <strong>specialized version</strong> of another.</p>
+      <ul>
+        <li><em>Example:</em> An <code>Admin</code> IS-A <code>Patron</code>. Instead of drawing separate lines from <code>Admin</code> to every use case <code>Patron</code> has access to, you draw the inheritance arrow and inherit all associations.</li>
+        <li><strong>Notation:</strong> Solid line with a <strong>hollow arrowhead</strong> pointing to the generalized (parent) element.</li>
+      </ul>
+
+      <h3>&laquo;include&raquo; (Inclusion)</h3>
+      <p>Indicates that one use case <strong>requires another as a mandatory sub-process</strong>.</p>
+      <ul>
+        <li><em>Example:</em> "Checkout" &laquo;include&raquo;s "Process Payment" — you cannot check out without processing payment.</li>
+        <li><strong>Notation:</strong> Dashed arrow pointing <em>to</em> the included use case.</li>
+      </ul>
+
+      <h3>&laquo;extend&raquo; (Extension)</h3>
+      <p>Indicates that one use case can <strong>optionally continue the process</strong> of another.</p>
+      <ul>
+        <li><em>Example:</em> "Checkout" can be extended by "Apply Coupon" — coupon application is optional.</li>
+        <li><strong>Notation:</strong> Dashed arrow pointing <em>from</em> the extension use case <em>to</em> the base use case.</li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-label">include vs. extend — Quick Rule</div>
+        <ul>
+          <li><strong>&laquo;include&raquo;</strong> → mandatory step, arrow points <em>to</em> what is included.</li>
+          <li><strong>&laquo;extend&raquo;</strong> → optional behaviour, arrow points <em>to</em> the base use case being extended.</li>
+        </ul>
+      </div>
+
+      <!-- 6 -->
+      <h2 id="guidelines">Guidelines &amp; Best Practices</h2>
+      <ul>
+        <li><strong>Avoid overcrowding:</strong> Do not show too many use cases in one diagram.</li>
+        <li><strong>Avoid fragmentation:</strong> Do not create a separate diagram for every single use case.</li>
+        <li><strong>Avoid overusing extend:</strong> Extension should model genuine optional behaviour, not every possible variation.</li>
+        <li><strong>Separation of Concerns / Divide &amp; Conquer:</strong> Group related use cases into separate sub-system diagrams (e.g., separate <code>SAMS/User Mgmt</code> from <code>SAMS/Program Mgmt</code>).</li>
+      </ul>
+
+      <!-- 7 -->
+      <h2 id="scope">Scope, Allocation &amp; Traceability</h2>
+
+      <h3>Defining Use Case Scope</h3>
+      <p>High-level use cases are given precise boundaries using two markers:</p>
+      <ul>
+        <li><strong>TUCBW</strong> — <em>The Use Case Begins When…</em></li>
+        <li><strong>TUCEW</strong> — <em>The Use Case Ends When…</em></li>
+      </ul>
+
+      <h3>Allocation Matrix (Project Planning)</h3>
+      <p>A scheduling matrix maps which use cases will be developed during which iteration (Week 1, Week 2, etc.). This lets the team know what needs to be built, what is ready for integration and testing, and tracks overall project status.</p>
+
+      <h3>Traceability Matrix</h3>
+      <p>A table mapping <strong>functional requirements to specific use cases</strong>, ensuring nothing is missed.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Direction</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Forward traceability</strong></td><td>Every requirement has been built (no requirement is missing from the implementation).</td></tr>
+            <tr><td><strong>Backward traceability</strong></td><td>No unnecessary features were built that were not requested.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 8 -->
+      <h2 id="exercise">ClickUP Class Exercise</h2>
+      <p>This is an explicit exam-prep exercise from the lecture on traceability mapping.</p>
+
+      <h3>Requirements</h3>
+      <ul>
+        <li><strong>FR1:</strong> A Student or TA can view announcements posted by a Lecturer.</li>
+        <li><strong>FR2:</strong> An Administrator can delete announcements.</li>
+      </ul>
+
+      <h3>Use Cases</h3>
+      <ul>
+        <li><strong>UC1:</strong> View Announcements</li>
+        <li><strong>UC2:</strong> Post Announcements</li>
+        <li><strong>UC3:</strong> Delete Announcements</li>
+      </ul>
+
+      <h3>Traceability Mapping</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Requirement</th><th>Traced Use Cases</th><th>Reasoning</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>FR1</strong></td>
+              <td>UC1, UC2</td>
+              <td>Viewing (UC1) and posting (UC2) are both necessary to satisfy FR1 — you cannot view without someone posting.</td>
+            </tr>
+            <tr>
+              <td><strong>FR2</strong></td>
+              <td>UC3</td>
+              <td>Deleting announcements (UC3) directly satisfies FR2.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout key">
+        <div class="callout-label">Key Takeaway</div>
+        <p>A single functional requirement can trace to <em>multiple</em> use cases, and a single use case can be traced back to <em>multiple</em> requirements. The matrix makes these many-to-many relationships explicit and auditable.</p>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L04_version_control.html"><span class="nav-arrow">←</span> Version Control &amp; CI/CD</a>
+  <a href="L08_domain_modelling.html">Domain Modelling <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

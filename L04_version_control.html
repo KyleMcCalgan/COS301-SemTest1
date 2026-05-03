@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L04 — Version Control &amp; CI/CD | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Foundations</div>
+        <a class="nav-link" href="L01_software_engineering_intro.html">
+          <span class="nav-tag">L01</span>Intro to SE
+        </a>
+        <a class="nav-link" href="L02_software_process.html">
+          <span class="nav-tag">L02</span>Software Process Models
+        </a>
+        <a class="nav-link" href="L03_systems_and_uml.html">
+          <span class="nav-tag">L03</span>Systems &amp; UML
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Planning</div>
+        <a class="nav-link active" href="L04_version_control.html">
+          <span class="nav-tag">L04</span>Version Control &amp; CI/CD
+        </a>
+        <a class="nav-link" href="L07_use_cases.html">
+          <span class="nav-tag">L07</span>Use Cases
+        </a>
+        <a class="nav-link" href="L08_domain_modelling.html">
+          <span class="nav-tag">L08</span>Domain Modelling
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L04 &nbsp;·&nbsp; Planning</div>
+      <h1>Version Control &amp; CI/CD</h1>
+      <p class="hero-sub">Git internals, the DAG model, deployment strategies, and disaster recovery</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#why-vcs">Why Version Control?</a></li>
+          <li><a href="#evolution">Centralized vs. Distributed Models</a></li>
+          <li><a href="#git-commits">Git Commits &amp; the DAG</a></li>
+          <li><a href="#three-areas">The Three Areas of Git</a></li>
+          <li><a href="#cicd">CI/CD Deployment Strategies</a></li>
+          <li><a href="#scenarios">Troubleshooting Scenarios</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="why-vcs">Why Version Control?</h2>
+      <p>Version control systems (VCS) are not just a convenience — they are <strong>critical infrastructure</strong> for any serious software project. Their value becomes most apparent during disasters.</p>
+
+      <div class="callout key">
+        <div class="callout-label">What a VCS Enables During a Production Crisis</div>
+        <ul>
+          <li><strong>Identify</strong> exactly what code changed between versions.</li>
+          <li><strong>Roll back</strong> immediately to a known-good, stable version.</li>
+          <li><strong>Trace accountability</strong> — who authored and approved the change?</li>
+          <li><strong>Investigate</strong> why testing did not catch the defect before release.</li>
+        </ul>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="evolution">Centralized vs. Distributed Models</h2>
+
+      <h3>The Centralized Model (Before Git)</h3>
+      <p>Older systems (CVS, SVN) relied on <strong>one central server</strong> that held the "true" version of the code. Developers checked out files, and all history and commits were stored in this single central location.</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Limitations of Centralized VCS</div>
+        <ul>
+          <li>Single point of failure — if the server goes down, no one can commit.</li>
+          <li>Requires network connectivity to perform most operations.</li>
+          <li>Poor support for branching and merging workflows.</li>
+        </ul>
+      </div>
+
+      <h3>Git — The Distributed Model</h3>
+      <p>In Git, <strong>every developer's machine holds a full copy of the repository</strong>, including the complete history. Operations like branching, merging, and viewing history are local and instant. Remote servers (like GitHub) are just another repository that teams agree to treat as authoritative.</p>
+
+      <!-- 3 -->
+      <h2 id="git-commits">Git Commits &amp; the DAG</h2>
+
+      <h3>Git as a Directed Acyclic Graph (DAG)</h3>
+      <p>Git operates mathematically as a <strong>Directed Acyclic Graph</strong>:</p>
+      <ul>
+        <li><strong>Nodes</strong> represent commits.</li>
+        <li><strong>Directed edges</strong> are pointers moving from a <em>child</em> commit to its <em>parent</em> commit(s).</li>
+        <li>A <strong>regular commit</strong> has one parent.</li>
+        <li>A <strong>merge commit</strong> has two or more parents.</li>
+        <li><strong>Acyclic</strong> — you can never follow edges back to a previous commit; time only moves forward.</li>
+      </ul>
+
+      <h3>What Is a Commit?</h3>
+      <p>A commit is not just a diff of changes — it is a full <strong>snapshot of the entire project state</strong> at that moment. Every commit contains:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Tree pointer</strong></td><td>Points to the directory structure and file contents at that moment.</td></tr>
+            <tr><td><strong>Parent pointer(s)</strong></td><td>Links to previous commits, forming the DAG.</td></tr>
+            <tr><td><strong>Metadata</strong></td><td>Author name, email, timestamp, and commit message.</td></tr>
+            <tr><td><strong>Cryptographic hash</strong></td><td>A SHA-1/SHA-256 hash that uniquely identifies this exact commit and all its ancestors.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Why Hashes Matter</div>
+        <p>Because each hash is computed from the commit's content <em>and</em> its parent's hash, changing any commit in history changes all descendant hashes. This makes Git history <strong>tamper-evident</strong> — you cannot silently alter old commits.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="three-areas">The Three Areas of Git</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Area</th><th>Also Known As</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Working Directory</strong></td>
+              <td>Working Tree</td>
+              <td>Your local file system — where you actively edit files. Changes here are <em>untracked</em> until staged.</td>
+            </tr>
+            <tr>
+              <td><strong>Staging Area</strong></td>
+              <td>Index</td>
+              <td>An intermediate holding area. You <code>git add</code> files here to prepare them for the next commit. Lets you craft precise, atomic commits.</td>
+            </tr>
+            <tr>
+              <td><strong>Local Repository</strong></td>
+              <td>.git directory</td>
+              <td>Where Git safely stores all committed snapshots, branches, tags, and metadata. The complete project history lives here.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Flow</div>
+        <p><strong>Edit</strong> in Working Directory → <code>git add</code> → <strong>Staged</strong> in Index → <code>git commit</code> → <strong>Stored</strong> in Local Repo → <code>git push</code> → <strong>Remote</strong> (GitHub/GitLab).</p>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="cicd">CI/CD Deployment Strategies</h2>
+      <p><strong>Continuous Integration / Continuous Deployment (CI/CD)</strong> pipelines automate the process of building, testing, and releasing software. Two key deployment risk-mitigation strategies are:</p>
+
+      <h3>Canary Deployment</h3>
+      <p>A new version is deployed to a <strong>very small percentage of users first</strong> (e.g., 5%). The team observes errors, performance metrics, and user behaviour before gradually increasing the rollout to all users.</p>
+      <ul>
+        <li><strong>Advantage:</strong> Limits blast radius — a bad release only affects a fraction of users.</li>
+        <li><strong>Advantage:</strong> Real production traffic validates the new version before full rollout.</li>
+        <li><strong>Disadvantage:</strong> Requires infrastructure to route traffic to multiple versions simultaneously.</li>
+      </ul>
+
+      <h3>Rolling Deployment</h3>
+      <p>Old application versions are <strong>gradually replaced with new ones across servers</strong>, one server (or group) at a time. At no point are all servers taken offline simultaneously.</p>
+      <ul>
+        <li><strong>Advantage:</strong> Minimal downtime — the service remains available throughout.</li>
+        <li><strong>Advantage:</strong> Significantly reduces the risk of a full system failure.</li>
+        <li><strong>Disadvantage:</strong> During the rollout, two versions run simultaneously — requires backwards compatibility.</li>
+      </ul>
+
+      <!-- 6 -->
+      <h2 id="scenarios">Troubleshooting Scenarios</h2>
+      <p>These three disaster scenarios are classic exam and real-world situations. Know them cold.</p>
+
+      <h3>Scenario 1 — CI Passed but Production Crashed</h3>
+      <div class="callout warn">
+        <div class="callout-label">Situation</div>
+        <p>All CI tests passed, but the application crashed immediately after deploying to production.</p>
+      </div>
+      <p><strong>Root cause:</strong> This is almost always caused by an <strong>environmental mismatch</strong> between the CI environment and production:</p>
+      <ul>
+        <li>Production has different database data or schema that CI's test database lacks.</li>
+        <li>Missing or different environment variables (API keys, feature flags, connection strings).</li>
+        <li>Different server configurations, OS versions, or dependency versions.</li>
+      </ul>
+      <p><strong>Fix:</strong> Make CI environments as production-like as possible. Use containerisation (Docker) and infrastructure-as-code to eliminate environment drift.</p>
+
+      <h3>Scenario 2 — Force-Push Erased Shared Branch History</h3>
+      <div class="callout warn">
+        <div class="callout-label">Situation</div>
+        <p>A teammate rebased and force-pushed to a shared feature branch, rewriting history and causing others to lose their commits.</p>
+      </div>
+      <p><strong>Fix:</strong></p>
+      <ol>
+        <li>Immediately <strong>tell the team to stop pushing/pulling</strong> to that branch.</li>
+        <li>Find a developer whose local machine still has the pre-rebase state, or use <code>git reflog</code> to find the hash of the branch before the rebase.</li>
+        <li>Force-push the correct history back to the remote server.</li>
+      </ol>
+      <p><strong>Prevention:</strong> Protect shared branches from force-pushes in your repository settings. Reserve rebasing for private local branches only.</p>
+
+      <h3>Scenario 3 — <code>git reset --hard</code> Lost Commits</h3>
+      <div class="callout warn">
+        <div class="callout-label">Situation</div>
+        <p>A developer ran <code>git reset --hard</code> on their local machine and lost several commits that had not been pushed to the remote.</p>
+      </div>
+      <p><strong>Fix:</strong></p>
+      <pre><code>git reflog</code></pre>
+      <p>The reflog acts as a <strong>diary of all local HEAD movements</strong>. Find the hash of the commit that existed right before the hard reset, then:</p>
+      <pre><code>git reset --hard &lt;commit-hash&gt;</code></pre>
+      <p>This recovers the lost state. Note: <code>git reflog</code> only works for local operations and expires after ~90 days by default.</p>
+
+      <div class="callout key">
+        <div class="callout-label">The Golden Rule of <code>git reflog</code></div>
+        <p>Almost nothing is truly lost in Git as long as you act before garbage collection runs. <code>git reflog</code> is your first tool to reach for in any local history disaster.</p>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L03_systems_and_uml.html"><span class="nav-arrow">←</span> Systems &amp; UML</a>
+  <a href="L07_use_cases.html">Use Cases <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

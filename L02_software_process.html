@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L02 — Software Process Models | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Foundations</div>
+        <a class="nav-link" href="L01_software_engineering_intro.html">
+          <span class="nav-tag">L01</span>Intro to SE
+        </a>
+        <a class="nav-link active" href="L02_software_process.html">
+          <span class="nav-tag">L02</span>Software Process Models
+        </a>
+        <a class="nav-link" href="L03_systems_and_uml.html">
+          <span class="nav-tag">L03</span>Systems &amp; UML
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Planning</div>
+        <a class="nav-link" href="L04_version_control.html">
+          <span class="nav-tag">L04</span>Version Control &amp; CI/CD
+        </a>
+        <a class="nav-link" href="L07_use_cases.html">
+          <span class="nav-tag">L07</span>Use Cases
+        </a>
+        <a class="nav-link" href="L08_domain_modelling.html">
+          <span class="nav-tag">L08</span>Domain Modelling
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L02 &nbsp;·&nbsp; Foundations</div>
+      <h1>Software Process Models</h1>
+      <p class="hero-sub">Waterfall, Spiral, RUP, PSP, TSP — and the nature of wicked problems</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#core-concepts">Core Concepts of Software Engineering</a></li>
+          <li><a href="#waterfall">The Software Process &amp; Waterfall Model</a></li>
+          <li><a href="#tame-wicked">Tame vs. Wicked Problems</a></li>
+          <li><a href="#process-models">Software Process Models</a></li>
+          <li><a href="#psp-tsp">PSP &amp; TSP</a></li>
+          <li><a href="#sqa">Quality Assurance &amp; Project Management</a></li>
+          <li><a href="#cs-vs-se">CS vs. Software Engineering</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="core-concepts">Core Concepts of Software Engineering</h2>
+      <p>Software engineering has three primary objectives and operates through three interacting life cycle tracks.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Primary Objectives</div>
+        <ul>
+          <li>Significantly <strong>improve software productivity and quality</strong>.</li>
+          <li><strong>Reduce costs</strong> and <strong>time to market</strong>.</li>
+        </ul>
+      </div>
+
+      <h3>Three Main Tracks</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Track</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Software Development Process</strong></td><td>The activities that transform requirements into a working system.</td></tr>
+            <tr><td><strong>Software Quality Assurance (SQA)</strong></td><td>Ensures activities are performed correctly and artefacts meet requirements.</td></tr>
+            <tr><td><strong>Software Project Management</strong></td><td>Administers and controls both development and SQA.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Object-Oriented Software Engineering (OOSE)</h3>
+      <p>A specialisation of SE that views the world and software systems as a <strong>collection of objects interacting with one another</strong>. This perspective underpins UML, class diagrams, and use case modelling covered in later lectures.</p>
+
+      <!-- 2 -->
+      <h2 id="waterfall">The Software Process &amp; Waterfall Model</h2>
+
+      <h3>What Is a Software Process?</h3>
+      <p>A software process is a <strong>series of activities performed to construct a system</strong>. It transforms an initial concept into an operational system by identifying business needs, conducting feasibility studies, and formulating requirements.</p>
+      <p>Each activity produces <strong>artefacts</strong> (deliverables that become inputs for the next phase), and every phase has strict <strong>entrance and exit criteria</strong>.</p>
+
+      <h3>The Waterfall Model</h3>
+      <p>The original, traditional sequential model:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Phase</th></tr></thead>
+          <tbody>
+            <tr><td>System Engineering</td></tr>
+            <tr><td>Requirements Analysis</td></tr>
+            <tr><td>Software Design</td></tr>
+            <tr><td>Coding &amp; Unit Testing</td></tr>
+            <tr><td>Integration Testing</td></tr>
+            <tr><td>Acceptance Testing</td></tr>
+            <tr><td>Maintenance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Merits of the Waterfall Model</div>
+        <p>Its straightforward sequence <strong>simplifies project management</strong> and naturally supports function-oriented project organisations where specialised teams (e.g., a dedicated design team or testing team) handle each phase sequentially. Documentation is thorough and each phase has a clear end point.</p>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">Limitations</div>
+        <p>Requirements rarely stay fixed. The model is inflexible to change — going back to an earlier phase is costly. This makes it poorly suited to most modern application software development.</p>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="tame-wicked">Tame vs. Wicked Problems</h2>
+      <p>Not all problems are the same. SE must grapple with a fundamental distinction:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Tame</th><th>Wicked</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Formulation</strong></td><td>Completely specifiable</td><td>No definite formulation</td></tr>
+            <tr><td><strong>Stopping rule</strong></td><td>Clear — objectively correct/incorrect</td><td>None — solutions are "good" or "bad"</td></tr>
+            <tr><td><strong>Specification vs. solution</strong></td><td>Can be separated</td><td>Cannot be separated</td></tr>
+            <tr><td><strong>Cause &amp; effect</strong></td><td>Definite chain</td><td>Multi-causal, unclear</td></tr>
+            <tr><td><strong>Examples</strong></td><td>Maths, chess, compilers, AI problems</td><td>Economic reforms, <em>application software</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout key">
+        <div class="callout-label">Key Insight</div>
+        <p><strong>Application software development is a wicked problem.</strong> You cannot fully specify it before starting, the requirements evolve as stakeholders see the product, and there is no objectively "correct" solution. This is why rigid waterfall often fails and why iterative/agile approaches exist.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="process-models">Software Process Models</h2>
+
+      <h3>Prototyping Model</h3>
+      <p>Prototypes are built specifically to <strong>acquire and validate requirements</strong> and assess project feasibility. Once requirements are confirmed, the prototype is typically discarded.</p>
+
+      <h3>Evolutionary Prototyping</h3>
+      <p>Instead of throwing prototypes away, the prototype <strong>directly evolves into the final production system</strong>. This avoids wasting time and effort.</p>
+      <ul>
+        <li><strong>Suited for:</strong> Exploratory systems (e.g., research software) where requirements are genuinely unknown.</li>
+        <li><strong>Not suitable for:</strong> Projects requiring a predictable schedule — the end-state is hard to plan upfront.</li>
+      </ul>
+
+      <h3>Spiral Model</h3>
+      <p>A <strong>risk-driven</strong> approach that loops through phases, choosing its next action based on current risk level:</p>
+      <ul>
+        <li>If risks remain → use <strong>prototyping</strong>.</li>
+        <li>If risks are resolved → proceed like a <strong>Waterfall</strong>.</li>
+        <li>If the prototype is robust → shift to an <strong>Evolutionary</strong> model.</li>
+      </ul>
+      <p>Each loop of the spiral represents one iteration of the development cycle, with increasing detail and decreasing risk.</p>
+
+      <h3>Rational Unified Process (RUP)</h3>
+      <p>An <strong>iterative framework</strong> with four main phases:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Phase</th><th>Iterations</th><th>Key Deliverables</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Inception</strong></td><td>1–2</td><td>Simplified use case model, tentative architecture, project plan</td></tr>
+            <tr><td><strong>Elaboration</strong></td><td>N</td><td>Architectural design, implementation of most critical use cases</td></tr>
+            <tr><td><strong>Construction</strong></td><td>Multiple</td><td>Remaining use cases iteratively implemented and integrated</td></tr>
+            <tr><td><strong>Transition</strong></td><td>—</td><td>System deployment, user training, defect correction</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="psp-tsp">PSP &amp; TSP</h2>
+
+      <h3>Personal Software Process (PSP)</h3>
+      <p>A framework of <strong>scripts, forms, and standards</strong> for training individual engineers and preparing them for team projects. It focuses on disciplined personal habits before scaling to teams.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PSP0 &amp; PSP0.1</strong></td><td>Process discipline, baseline measurement, time and defect recording</td></tr>
+            <tr><td><strong>PSP1 &amp; PSP1.1</strong></td><td>Size estimation, planning, and scheduling</td></tr>
+            <tr><td><strong>PSP2 &amp; PSP2.1</strong></td><td>Quality management — design and code reviews</td></tr>
+            <tr><td><strong>PSP3.0</strong></td><td>Component-level development</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Team Software Process (TSP)</h3>
+      <p>Scales PSP to a <strong>team level</strong>. Teams work through cycles of: <em>Strategy → Plan → Requirements → Design → Implementation → Test → Postmortem</em>. The postmortem feeds lessons back into the next cycle.</p>
+
+      <!-- 6 -->
+      <h2 id="sqa">Quality Assurance &amp; Project Management</h2>
+
+      <h3>Software Quality Assurance (SQA)</h3>
+      <p>SQA operates through two complementary activities:</p>
+      <ul>
+        <li><strong>Verification:</strong> Ensures development activities are performed correctly — <em>"Are we building the product right?"</em></li>
+        <li><strong>Validation:</strong> Ensures produced artefacts meet requirements — <em>"Are we building the right product?"</em> This includes static checking and dynamic testing.</li>
+      </ul>
+
+      <h3>Software Project Management</h3>
+      <p>Oversees the <strong>administration and control</strong> of both the development activities and SQA. It tracks schedule, budget, risk, and team coordination to keep the project on track.</p>
+
+      <!-- 7 -->
+      <h2 id="cs-vs-se">CS vs. Software Engineering</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Dimension</th><th>Computer Science (CS)</th><th>Software Engineering (SE)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Goal</strong></td><td>Pursue optimal solutions</td><td>"Good enough is enough"</td></tr>
+            <tr><td><strong>Problem type</strong></td><td>Tame problems</td><td>Wicked problems</td></tr>
+            <tr><td><strong>Scale</strong></td><td>"Programming in the small"</td><td>"Programming in the large"</td></tr>
+            <tr><td><strong>Focus</strong></td><td>Technical and theoretical issues</td><td>All aspects of the system</td></tr>
+            <tr><td><strong>Cost</strong></td><td>Not an important consideration</td><td><em>Highly</em> important — the Iron Triangle</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">The Iron Triangle</div>
+        <p>In SE, project constraints are often framed as <strong>PQCT</strong> — Productivity/Scope, Quality, Cost, and Time. You can optimise for three, but the fourth will suffer. This trade-off is fundamental to project management in SE.</p>
+      </div>
+
+      <p>SE builds <em>upon</em> the foundations of CS and other disciplines — it does not replace them. A software engineer must understand algorithms, data structures, and system theory while also mastering process, communication, and economics.</p>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L01_software_engineering_intro.html"><span class="nav-arrow">←</span> Intro to SE</a>
+  <a href="L03_systems_and_uml.html">Systems &amp; UML <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

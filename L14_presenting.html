@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L14 — Presenting in Software Engineering | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link active" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L14 &nbsp;·&nbsp; Communication</div>
+      <h1>Presenting in Software Engineering</h1>
+      <p class="hero-sub">Content · Delivery · Demos · The failure modes that follow engineers from university into industry</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents — Part I: The Presentation</div>
+        <ol>
+          <li><a href="#context">Why This Matters</a></li>
+          <li><a href="#audience">Audience</a></li>
+          <li><a href="#structure">Structure</a></li>
+          <li><a href="#slide-design">Slide Design</a></li>
+          <li><a href="#code-slides">Code &amp; Architecture Slides</a></li>
+          <li><a href="#demos">Demo Anti-Patterns</a></li>
+          <li><a href="#data">Data Visualisation</a></li>
+          <li><a href="#pitfalls">The 11 Endemic Pitfalls</a></li>
+        </ol>
+        <div class="toc-title" style="margin-top:0.75rem">Part II: The Delivery</div>
+        <ol start="9">
+          <li><a href="#confidence">Confidence &amp; Pacing</a></li>
+          <li><a href="#demo-survival">Live Demo Survival</a></li>
+          <li><a href="#qa">Q&amp;A Mastery</a></li>
+          <li><a href="#group">Group Presentations</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="context">Why This Matters</h2>
+
+      <div class="callout key">
+        <div class="callout-label">The Data</div>
+        <ul>
+          <li>72.7% of employers rate written communication as important vs. 67.0% for technical skills. <em>(NACE Job Outlook 2024)</em></li>
+          <li>92% of SA engineers felt their curriculum did not adequately prepare them in communication.</li>
+          <li>Communication demands compound with every promotion.</li>
+        </ul>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Career Stage</th><th>Communication Demands</th></tr></thead>
+          <tbody>
+            <tr><td>Student</td><td>Project demos, viva examinations, group presentations</td></tr>
+            <tr><td>Job candidate</td><td>Technical screen, system design interview, take-home demo</td></tr>
+            <tr><td>Junior SWE</td><td>Sprint reviews, team standups, bug post-mortems</td></tr>
+            <tr><td>Mid-level</td><td>Architecture RFCs, stakeholder demos, tech talks</td></tr>
+            <tr><td>Senior / Lead</td><td>Direction proposals, incident reports, org-wide strategy, conference talks</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="audience">Audience</h2>
+      <p>The question engineers never ask: <em>"Who is in this room, and what do they need to decide?"</em></p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Audience Type</th><th>What They Want</th><th>How to Adapt</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Technical peers</strong> (assessors, engineers)</td>
+              <td>Accuracy, depth, trade-off reasoning</td>
+              <td>Skip basics. Show your thinking, not just your answer. They'll notice hand-waving.</td>
+            </tr>
+            <tr>
+              <td><strong>Mixed audience</strong> (sprint review)</td>
+              <td>Outcome + some technical depth</td>
+              <td>Split your talk. Lead with value, then add a technical layer. Never assume shared context.</td>
+            </tr>
+            <tr>
+              <td><strong>Non-technical decision makers</strong></td>
+              <td>Problem → solution → business outcome</td>
+              <td>Speak in consequences, not implementations. No stack details.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="structure">Structure</h2>
+      <blockquote>Engineers present chronologically. Audiences need causally. A great technical presentation is a spoken RFC.</blockquote>
+
+      <div class="callout note">
+        <div class="callout-label">The Six-Part Structure</div>
+        <ol>
+          <li><strong>Hook</strong> — A sharp claim or fact. Not "Hi, I'm going to talk about..."</li>
+          <li><strong>Problem</strong> — Why does the world have a gap? Make it concrete.</li>
+          <li><strong>Insight</strong> — The non-obvious thing you learned. This is your core thesis.</li>
+          <li><strong>Solution</strong> — Your approach, grounded in the insight — not listed from nowhere.</li>
+          <li><strong>Evidence</strong> — Demo, data, or proof.</li>
+          <li><strong>Impact</strong> — So what changes? Who benefits? What is the measurable outcome?</li>
+        </ol>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="slide-design">Slide Design</h2>
+      <p>Good slide design is learning science, not aesthetics.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Principle</th><th>Rule</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Coherence</strong></td><td>Remove extraneous material. Every pixel competes for cognitive bandwidth. If it doesn't earn its place, cut it.</td></tr>
+            <tr><td><strong>Modality</strong></td><td>Explanatory words should be spoken, not printed in full on screen. Dense text forces the audience to read instead of listen — they can't do both.</td></tr>
+            <tr><td><strong>One claim per slide</strong></td><td>"Authentication" is a category. "JWT expiry caused 40% of our auth failures" is a claim. The slide title IS the takeaway.</td></tr>
+            <tr><td><strong>Font-size floor: 24pt</strong></td><td>If it doesn't fit at 24pt+, the text must be cut, not shrunk.</td></tr>
+            <tr><td><strong>Slides ≠ documents</strong></td><td>Prose belongs in speaker notes and handouts. Slides are a live aid — not a transcript.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="code-slides">Code &amp; Architecture Slides</h2>
+
+      <h3>Code Slides</h3>
+      <div class="callout tip">
+        <div class="callout-label">Rules</div>
+        <ul>
+          <li><strong>6–10 lines maximum</strong> — extract the one function that illustrates your insight. Show the idea, not the implementation. The audience can read the repo later.</li>
+          <li><strong>Syntax-highlight always</strong> — use Carbon (carbon.now.sh) or Ray.so. Dark mode, ≥18pt font. Never paste raw IDE text onto a white background.</li>
+          <li><strong>Annotate the key line</strong> — box it, arrow it, highlight it. Don't make the audience grep your code for the point.</li>
+          <li><strong>Narrate while showing</strong> — explain what the critical part does and why it matters.</li>
+        </ul>
+      </div>
+
+      <h3>Architecture Slides</h3>
+      <div class="callout tip">
+        <div class="callout-label">Rules</div>
+        <ol>
+          <li><strong>Hierarchical abstraction</strong> — start high level; never open with every service on one diagram.</li>
+          <li><strong>Tell the data journey</strong> — trace one user request end-to-end; animation or staged builds help.</li>
+          <li><strong>Justify every decision</strong> — "Why Kafka instead of SQS?" Every architectural choice has a reason.</li>
+          <li><strong>Legible at 6 metres</strong> — standard icon sets, min 14pt labels, distinct shapes per component type.</li>
+          <li><strong>No spaghetti</strong> — more than 8 connections? Split it. Colour-code by responsibility domain.</li>
+          <li><strong>Show what changed</strong> — the before/after hits harder than a single static diagram.</li>
+        </ol>
+      </div>
+
+      <!-- 6 -->
+      <h2 id="demos">Demo Anti-Patterns</h2>
+
+      <div class="callout warn">
+        <div class="callout-label">What NOT to Demo</div>
+        <ul>
+          <li><strong>The scrolling Jupyter notebook</strong> — a notebook is a scratchpad. Export to slides or record a clean run.</li>
+          <li><strong>The IDE tour</strong> — nobody wants a file tree. They want to see the system working.</li>
+          <li><strong>The GitHub repo browse</strong> — clicking through folders signals poor preparation.</li>
+          <li><strong>The localhost reveal</strong> — "let me just start the server..." Demo setup must be invisible. Walk in with everything already running.</li>
+          <li><strong>The feature catalogue</strong> — show a user completing a task, not a click-through of every screen.</li>
+          <li><strong>The apology tour</strong> — "Sorry this isn't finished..." Every apology reduces credibility. Fix it or don't show it.</li>
+        </ul>
+      </div>
+
+      <!-- 7 -->
+      <h2 id="data">Data Visualisation</h2>
+      <blockquote>83.5% of participants showed the truncation effect, even after being taught about it. — Yang, Schneider et al., 2021</blockquote>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pitfall</th><th>Why It Misleads</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Truncated Y-axis</strong></td><td>Starting at 94% not 0%? A 1% change looks like 100%. Empirically proven to mislead even informed viewers.</td></tr>
+            <tr><td><strong>No baseline</strong></td><td>"Response time: 120ms" — compared to what? Always answer: is this good?</td></tr>
+            <tr><td><strong>3D charts</strong></td><td>Distort perceptual judgment. Switch to 2D for all comparison tasks.</td></tr>
+            <tr><td><strong>Raw counts vs. rates</strong></td><td>Normalise before comparing — raw volume hides relative performance differences.</td></tr>
+            <tr><td><strong>No error bars</strong></td><td>A single-run result with no confidence interval is not a scientific claim.</td></tr>
+            <tr><td><strong>Colour without meaning</strong></td><td>Every colour must encode something. Arbitrary colour is noise that misdirects attention.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">The 55/38/7 Myth</div>
+        <p>Mehrabian's 1967 studies were about judging feelings from conflicting cues — not about presentations or technical communication. In technical communication, <strong>structure and content carry enormous weight</strong>. Delivery amplifies good content — it cannot rescue weak content.</p>
+      </div>
+
+      <!-- 8 -->
+      <h2 id="pitfalls">The 11 Endemic Pitfalls</h2>
+
+      <div class="callout warn">
+        <div class="callout-label">Patterns Assessors See Every Year</div>
+        <ol>
+          <li><strong>Tech-stack laundry list</strong> — listing a tech stack with no reasoning. No "We use X because Y".</li>
+          <li><strong>No problem statement</strong> — building a solution to a problem you never articulated. The audience has no anchor.</li>
+          <li><strong>Feature enumeration</strong> — "Here's the login page, here's the dashboard..." Features are not insights. Outcomes are.</li>
+          <li><strong>Death by caveat</strong> — "This isn't fully optimised, there are edge cases..." Preemptive defensiveness kills credibility.</li>
+          <li><strong>Buried evaluation</strong> — your test results are the entire point. Engineers who bury their evaluation are hiding from it.</li>
+          <li><strong>Assuming shared context</strong> — not everyone knows what a webhook, race condition, or transformer is.</li>
+          <li><strong>No lessons learned</strong> — what broke? What surprised you? What would you do differently?</li>
+          <li><strong>Reading slides aloud</strong> — the audience reads faster than you speak. You've lost them the moment you start reading.</li>
+          <li><strong>"Sorry, this slide is busy"</strong> — that's the slide failing. Redesign it — never apologise for it.</li>
+          <li><strong>Presenting to the screen</strong> — turning to face projected slides. Your audience is behind you.</li>
+          <li><strong>Stopping at "any questions?"</strong> — no summary, no conclusion, no takeaway. Tell them what they just learned.</li>
+        </ol>
+      </div>
+
+      <hr />
+
+      <!-- 9 -->
+      <h2 id="confidence">Confidence &amp; Pacing</h2>
+
+      <div class="callout key">
+        <div class="callout-label">What Actually Works for Nerves</div>
+        <ul>
+          <li><strong>Prepare obsessively</strong> — confidence IS competence. Run through until transitions feel automatic. Record yourself once.</li>
+          <li><strong>Slow down by 30%</strong> — nervous speakers rush. Your "right pace" feels too slow. Deliberate pacing reads as authority.</li>
+          <li><strong>Box breathing</strong> — 4 sec in → 4 hold → 4 out → 4 hold. Physiologically lowers cortisol within 60 seconds.</li>
+          <li><strong>Reframe the room</strong> — the audience wants you to succeed. They're curious people who gave you their time.</li>
+        </ul>
+      </div>
+
+      <h3>Pacing &amp; Signposting</h3>
+      <p><strong>Silence is not awkward. Silence is emphasis.</strong> ~90 seconds per slide. Pause 3 seconds after key points. Tell them three times: "I'll show you X → [Show X] → So as you saw, X."</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Signpost Type</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Opening</td><td>"By the end of this, you'll understand exactly how we cut latency by 60%."</td></tr>
+            <tr><td>Transition</td><td>"That covers the problem. Now let me show you how we solved it."</td></tr>
+            <tr><td>Emphasis</td><td>"The key insight — and this is the important part — is that we moved the lock."</td></tr>
+            <tr><td>Demo</td><td>"Rather than explaining further, let me just show you this running."</td></tr>
+            <tr><td>Closing</td><td>"Three takeaways. One, two, three. Questions?"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 10 -->
+      <h2 id="demo-survival">Live Demo Survival</h2>
+      <blockquote>"It worked on my machine" is not a risk mitigation strategy.</blockquote>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Phase</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Before</strong></td><td>Record a video backup — non-negotiable. Test on THE presentation machine. Terminal font ≥ 18pt, readable from row 5.</td></tr>
+            <tr><td><strong>During</strong></td><td>Narrate while doing. Never apologise preemptively. Demo outcomes, not features — show a user completing a task.</td></tr>
+            <tr><td><strong>If it breaks</strong></td><td>Stay completely calm — your reaction matters more than the failure. Pivot to video, zero hesitation. Don't over-explain why it broke.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 11 -->
+      <h2 id="qa">Q&amp;A Mastery</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Question Type</th><th>Example</th><th>Response</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Clarification</strong></td><td>"Can you explain the caching layer?"</td><td>Just answer clearly. Ask if that covers it. These are gifts.</td></tr>
+            <tr><td><strong>Technical challenge</strong></td><td>"Did you consider approach X?"</td><td>Don't defend. Engage. "Yes, we evaluated it and found..." Shows maturity.</td></tr>
+            <tr><td><strong>Gotcha</strong></td><td>"Why didn't you use Y? Everyone does."</td><td>"We looked at Y — here's why Z fit our constraints better."</td></tr>
+            <tr><td><strong>I don't know</strong></td><td>Out-of-scope question</td><td>"I don't know, but here's how I'd find out." Most credible answer possible.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">The PREP Framework</div>
+        <ul>
+          <li><strong>P — Point:</strong> State your direct answer first. Not context, not caveats — the answer.</li>
+          <li><strong>R — Reason:</strong> One sentence of justification. The why.</li>
+          <li><strong>E — Example:</strong> Concrete instance from your project. Not a hypothetical.</li>
+          <li><strong>P — Point again:</strong> Restate the answer. Close the loop. Signals you're done.</li>
+        </ul>
+      </div>
+
+      <!-- 12 -->
+      <h2 id="group">Group Presentations</h2>
+      <blockquote>A group presentation is not five individual presentations welded together. It's one talk with multiple presenters.</blockquote>
+
+      <div class="callout warn">
+        <div class="callout-label">Common Group Failures</div>
+        <ul>
+          <li><strong>The handoff problem</strong> — each handoff must connect sections, not simply introduce the next person.</li>
+          <li><strong>Visual inconsistency</strong> — three sections made by three people look like three different presentations. Agree a template at the start.</li>
+          <li><strong>"That was X's part"</strong> — unacceptable in Q&amp;A. Every team member must speak to every section.</li>
+          <li><strong>The absent presenter</strong> — when one speaks, the others stare blankly. Assessors watch everyone.</li>
+          <li><strong>Unequal time</strong> — agree the split beforehand. Designate a timekeeper.</li>
+        </ul>
+      </div>
+
+      <hr />
+
+      <div class="callout key">
+        <div class="callout-label">Five Key Takeaways</div>
+        <ol>
+          <li><strong>Know your audience before you write slide one</strong> — who is in the room? What do they need to decide? Everything flows from this.</li>
+          <li><strong>Structure causally, not chronologically</strong> — Problem → Insight → Solution → Evidence → Impact.</li>
+          <li><strong>One claim per slide — enforced ruthlessly</strong> — if you catch yourself saying "sorry this slide is busy," that's the slide failing. Redesign it.</li>
+          <li><strong>Always have a backup. Always.</strong> — video of your demo, pre-seeded data, offline mode. A graceful failure handled calmly builds more credibility than a perfect run.</li>
+          <li><strong>"I don't know" is a complete, credible answer</strong> — followed by how you'd find out. Bluffing in a room of engineers destroys trust permanently.</li>
+        </ol>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L13_non_functional_testing.html"><span class="nav-arrow">←</span> L13: Non-Functional Testing</a>
+  <a href="L15_agile_1.html">L15: Agile &amp; Scrum I <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

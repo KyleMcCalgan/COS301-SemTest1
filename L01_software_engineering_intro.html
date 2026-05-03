@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L01 — Introduction to Software Engineering | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Foundations</div>
+        <a class="nav-link active" href="L01_software_engineering_intro.html">
+          <span class="nav-tag">L01</span>Intro to SE
+        </a>
+        <a class="nav-link" href="L02_software_process.html">
+          <span class="nav-tag">L02</span>Software Process Models
+        </a>
+        <a class="nav-link" href="L03_systems_and_uml.html">
+          <span class="nav-tag">L03</span>Systems &amp; UML
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Planning</div>
+        <a class="nav-link" href="L04_version_control.html">
+          <span class="nav-tag">L04</span>Version Control &amp; CI/CD
+        </a>
+        <a class="nav-link" href="L07_use_cases.html">
+          <span class="nav-tag">L07</span>Use Cases
+        </a>
+        <a class="nav-link" href="L08_domain_modelling.html">
+          <span class="nav-tag">L08</span>Domain Modelling
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L01 &nbsp;·&nbsp; Foundations</div>
+      <h1>Introduction to Software Engineering</h1>
+      <p class="hero-sub">Systematic, disciplined, and quantifiable approaches to software development</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#what-is-se">What Is Software Engineering?</a></li>
+          <li><a href="#objectives">Core Objectives &amp; Key Activities</a></li>
+          <li><a href="#sdlc">The Software Development Life Cycle</a></li>
+          <li><a href="#sdlc-phases">SDLC Phases in Detail</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="what-is-se">What Is Software Engineering?</h2>
+      <p>Software engineering is defined as a <strong>systematic, disciplined, and quantifiable approach</strong> to the development, operation, and maintenance of software. It is not merely "writing code" — it is the principled application of engineering methodology to software construction.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Definition</div>
+        <p>Software engineering requires the application of <strong>engineering principles</strong>, <strong>design methodologies</strong>, and <strong>programming expertise</strong> to create scalable, efficient, and reliable software solutions designed to solve complex problems in major industries such as technology, finance, and healthcare.</p>
+      </div>
+
+      <h3>Why "Engineering"?</h3>
+      <p>Traditional engineering disciplines (civil, mechanical, electrical) have centuries of codified practice, standards, and failure post-mortems. Software engineering borrows this rigour: it insists on defined processes, measurable outcomes, and structured documentation rather than ad-hoc development.</p>
+
+      <!-- 2 -->
+      <h2 id="objectives">Core Objectives &amp; Key Activities</h2>
+
+      <h3>Objectives</h3>
+      <ul>
+        <li>Create <strong>scalable</strong> solutions that handle growth without re-architecture.</li>
+        <li>Ensure <strong>efficiency</strong> — optimal use of compute, memory, and developer time.</li>
+        <li>Guarantee <strong>reliability</strong> — software behaves correctly under expected and unexpected conditions.</li>
+        <li>Reduce <strong>cost and time-to-market</strong> through structured processes.</li>
+      </ul>
+
+      <h3>Key Activities</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Activity</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Requirements Analysis</strong></td><td>Eliciting and documenting exactly what the customer needs the software to do.</td></tr>
+            <tr><td><strong>System Design</strong></td><td>Creating the architecture, user interfaces, and data models before coding begins.</td></tr>
+            <tr><td><strong>Coding</strong></td><td>The actual programming and construction of the software components.</td></tr>
+            <tr><td><strong>Testing</strong></td><td>Running tests to detect defects and verify correctness.</td></tr>
+            <tr><td><strong>Maintenance</strong></td><td>Ongoing updates, bug fixes, and feature enhancements after deployment.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="sdlc">The Software Development Life Cycle (SDLC)</h2>
+      <p>The SDLC is a <strong>continuous 6-step cycle</strong> that guides the structured creation and management of software. It is a framework — not a rigid sequence — and version control (e.g., GitHub) plays an important role throughout every phase.</p>
+
+      <div class="callout note">
+        <div class="callout-label">The 6 Phases</div>
+        <ol>
+          <li><strong>Planning</strong></li>
+          <li><strong>Analysis</strong></li>
+          <li><strong>Design</strong></li>
+          <li><strong>Implementation</strong></li>
+          <li><strong>Testing &amp; Integration</strong></li>
+          <li><strong>Maintenance</strong></li>
+        </ol>
+      </div>
+
+      <p>The cycle is described as <em>continuous</em> because after maintenance, new requirements surface and the cycle begins again with updated planning. This reflects the living nature of real-world software.</p>
+
+      <!-- 4 -->
+      <h2 id="sdlc-phases">SDLC Phases in Detail</h2>
+
+      <h3>Planning</h3>
+      <p>Involves <strong>feasibility studies</strong>, resource allocation, cost estimation, and project scheduling. The goal is to determine whether the project is viable before committing significant effort. Deliverables typically include a project charter and a high-level schedule.</p>
+
+      <h3>Analysis</h3>
+      <p>Focuses on <strong>requirements elicitation and documentation</strong> — understanding exactly what the customer needs the system to do. This phase answers the question: <em>"What problem are we solving?"</em> Poor analysis is the leading cause of failed projects.</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Common Pitfall</div>
+        <p>Skipping or rushing the Analysis phase leads to building the wrong product. Fixing a misunderstood requirement in production costs <strong>10–100× more</strong> than catching it here.</p>
+      </div>
+
+      <h3>Design</h3>
+      <p>Creating the <strong>architecture, user interfaces, and data models</strong> before any code is written. This includes UML diagrams (covered in L03 and L08), database schemas, API contracts, and technology stack decisions. Design translates <em>what</em> into <em>how</em>.</p>
+
+      <h3>Implementation</h3>
+      <p>The actual <strong>programming and construction</strong> of the software. Developers write code according to the design specifications. Version control (Git) is essential here to manage concurrent development across teams.</p>
+
+      <h3>Testing &amp; Integration</h3>
+      <p>Running tests to <strong>find bugs and verify that different subsystems work together</strong> seamlessly. Includes unit testing (individual components), integration testing (component interactions), and system testing (end-to-end). Covered in depth in L09–L10 and L13.</p>
+
+      <h3>Maintenance</h3>
+      <p>Deploying the software to users and providing <strong>ongoing updates, bug fixes, and feature enhancements</strong>. This is the longest-lived phase — most software spends far more time in maintenance than in initial development. Studies show maintenance can consume <strong>60–80% of total lifetime cost</strong>.</p>
+
+      <div class="callout tip">
+        <div class="callout-label">Why the Cycle Matters</div>
+        <p>Understanding the SDLC gives every engineer a mental model for <em>where</em> their current work fits, what phase comes next, and what artefacts they need to produce for the next team to succeed.</p>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="index.html"><span class="nav-arrow">←</span> Home</a>
+  <a href="L02_software_process.html">Software Process Models <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

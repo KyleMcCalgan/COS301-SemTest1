@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L08 — Domain Modelling | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Foundations</div>
+        <a class="nav-link" href="L01_software_engineering_intro.html">
+          <span class="nav-tag">L01</span>Intro to SE
+        </a>
+        <a class="nav-link" href="L02_software_process.html">
+          <span class="nav-tag">L02</span>Software Process Models
+        </a>
+        <a class="nav-link" href="L03_systems_and_uml.html">
+          <span class="nav-tag">L03</span>Systems &amp; UML
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Planning</div>
+        <a class="nav-link" href="L04_version_control.html">
+          <span class="nav-tag">L04</span>Version Control &amp; CI/CD
+        </a>
+        <a class="nav-link" href="L07_use_cases.html">
+          <span class="nav-tag">L07</span>Use Cases
+        </a>
+        <a class="nav-link active" href="L08_domain_modelling.html">
+          <span class="nav-tag">L08</span>Domain Modelling
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L08 &nbsp;·&nbsp; Planning</div>
+      <h1>Domain Modelling</h1>
+      <p class="hero-sub">UML class diagrams, relationships, multiplicity, and the brainstorming rules for building a domain model</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#what-is-model">What Is a Model &amp; Domain Modelling?</a></li>
+          <li><a href="#class-diagrams">UML Class Diagrams</a></li>
+          <li><a href="#relationships">Relationships &amp; Multiplicity</a></li>
+          <li><a href="#brainstorming">The Brainstorming Rules</a></li>
+          <li><a href="#exercise">ClickUP Class Exercise</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="what-is-model">What Is a Model &amp; Domain Modelling?</h2>
+
+      <h3>Model</h3>
+      <p>A <strong>model</strong> is a conceptual representation or schematic description of a system, theory, or phenomenon that accounts for its properties and is used to study its characteristics.</p>
+
+      <h3>Domain Modelling</h3>
+      <p><strong>Domain modelling</strong> is a process that helps a development team understand the specific application or domain they are working in, enabling them to establish a <em>common understanding</em>. It is driven by the language used in the requirements.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Why Domain Modelling Matters</div>
+        <p>Without a shared domain model, different team members build software based on different mental models of the problem space. This leads to integration failures, missed requirements, and costly rework.</p>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="class-diagrams">UML Class Diagrams</h2>
+      <p>A <strong>UML class diagram</strong> is a structural diagram that displays classes, their attributes, their operations, and the relationships between them.</p>
+
+      <h3>Domain Model vs. Full Class Diagram</h3>
+      <div class="callout warn">
+        <div class="callout-label">Crucial Distinction</div>
+        <p>A <strong>domain model</strong> is represented by a class diagram <strong>without operations</strong>. It shows only the structural concepts and relationships — no methods. Adding operations turns it into a full design-level class diagram.</p>
+      </div>
+
+      <h3>Visual Structure of a Class</h3>
+      <p>A class is represented by a rectangle divided into compartments:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Compartment</th><th>Position</th><th>Contents</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Class Name</strong></td><td>Top</td><td>Name of the class, usually capitalized (e.g., <code>User</code>).</td></tr>
+            <tr><td><strong>Attributes</strong></td><td>Middle</td><td>Data fields the class holds (e.g., <code>name: String</code>).</td></tr>
+            <tr><td><strong>Operations</strong></td><td>Bottom</td><td>Methods (omitted in a domain model).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Classes can be displayed in three views:</p>
+      <ul>
+        <li><strong>Compact:</strong> Class name only.</li>
+        <li><strong>Semi-Compact:</strong> Name and selected attributes.</li>
+        <li><strong>Expanded:</strong> All compartments fully shown.</li>
+      </ul>
+
+      <!-- 3 -->
+      <h2 id="relationships">Relationships &amp; Multiplicity</h2>
+
+      <h3>Association</h3>
+      <p>An <strong>association</strong> expresses a general relationship between two concepts that is distinct from inheritance or aggregation. These are often application-specific.</p>
+      <ul>
+        <li><em>Example:</em> "Instructor teaches Course", "User has Account".</li>
+        <li>Associations include an <strong>association name</strong>, a <strong>direction pointer</strong>, and the specific <strong>roles</strong> involved at each end.</li>
+      </ul>
+
+      <h3>Aggregation</h3>
+      <p>Represents a <strong>"has-a" or "part-of"</strong> relationship. Used when possession expressions ("has", "possess") or containment expressions ("consist of", "part of") appear in the requirements.</p>
+
+      <h3>Inheritance (Generalization)</h3>
+      <p>Used when <strong>"X is a Y"</strong> expressions appear in the requirements. Represented by a solid line with a hollow arrowhead pointing to the parent class.</p>
+
+      <h3>Multiplicity</h3>
+      <p>Multiplicity defines the <strong>numerical constraints</strong> of a relationship. You must know these notations:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Notation</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>1</code></td><td>Exactly one (the default).</td></tr>
+            <tr><td><code>1..*</code></td><td>One or more.</td></tr>
+            <tr><td><code>0..1</code></td><td>Zero or one (optional).</td></tr>
+            <tr><td><code>m..n</code></td><td>From <em>m</em> to <em>n</em>.</td></tr>
+            <tr><td><code>*</code> or <code>0..*</code></td><td>Zero or more.</td></tr>
+            <tr><td><code>n</code></td><td>Exactly <em>n</em>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Reading Multiplicity</div>
+        <p>Read multiplicities from the <em>opposite</em> end: the multiplicity next to class B tells you how many B's are associated with one instance of class A.</p>
+        <p><em>Example:</em> "One base station services zero or more mobiles" → multiplicity of <code>0..*</code> on the Mobile end.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="brainstorming">The Brainstorming Rules</h2>
+      <p>To build a domain model, the team analyses the <strong>language used in the requirements</strong> and maps parts of speech to UML concepts using these nine rules:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Language Pattern</th><th>Maps To</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Nouns / noun phrases</td><td>Classes or attributes</td></tr>
+            <tr><td>2</td><td>"X of Y" expressions (e.g., <em>colour of car</em>)</td><td>X is an <strong>attribute</strong> of class Y</td></tr>
+            <tr><td>3</td><td>Transitive verbs</td><td><strong>Association</strong> relationships</td></tr>
+            <tr><td>4</td><td>Adjectives</td><td>Attribute values</td></tr>
+            <tr><td>5</td><td>Numeric values</td><td>Attribute or multiplicity values</td></tr>
+            <tr><td>6</td><td>Possession expressions (has/have, possess)</td><td><strong>Aggregation</strong> or an attribute</td></tr>
+            <tr><td>7</td><td>"Consist of / part of" expressions</td><td><strong>Aggregation</strong> relationships</td></tr>
+            <tr><td>8</td><td>Containment / containing expressions</td><td>Association or aggregation</td></tr>
+            <tr><td>9</td><td>"X is a Y" expressions</td><td><strong>Inheritance</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Process Tip</div>
+        <p>Work through the requirements sentence by sentence. Highlight nouns in one colour and verbs in another before you start placing elements on the diagram.</p>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="exercise">ClickUP Class Exercise</h2>
+      <p>The lecture provides this exercise as a practical walkthrough of building a domain model from requirements.</p>
+
+      <h3>Requirements</h3>
+      <ul>
+        <li><strong>FR1:</strong> A Student and Teaching Assistant can view announcements posted by their Lecturer.</li>
+        <li><strong>FR2:</strong> Announcements can be deleted by an Administrator.</li>
+      </ul>
+
+      <h3>Model Solution</h3>
+      <p>Applying the brainstorming rules to the requirements yields:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Element</th><th>Type</th><th>Reasoning</th></tr></thead>
+          <tbody>
+            <tr><td><code>User</code></td><td>Class (parent)</td><td>Common noun; <code>Student</code>, <code>Lecturer</code>, <code>Teaching Assistant</code>, <code>Administrator</code> all ARE-A User → rule 9 (inheritance).</td></tr>
+            <tr><td><code>Student</code>, <code>Lecturer</code>, <code>Teaching Assistant</code>, <code>Administrator</code></td><td>Classes (children of User)</td><td>Noun phrases; specialized roles → inheritance from <code>User</code>.</td></tr>
+            <tr><td><code>Announcement</code></td><td>Class</td><td>Noun phrase.</td></tr>
+            <tr><td>User <em>views</em> Announcement (0..*)</td><td>Association</td><td>Transitive verb "view" → rule 3.</td></tr>
+            <tr><td>Lecturer <em>makes</em> Announcement</td><td>Association</td><td>Transitive verb "post" → rule 3.</td></tr>
+            <tr><td>Administrator <em>deletes</em> Announcement</td><td>Association</td><td>Transitive verb "delete" → rule 3.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">Operations in this Exercise</div>
+        <p>The lecture notes that while domain models should technically hide operations, the provided solution for this exercise <em>does</em> display operations such as <code>login()</code>, <code>deleteAnnouncement()</code>, and <code>makeAnnouncement()</code>. Be aware of this inconsistency when comparing to exam questions.</p>
+      </div>
+
+      <div class="callout key">
+        <div class="callout-label">Key Takeaway</div>
+        <p>The power of a domain model lies in <strong>inheritance flattening</strong>: by having all roles inherit from <code>User</code>, you avoid duplicating the "views Announcement" association for every sub-role. One association at the parent level covers all children.</p>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L07_use_cases.html"><span class="nav-arrow">←</span> Use Cases</a>
+  <a href="L09_L10_testing.html">Unit &amp; Integration Testing <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

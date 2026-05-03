@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L09 &amp; L10 — Unit &amp; Integration Testing | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link active" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L09 &amp; L10 &nbsp;·&nbsp; Testing</div>
+      <h1>Unit &amp; Integration Testing</h1>
+      <p class="hero-sub">Source: Object-Oriented Software Engineering — David Kung, Ch. 20</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#what-is-testing">What Is Software Testing?</a></li>
+          <li><a href="#vv">Verification &amp; Validation</a></li>
+          <li><a href="#techniques">Test Case Generation Techniques</a></li>
+          <li><a href="#unit-tests">Unit Tests — Properties &amp; AAA</a></li>
+          <li><a href="#coverage">Test Coverage</a></li>
+          <li><a href="#tdd">Test Driven Development (TDD)</a></li>
+          <li><a href="#use-case">Use Case Based Testing</a></li>
+          <li><a href="#integration">Integration Testing</a></li>
+          <li><a href="#strategies">Integration Strategies</a></li>
+          <li><a href="#regression">Regression Testing</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="what-is-testing">What Is Software Testing?</h2>
+      <p>Software testing is a <strong>dynamic validation activity</strong> — it executes the program to detect defects and demonstrate that software satisfies its requirements and constraints.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Core Principles</div>
+        <ul>
+          <li>Testing is <strong>dynamic</strong> — review and inspection alone are not enough. You can't test a car without driving it.</li>
+          <li>Testing can <strong>detect</strong> errors but cannot <strong>prove</strong> a program is error-free.</li>
+          <li>A <strong>good test case</strong> has a high probability of finding an undetected error.</li>
+          <li>A <strong>successful test</strong> is one that uncovers an undiscovered error.</li>
+          <li>Testing ≠ Debugging. Debugging locates and fixes a <em>known</em> error; testing finds <em>unknown</em> ones.</li>
+        </ul>
+      </div>
+
+      <h3>Why Software Testing Matters</h3>
+      <p>Testing costs <strong>40–80% of total development costs</strong> (higher for real-time embedded systems). The average field-detected bug cost US$15,000 in 1991 — catching it in testing is far cheaper. Testing is especially critical for: instrumentation systems, process control, military systems, and safety-critical healthcare software.</p>
+
+      <!-- 2 -->
+      <h2 id="vv">Verification &amp; Validation</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Concept</th><th>Question</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Verification</strong></td><td>"Are we building the product right?"</td><td>Conformance to specification</td></tr>
+            <tr><td><strong>Validation</strong></td><td>"Are we building the right product?"</td><td>Meeting user needs</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Three Approaches to Correctness</h3>
+      <ul>
+        <li><strong>Testing</strong> — pragmatic; proves errors exist but cannot assert a program is error-free.</li>
+        <li><strong>Program correctness proof</strong> — theoretical; once proved, correct forever.</li>
+        <li><strong>Symbolic execution</strong> — hybrid; executes programs using symbolic values and correctness proof rules.</li>
+      </ul>
+
+      <!-- 3 -->
+      <h2 id="techniques">Test Case Generation Techniques</h2>
+
+      <h3>White Box Testing</h3>
+      <p>Based on knowledge of the <strong>internal workings</strong> of the product. Test cases are designed from program structure and control flow.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Technique</th><th>What It Tests</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Basis Path Testing</strong></td><td>Exercise all control flow paths</td></tr>
+            <tr><td><strong>Condition Testing</strong></td><td>Every outcome of every condition</td></tr>
+            <tr><td><strong>Data Flow Testing</strong></td><td>Define/use relationships of data elements</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Black Box Testing</h3>
+      <p>Based on the <strong>functional specification</strong>. No knowledge of internal structure required.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Technique</th><th>What It Tests</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Boundary Value Analysis</strong></td><td>Test cases from boundary values of variables</td></tr>
+            <tr><td><strong>Causal-Effect Analysis</strong></td><td>Derived from stimuli/responses and input-output relationships</td></tr>
+            <tr><td><strong>Equivalence Partitioning</strong></td><td>Derived from partitions of input/output domains</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Test Categories &amp; The Pyramid</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Unit Testing</strong></td><td>Individual module level — functions, classes</td></tr>
+            <tr><td><strong>Integration Testing</strong></td><td>Interfaces and interactions between modules</td></tr>
+            <tr><td><strong>Validation Testing</strong></td><td>Against customer's functional requirements</td></tr>
+            <tr><td><strong>System Testing</strong></td><td>Recovery, Security, Stress, Performance</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The <strong>testing pyramid</strong>: Unit Tests (bottom — fastest, most isolated) → Integration → API → UI → Manual (top — slowest). Write most tests at the bottom.</p>
+
+      <!-- 4 -->
+      <h2 id="unit-tests">Unit Tests — Properties &amp; AAA</h2>
+      <p>A unit test targets the <strong>smallest possible piece of testable software</strong> — usually a single function or method — in isolation from databases, APIs, and UIs.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Properties of a Good Unit Test</div>
+        <ul>
+          <li><strong>Fast</strong> — runs in milliseconds.</li>
+          <li><strong>Isolated</strong> — no external state dependency.</li>
+          <li><strong>Deterministic</strong> — same result every time if code hasn't changed.</li>
+          <li><strong>Granular</strong> — pinpoints exactly where a bug exists.</li>
+        </ul>
+      </div>
+
+      <h3>The AAA Pattern</h3>
+      <p>Structure every test using <strong>Arrange – Act – Assert</strong>:</p>
+      <ul>
+        <li><strong>Arrange</strong> — set up data and conditions; define variables, mock dependencies.</li>
+        <li><strong>Act</strong> — execute the specific function under test.</li>
+        <li><strong>Assert</strong> — verify the result matches expectation.</li>
+      </ul>
+
+      <!-- 5 -->
+      <h2 id="coverage">Test Coverage</h2>
+      <p>A metric measuring how much code is executed when a test suite runs. Helps identify "dark" areas of the codebase.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Question It Answers</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Function Coverage</strong></td><td>Has each function been called?</td></tr>
+            <tr><td><strong>Statement Coverage</strong></td><td>Has each executable line run at least once?</td></tr>
+            <tr><td><strong>Branch (Decision) Coverage</strong></td><td>Has every path through a control structure been tested?</td></tr>
+            <tr><td><strong>Condition Coverage</strong></td><td>Have all logical sub-expressions been evaluated as both true and false?</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">The Coverage Trap</div>
+        <p>100% coverage does <strong>not</strong> mean bug-free — it just means every line was executed. It doesn't prove logic is correct for all edge cases.</p>
+        <ul>
+          <li><strong>90%+</strong> — appropriate for critical business logic (e.g., payment processing).</li>
+          <li><strong>70–80%</strong> — often acceptable for UI glue code or low-risk scripts.</li>
+        </ul>
+      </div>
+      <blockquote>"Test coverage is a useful tool for finding untested parts of a codebase. It is of little use as a numeric target." — Martin Fowler</blockquote>
+
+      <!-- 6 -->
+      <h2 id="tdd">Test Driven Development (TDD)</h2>
+      <p>Tests are written <strong>before</strong> production code.</p>
+
+      <div class="callout note">
+        <div class="callout-label">TDD Cycle</div>
+        <ol>
+          <li>Write/edit tests for the next feature to be implemented.</li>
+          <li>Run new tests → all new tests <em>should fail</em>.</li>
+          <li>Write/edit production code.</li>
+          <li>Run all tests → all tests should pass.</li>
+          <li>Refactor code.</li>
+          <li>Check test coverage; add tests if needed.</li>
+          <li>Repeat for more features.</li>
+        </ol>
+      </div>
+
+      <p><strong>Merits of TDD:</strong> Clarifies and improves requirements. Produces higher-quality, well-structured code. Makes debugging easier. Improves readability through refactoring.</p>
+
+      <!-- 7 -->
+      <h2 id="use-case">Use Case Based Testing</h2>
+      <p>Links test cases back to requirements systematically:</p>
+      <ol>
+        <li>Prioritise use cases using a <strong>requirement-use case traceability matrix</strong>.</li>
+        <li>Generate test scenarios from expanded use cases.</li>
+        <li>Identify test cases from the scenarios.</li>
+        <li>Generate test data (values).</li>
+        <li>Generate test scripts.</li>
+      </ol>
+
+      <div class="callout tip">
+        <div class="callout-label">Scenarios</div>
+        <p>A <strong>scenario</strong> is a concrete instance of a use case. Each use case has a <strong>primary scenario</strong> (the happy/normal path) and <strong>secondary scenarios</strong> (rare or exceptional cases). Both must be tested.</p>
+      </div>
+
+      <hr />
+
+      <!-- 8 -->
+      <h2 id="integration">Integration Testing</h2>
+      <p>Integration testing verifies the <strong>interactions and data exchange between components or modules</strong>. It assumes individual units have already been tested. Focus is on the <strong>correctness of the interface</strong>, not the modules themselves. Requires a module call graph.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Evaluation Criterion</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Fault localisation</strong></td><td>How easy is it to pinpoint the source of a failure?</td></tr>
+            <tr><td><strong>Effort needed</strong></td><td>How much setup work (stubs, drivers) is required?</td></tr>
+            <tr><td><strong>Degree of testing</strong></td><td>How thoroughly are all modules exercised?</td></tr>
+            <tr><td><strong>Parallel development</strong></td><td>Can testing begin before all modules are complete?</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 9 -->
+      <h2 id="strategies">Integration Strategies</h2>
+
+      <h3>Big Bang</h3>
+      <p><strong>Non-incremental.</strong> Unit test each module in isolation, then integrate and test all at once.</p>
+      <ul>
+        <li><strong>Advantage:</strong> Convenient for small systems.</li>
+        <li><strong>Disadvantage:</strong> Integration can only begin when <em>all</em> modules are ready. Fault localisation is very difficult.</li>
+      </ul>
+
+      <h3>Top-Down</h3>
+      <p>Integrate moving <strong>downward</strong> in the control hierarchy from the main/top module. Uses <strong>stubs</strong> as placeholders for lower modules not yet implemented. Order can be depth-first or breadth-first.</p>
+      <ul>
+        <li><strong>Advantages:</strong> Fault localisation easier; few/no drivers needed; early prototype possible; major design flaws found first; flexible testing order.</li>
+        <li><strong>Disadvantages:</strong> Requires many stubs/mock objects; low-level reusable modules may be inadequately tested.</li>
+      </ul>
+
+      <h3>Bottom-Up</h3>
+      <p>Begins with <strong>atomic (leaf) modules</strong>, works upward. Uses <strong>drivers</strong> to test clusters of low-level components before integrating upward.</p>
+      <ul>
+        <li><strong>Advantages:</strong> Fault localisation easier; fewer stubs; operational modules tested thoroughly; can run parallel with implementation.</li>
+        <li><strong>Disadvantages:</strong> Requires drivers; high-level modules (containing core solution logic) are tested last and least.</li>
+      </ul>
+
+      <h3>Sandwich (Hybrid)</h3>
+      <p>Combines top-down and bottom-up. Top layer tested top-down while bottom layer tested bottom-up — they meet in the middle. Allows integration to begin early in the testing phase.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Strategy Summary</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Strategy</th><th>Fault Loc.</th><th>Stubs</th><th>Drivers</th><th>Parallel Dev</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Big Bang</strong></td><td>Hard</td><td>None</td><td>None</td><td>No</td></tr>
+              <tr><td><strong>Top-Down</strong></td><td>Easier</td><td>Many</td><td>Few/None</td><td>Partial</td></tr>
+              <tr><td><strong>Bottom-Up</strong></td><td>Easier</td><td>Few/None</td><td>Many</td><td>Yes</td></tr>
+              <tr><td><strong>Sandwich</strong></td><td>Easier</td><td>Some</td><td>Some</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <h2 id="regression">Regression Testing</h2>
+      <p>When a module is added or changed, <strong>regression testing</strong> re-executes a subset of tests to ensure changes have not introduced unintended side effects. New code can establish new data flow paths, new I/O, or new control logic that breaks existing functionality.</p>
+
+      <div class="callout note">
+        <div class="callout-label">A Good Regression Test Suite Contains</div>
+        <ol>
+          <li>A <strong>representative sample</strong> of tests that exercise all software functions.</li>
+          <li>Tests focused on <strong>functions likely to be affected</strong> by the change.</li>
+          <li>Tests focused on <strong>components that have been changed</strong>.</li>
+        </ol>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="index.html"><span class="nav-arrow">←</span> Home</a>
+  <a href="L11_architectural_design.html">Architectural Design <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

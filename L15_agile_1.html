@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L15 — Agile &amp; Scrum Part 1 | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link active" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L15 &nbsp;·&nbsp; Process</div>
+      <h1>Agile &amp; Scrum — Part 1</h1>
+      <p class="hero-sub">Cindy Govender · University of Pretoria · WIL Preparation</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#roles">Scrum Roles</a></li>
+          <li><a href="#ceremonies">Ceremonies &amp; Artifacts</a></li>
+          <li><a href="#sprint">The Sprint Lifecycle</a></li>
+          <li><a href="#values">Scrum Values</a></li>
+          <li><a href="#buzzwords">Buzzword Survival Kit</a></li>
+          <li><a href="#user-stories">User Stories &amp; Acceptance Criteria</a></li>
+          <li><a href="#dod">Definition of Done</a></li>
+          <li><a href="#manifesto">The Agile Manifesto</a></li>
+          <li><a href="#testing-agile">Testing in Agile — 12 Steps</a></li>
+          <li><a href="#day-one">Practical Tips for Day 1</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="roles">Scrum Roles</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Role</th><th>Core Responsibilities</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Product Owner (PO)</strong></td>
+              <td>
+                Owns the backlog and priorities. Ambassador for the product. Makes timely decisions about scope and features. Assesses value and prioritises stories for maximum business impact. Available to the team for requirements questions.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Scrum Master (SM)</strong></td>
+              <td>
+                Removes impediments, coaches the team. Facilitates without coercing. Builds a trusting, safe environment where problems can be raised without blame. Helps the PO manage the backlog and interact with stakeholders. Establishes a culture of experimentation.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Dev Team / Squad</strong></td>
+              <td>
+                Builds and tests the product. Collaborates to deliver the sprint commitment. Continuously improves. Transparent about work and challenges. Holds fellow members accountable to the team's Definition of Done.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="ceremonies">Ceremonies &amp; Artifacts</h2>
+
+      <h3>Ceremonies</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ceremony</th><th>Duration</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sprint Planning</strong></td><td>4 hrs</td><td>What do we build this sprint? Team commits to the sprint backlog.</td></tr>
+            <tr><td><strong>Daily Standup</strong></td><td>15 min</td><td>Yesterday / Today / Blockers. Same time, every day.</td></tr>
+            <tr><td><strong>Backlog Refinement</strong></td><td>3 hrs</td><td>Size and clarify upcoming work. Ensure stories are ready (DOR).</td></tr>
+            <tr><td><strong>Sprint Review</strong></td><td>1 hr</td><td>Demo working software to stakeholders. Gather feedback.</td></tr>
+            <tr><td><strong>Retrospective</strong></td><td>1.5 hrs</td><td>How do we improve? What worked / what didn't / what we commit to.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Artifacts</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Artifact</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Product Backlog</strong></td><td>Master list of all work — ordered by value and priority</td></tr>
+            <tr><td><strong>Sprint Backlog</strong></td><td>What THIS sprint contains — committed by the team in planning</td></tr>
+            <tr><td><strong>User Stories + AC</strong></td><td>How work is described and how completion is verified</td></tr>
+            <tr><td><strong>Definition of Done (DoD)</strong></td><td>The team's agreed quality checklist — when is it REALLY done?</td></tr>
+            <tr><td><strong>Burndown Chart</strong></td><td>Visual representation of remaining sprint work over time</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="sprint">The Sprint Lifecycle</h2>
+
+      <div class="callout note">
+        <div class="callout-label">Two-Week Sprint — What Happens</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Day</th><th>Activity</th></tr></thead>
+            <tbody>
+              <tr><td>Monday Week 1</td><td>Sprint Planning</td></tr>
+              <tr><td>All days</td><td>Development &amp; Testing work + Daily Standup (15 min, fixed time)</td></tr>
+              <tr><td>Tuesday Week 2</td><td>Backlog Refinement</td></tr>
+              <tr><td>Thursday Week 2</td><td>Sprint Review (demo to stakeholders)</td></tr>
+              <tr><td>Friday Week 2</td><td>Retrospective</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">As a Squad Member</div>
+        <p>Attend the Daily Standup. Raise blockers immediately. <strong>Start testing as soon as a story is developed — don't wait for the end of the sprint.</strong> The Dev Team (including you) decides HOW the work gets done.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="values">Scrum Values</h2>
+      <p>The values guide you when the Scrum framework doesn't have an answer for a situation you encounter.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Value</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Courage</strong></td><td>Do the right thing and work on tough problems — even when it's uncomfortable</td></tr>
+            <tr><td><strong>Focus</strong></td><td>Everyone focuses on the sprint work and the goals of the Scrum Team</td></tr>
+            <tr><td><strong>Commitment</strong></td><td>People personally commit to achieving the goals of the Scrum Team</td></tr>
+            <tr><td><strong>Respect</strong></td><td>Team members respect each other as capable, independent people</td></tr>
+            <tr><td><strong>Openness</strong></td><td>The team and stakeholders are open about all work and challenges performing it</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="buzzwords">Buzzword Survival Kit</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+          <tbody>
+            <tr><td><strong>PBI</strong></td><td>Product Backlog Item — any unit of work in the backlog</td></tr>
+            <tr><td><strong>Epic</strong></td><td>A large PBI broken into smaller user stories</td></tr>
+            <tr><td><strong>User Story</strong></td><td>"As a [user], I want [feature], so that [value]"</td></tr>
+            <tr><td><strong>Acceptance Criteria</strong></td><td>Given/When/Then conditions that must pass for a story to be done</td></tr>
+            <tr><td><strong>Sprint</strong></td><td>Fixed time-box (usually 2 weeks) to deliver working software</td></tr>
+            <tr><td><strong>Velocity</strong></td><td>Story points completed per sprint — the team's measured pace</td></tr>
+            <tr><td><strong>Story Points</strong></td><td>Relative effort estimate, not hours — team decides the scale</td></tr>
+            <tr><td><strong>Impediment</strong></td><td>Anything blocking the team's progress — the SM must remove it</td></tr>
+            <tr><td><strong>MVP</strong></td><td>Minimum Viable Product — smallest thing that delivers real value</td></tr>
+            <tr><td><strong>INVEST</strong></td><td>Independent · Negotiable · Valuable · Estimatable · Small · Testable</td></tr>
+            <tr><td><strong>DoD</strong></td><td>Definition of Done — agreed quality checklist for every story</td></tr>
+            <tr><td><strong>DOR</strong></td><td>Definition of Ready — story is clear enough to be pulled into a sprint</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 6 -->
+      <h2 id="user-stories">User Stories &amp; Acceptance Criteria</h2>
+
+      <div class="callout note">
+        <div class="callout-label">Templates</div>
+        <p><strong>User Story:</strong></p>
+        <pre>As a &lt;user&gt;
+I want &lt;business functionality&gt;
+So that &lt;business value&gt;</pre>
+        <p><strong>Acceptance Criteria:</strong></p>
+        <pre>Given &lt;starting conditions&gt;
+When &lt;event&gt;
+Then &lt;expected result&gt;</pre>
+      </div>
+
+      <h3>Real Example — Credit Card Payment</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Element</th><th>Content</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>User Story</strong></td>
+              <td>As a traveller, I want to pay for my ticket with a credit card, so that I can get my ticket immediately.</td>
+            </tr>
+            <tr>
+              <td><strong>Acceptance Criteria</strong></td>
+              <td>Accept Visa &amp; Mastercard only · Validate expiry &amp; CVV · Show error if declined · OTP confirmation required · Show 'Payment Successful' screen</td>
+            </tr>
+            <tr>
+              <td><strong>Definition of Done</strong></td>
+              <td>All AC tests pass (manual &amp; automated) · No open P1/P2 defects · Code reviewed &amp; merged · Tested on Chrome, Firefox, mobile · PO has accepted the story</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 7 -->
+      <h2 id="dod">Definition of Done</h2>
+
+      <div class="callout key">
+        <div class="callout-label">DoD Guidelines — All 7 Must Be Met</div>
+        <ol>
+          <li>Agreed between the team and the PO.</li>
+          <li>Realistic (not aspirational).</li>
+          <li>Within the control of the team — not dependent on someone outside the team.</li>
+          <li>Updated regularly as team practices change or issues are identified.</li>
+          <li><strong>Short (5–8 items)</strong> — any longer and people will ignore it.</li>
+          <li>Well understood by all; not ambiguous.</li>
+          <li>Visible — put it on your task board.</li>
+        </ol>
+      </div>
+
+      <!-- 8 -->
+      <h2 id="manifesto">The Agile Manifesto</h2>
+
+      <div class="callout key">
+        <div class="callout-label">We value the LEFT more than the right</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>We value…</th><th>…over</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Individuals &amp; Interactions</strong></td><td>Processes &amp; Tools</td></tr>
+              <tr><td><strong>Working Software</strong></td><td>Comprehensive Documentation</td></tr>
+              <tr><td><strong>Customer Collaboration</strong></td><td>Contract Negotiation</td></tr>
+              <tr><td><strong>Responding to Change</strong></td><td>Following a Plan</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <h2 id="testing-agile">Testing in Agile — 12-Step Process Map</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Phase</th><th>#</th><th>Activity</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3"><strong>PLAN</strong></td><td>1</td><td>Involved upfront in Backlog Refinement</td></tr>
+            <tr><td>2</td><td>Ensure user stories are clearly understood in Sprint Planning</td></tr>
+            <tr><td>3</td><td>Flesh out AC, DoD, and provide estimates</td></tr>
+            <tr><td rowspan="3"><strong>DESIGN</strong></td><td>4</td><td>Design test cases — both positive AND negative</td></tr>
+            <tr><td>5</td><td>Automation engineers create test scripts (regression pack)</td></tr>
+            <tr><td>6</td><td>Peer review test cases and scripts</td></tr>
+            <tr><td rowspan="4"><strong>EXECUTE</strong></td><td>7</td><td>Story developed → start executing tests, raise defects</td></tr>
+            <tr><td>8</td><td>Run regression test pack once manual tests pass</td></tr>
+            <tr><td>9</td><td>Exploratory testing on high-risk / impacted areas</td></tr>
+            <tr><td>10</td><td>UI &amp; UX testing</td></tr>
+            <tr><td rowspan="2"><strong>EXTEND</strong></td><td>11</td><td>Performance testing — are pages loading quickly?</td></tr>
+            <tr><td>12</td><td>Test on different browsers, devices, operating systems</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 10 -->
+      <h2 id="day-one">Practical Tips for Day 1</h2>
+
+      <div class="callout tip">
+        <div class="callout-label">What to Ask and Do on Day 1</div>
+        <ul>
+          <li><strong>Find out the sprint cadence</strong> — when does it start/end? When is planning, standup, retro?</li>
+          <li><strong>Know your team's roles</strong> — who is the PO? SM? Where do you go for requirements vs. blockers?</li>
+          <li><strong>Ask to see the Product Backlog</strong> — get familiar with the system you're building before writing a single line of code or test.</li>
+          <li><strong>Ask for the Definition of Done</strong> — if they don't have one, offer to help create one: instant value add.</li>
+          <li><strong>Ask how defects are raised</strong> — Jira? Azure DevOps? Trello? Learn the tool fast.</li>
+          <li><strong>Attend Backlog Refinement from Day 1</strong> — don't wait to be invited. Testing starts here, not at end of sprint.</li>
+          <li><strong>Your first standup:</strong> "Yesterday I did X. Today I'll do Y. I have [no] blockers." Keep it to 1 minute.</li>
+          <li><strong>Speak up early</strong> — Scrum values courage and openness. If you don't understand something, ask — it helps the whole team.</li>
+        </ul>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L14_presenting.html"><span class="nav-arrow">←</span> L14: Presenting</a>
+  <a href="L16_agile_2.html">L16: Agile &amp; Scrum II <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

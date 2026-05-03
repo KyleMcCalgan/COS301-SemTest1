@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L03 — Systems Engineering &amp; UML | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Foundations</div>
+        <a class="nav-link" href="L01_software_engineering_intro.html">
+          <span class="nav-tag">L01</span>Intro to SE
+        </a>
+        <a class="nav-link" href="L02_software_process.html">
+          <span class="nav-tag">L02</span>Software Process Models
+        </a>
+        <a class="nav-link active" href="L03_systems_and_uml.html">
+          <span class="nav-tag">L03</span>Systems &amp; UML
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Planning</div>
+        <a class="nav-link" href="L04_version_control.html">
+          <span class="nav-tag">L04</span>Version Control &amp; CI/CD
+        </a>
+        <a class="nav-link" href="L07_use_cases.html">
+          <span class="nav-tag">L07</span>Use Cases
+        </a>
+        <a class="nav-link" href="L08_domain_modelling.html">
+          <span class="nav-tag">L08</span>Domain Modelling
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L03 &nbsp;·&nbsp; Foundations</div>
+      <h1>Systems Engineering &amp; UML Diagrams</h1>
+      <p class="hero-sub">Understanding systems, domain knowledge, and Unified Modelling Language</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#what-is-system">What Is a System?</a></li>
+          <li><a href="#se-activities">Core System Engineering Activities</a></li>
+          <li><a href="#analysis-models">Constructing Analysis Models</a></li>
+          <li><a href="#uml-diagrams">UML Diagram Types</a></li>
+          <li><a href="#requirements">Structuring System Requirements</a></li>
+          <li><a href="#why-se">Why Systems Engineering Matters</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="what-is-system">What Is a System?</h2>
+      <p>A system is a <strong>set of interrelated components</strong>. Systems can be:</p>
+      <ul>
+        <li><strong>Physical or conceptual</strong> — a mobile phone vs. mathematical logic.</li>
+        <li><strong>Natural or man-made</strong> — the human body vs. a sprinkler system.</li>
+        <li><strong>Simple or complex</strong> — a door lock vs. a distributed banking platform.</li>
+      </ul>
+
+      <div class="callout note">
+        <div class="callout-label">Examples of Systems</div>
+        <p>The universe, a human body, mathematical logic, a mobile phone, a sprinkler system, and — critically — software applications themselves are all systems.</p>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="se-activities">Core System Engineering Activities</h2>
+
+      <h3>Integration</h3>
+      <p>The process of <strong>combining subsystems and components</strong>, then testing them to ensure they operate seamlessly together as a single, unified system. Integration is not just "putting pieces together" — it requires validating the interfaces and data flows between components.</p>
+
+      <h3>Testing</h3>
+      <p>Evaluating the <strong>fully integrated system</strong> to confirm that it meets all of its defined requirements and constraints. System-level testing looks at the whole, not individual parts.</p>
+
+      <h3>Requirements Sub-Activities</h3>
+      <p>The requirements phase itself usually consists of four sub-activities:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sub-Activity</th><th>What It Does</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Elicitation</strong></td><td>Gathering needs from stakeholders through interviews, workshops, and observation.</td></tr>
+            <tr><td><strong>Analysis</strong></td><td>Modelling and refining the gathered requirements to resolve conflicts and ambiguities.</td></tr>
+            <tr><td><strong>Specification</strong></td><td>Documenting the requirements formally (e.g., in an SRS document).</td></tr>
+            <tr><td><strong>Validation</strong></td><td>Ensuring the documented requirements actually reflect the client's real needs.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="analysis-models">Constructing Analysis Models</h2>
+
+      <h3>The Role of Domain Knowledge</h3>
+      <p>Development teams must deeply understand the specific field or <strong>"domain"</strong> they are building software for (e.g., banking, healthcare) to define accurate requirements. Domain knowledge forms the foundation for every subsequent phase: design, implementation, testing, and maintenance.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Why Modelling?</div>
+        <p>Modelling is heavily used during requirements elicitation to help teams <strong>structure their domain knowledge</strong>. It helps conceptualise and visualise the system, making it easier to analyse and communicate — especially to non-technical stakeholders.</p>
+      </div>
+
+      <h3>Object-Oriented Perspective</h3>
+      <p>In OO engineering, systems are specifically viewed as a <strong>collection of interacting objects</strong>. Each object has state (attributes) and behaviour (methods), and objects communicate by sending messages to each other.</p>
+
+      <!-- 4 -->
+      <h2 id="uml-diagrams">UML Diagram Types</h2>
+      <p>The <strong>Unified Modelling Language (UML)</strong> is the standard notation for representing software system designs. Different diagram types capture different aspects of the system.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Diagram</th><th>What It Shows</th><th>Key Use</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Class Diagram</strong></td>
+              <td>Static structure — classes, attributes, methods, relationships (inheritance, associations)</td>
+              <td>Design-time blueprint; domain modelling</td>
+            </tr>
+            <tr>
+              <td><strong>Use Case Diagram</strong></td>
+              <td>External entities (actors) and their interactions with the system's high-level functionality</td>
+              <td>Requirements; scope definition</td>
+            </tr>
+            <tr>
+              <td><strong>Sequence Diagram</strong></td>
+              <td>Object interactions in a specific scenario — the chronological order of messages exchanged over time</td>
+              <td>Design; API contract documentation</td>
+            </tr>
+            <tr>
+              <td><strong>State Diagram</strong></td>
+              <td>States an individual object can be in, and transitions between states triggered by events</td>
+              <td>Modelling objects with complex lifecycles</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Class Diagram — In Focus</h3>
+      <p>Shows the <strong>static</strong> structure of a system. It includes the system's classes, their attributes, their methods (operations), and the relationships between them (like inheritance and associations). Domain models are a special case of class diagrams — they show only classes and relationships, without operations.</p>
+
+      <h3>Use Case Diagram — In Focus</h3>
+      <p>Illustrates how external entities (<strong>actors</strong>) interact with the system, highlighting the user's goals and the system's high-level functionality. Think of it as the "menu" of what the system can do.</p>
+
+      <h3>Sequence Diagram — In Focus</h3>
+      <p>Represents object interactions within a <strong>specific scenario</strong>, mapping the chronological order of messages exchanged over time. Each vertical lifeline represents an object; horizontal arrows represent messages.</p>
+
+      <h3>State Diagram — In Focus</h3>
+      <p>Models the <strong>various states</strong> an individual object can be in, and the transitions between those states triggered by specific events. Useful for objects like orders, tickets, or user accounts that have distinct lifecycle phases.</p>
+
+      <!-- 5 -->
+      <h2 id="requirements">Structuring System Requirements</h2>
+
+      <h3>Hierarchical Breakdown</h3>
+      <p>Requirements should be <strong>heavily detailed and structured hierarchically</strong>, using numbered notation to enable precise traceability:</p>
+      <blockquote>R1 → R1.1 → R1.1.1 → R1.1.1.1 ...</blockquote>
+
+      <div class="callout tip">
+        <div class="callout-label">Example Breakdown</div>
+        <ul>
+          <li><strong>R2.1</strong> — Manage user profile (high-level)</li>
+          <li><strong>R2.1.1</strong> — Allow users to view and edit bio and profile picture</li>
+          <li><strong>R2.1.2</strong> — Enable users to switch between public and private profile settings</li>
+        </ul>
+      </div>
+
+      <p>This type of structured numbering is the industry standard for a <strong>Software Requirements Specification (SRS)</strong> document, allowing engineers to easily trace specific features back to overarching business rules — and vice versa.</p>
+
+      <!-- 6 -->
+      <h2 id="why-se">Why Systems Engineering Matters</h2>
+      <p>Applying formal systems engineering principles provides four major benefits:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Benefit</th><th>What It Means in Practice</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Manages Complexity</strong></td>
+              <td>Clearly structures requirements, components, and interactions for full systems, rather than focusing on isolated code.</td>
+            </tr>
+            <tr>
+              <td><strong>Improves Teamwork</strong></td>
+              <td>Forces coordination of roles, responsibilities, and system interfaces — exactly like real-world engineering teams do.</td>
+            </tr>
+            <tr>
+              <td><strong>Strengthens Requirement Clarity</strong></td>
+              <td>Defining, refining, and validating requirements <em>before</em> building drastically reduces confusion and costly rework.</td>
+            </tr>
+            <tr>
+              <td><strong>Prepares for Industry</strong></td>
+              <td>Real software projects rely on these exact principles for integration, testing, and deployment.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout key">
+        <div class="callout-label">The Core Loop</div>
+        <p>Requirements → Model → Verify → Build → Integrate → Test. This loop, applied rigorously, is what separates professional software engineering from ad-hoc programming.</p>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L02_software_process.html"><span class="nav-arrow">←</span> Software Process Models</a>
+  <a href="L04_version_control.html">Version Control &amp; CI/CD <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L11 — Architectural Design | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link active" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L11 &nbsp;·&nbsp; Architecture</div>
+      <h1>Architectural Design</h1>
+      <p class="hero-sub">Source: Object-Oriented Software Engineering — David Kung, Chapter 6</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#what-is">What Is Architectural Design?</a></li>
+          <li><a href="#process">The Design Process</a></li>
+          <li><a href="#system-types">Four System Types</a></li>
+          <li><a href="#styles">Architectural Styles</a></li>
+          <li><a href="#custom">Custom Design</a></li>
+          <li><a href="#principles">Software Design Principles</a></li>
+          <li><a href="#review">Review &amp; Guidelines</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="what-is">What Is Architectural Design?</h2>
+      <p>The <strong>software architecture</strong> of a system refers to the style of design of its structure — including how its major components interface and interact. <strong>Architectural design</strong> is the decision-making process that determines this architecture for the system under development.</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Why It Matters</div>
+        <ul>
+          <li>Has significant impact on <strong>performance, efficiency, security, and maintainability</strong>.</li>
+          <li>Is the primary artifact for conceptualising, constructing, managing, and evolving the system.</li>
+          <li>Architectural design flaws may result in <strong>project failure</strong>.</li>
+          <li>Different types of systems require <strong>different design methods and architectural styles</strong>.</li>
+        </ul>
+      </div>
+
+      <h3>Design Considerations</h3>
+      <p>Before choosing a style, consider: ease of change and maintenance; use of COTS (Commercial Off-The-Shelf) parts; system performance (real-time data, high-volume transactions); reliability; security; software fault tolerance; recovery.</p>
+
+      <!-- 2 -->
+      <h2 id="process">The Design Process</h2>
+      <div class="callout note">
+        <div class="callout-label">Steps in Order</div>
+        <ol>
+          <li><strong>Determine design objectives</strong> — performance, reliability, security, etc.</li>
+          <li><strong>Determine the type of system</strong> — Interactive, Event-Driven, Transformational, or Persistence.</li>
+          <li><strong>Apply an architectural style</strong> — or perform custom design if no existing style fits.</li>
+          <li><strong>Specify subsystem functions, interfaces, and interaction behaviour</strong>.</li>
+          <li><strong>Review the architectural design</strong> — against requirements, principles, and security.</li>
+        </ol>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="system-types">Four System Types</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Type</th><th>Description</th><th>Key Characteristics</th><th>Architectural Style</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Interactive</strong></td>
+              <td>Fixed sequence of actor requests and system responses</td>
+              <td>Client-server relationship; actor initiates and ends interaction; state reflects business process progress</td>
+              <td>N-Tier</td>
+            </tr>
+            <tr>
+              <td><strong>Event-Driven</strong></td>
+              <td>Responds to randomly arriving events; state-dependent responses</td>
+              <td>No fixed sequence; interacts with multiple external entities simultaneously; may have timing constraints</td>
+              <td>Event-Driven</td>
+            </tr>
+            <tr>
+              <td><strong>Transformational</strong></td>
+              <td>Network of information-processing activities; batch process</td>
+              <td>Little or no interaction during transformation; usually stateless; may be computation-intensive</td>
+              <td>Main Program &amp; Subroutines</td>
+            </tr>
+            <tr>
+              <td><strong>Object-Persistence</strong></td>
+              <td>Provides object storage and retrieval; hides implementation</td>
+              <td>Responsible only for storing/retrieving objects; does little or no business processing</td>
+              <td>Persistence Framework</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Recursive View</div>
+        <p>Systems and subsystems are relative to each other — a system is a subsystem of a larger system; a subsystem is a system that may consist of other subsystems. A system may contain <strong>different types</strong> of subsystems, each requiring a different design method.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="styles">Architectural Styles</h2>
+
+      <h3>N-Tier Architecture</h3>
+      <p>Organises the system into distinct layers. Each layer has a high-level responsibility and communicates only with adjacent layers.</p>
+      <pre>User → [GUI Layer] → [Controller Layer] → [Business Objects Layer] → [Database Layer]</pre>
+      <p>Represented in UML as a <strong>package diagram</strong> with <code>&lt;&lt;import&gt;&gt;</code> dependencies (dashed arrows) between layers. Packages contain their public (+) and private (−) components.</p>
+
+      <h3>Client-Server Architecture</h3>
+      <p>Multiple clients communicate with a shared server via remote procedure calls. Clients provide access to humans or systems; the server (commonly a database server) processes requests. <em>Use for: distributed systems where multiple users access shared resources.</em></p>
+
+      <h3>Main Program and Subroutine Architecture</h3>
+      <p>A main program calls subroutines hierarchically. Straightforward to understand and trace. <em>Use for: batch processing, transformational systems.</em></p>
+
+      <h3>Event-Driven Architecture</h3>
+      <p>A state-based controller receives events from external entities and directs multiple components. Responses depend on current state, not a fixed sequence. <em>Use for: control systems, real-time systems, GUIs.</em></p>
+
+      <h3>Object-Persistence (Database) Framework</h3>
+      <p>A DB Manager mediates between business objects (in an OO language) and multiple databases (using DBMS-specific languages), hiding database differences from the rest of the system. Business objects do not need to know what database is used.</p>
+
+      <h3>Additional Styles</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Context</th><th>Style</th></tr></thead>
+          <tbody>
+            <tr><td>Distributed, decentralised systems</td><td>Peer-to-Peer</td></tr>
+            <tr><td>Heuristic problem-solving</td><td>Blackboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="custom">Custom Architectural Design</h2>
+      <p>Not all application systems fit an existing architectural style. <strong>Custom architectural design</strong> is required to meet specific application needs. <strong>Design patterns</strong> are a key tool for custom design.</p>
+
+      <h3>Specifying Subsystems</h3>
+      <p>Once an architectural style is chosen or a custom design is created:</p>
+      <ol>
+        <li>Allocate requirements and design objectives to subsystems and components.</li>
+        <li>Specify the <strong>functionality</strong> of each subsystem.</li>
+        <li>Specify the <strong>interfaces</strong> between subsystems.</li>
+        <li>Specify the <strong>interaction behaviour</strong> between subsystems.</li>
+      </ol>
+
+      <!-- 6 -->
+      <h2 id="principles">Software Design Principles</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Principle</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Design for Change</strong></td><td>Build in a mechanism to adapt to anticipated changes — volatility should be isolated</td></tr>
+            <tr><td><strong>Separation of Concerns</strong></td><td>Focus on one aspect of the problem in isolation — don't mix concerns in one module</td></tr>
+            <tr><td><strong>Information Hiding</strong></td><td>Shield implementation details to reduce change impact — only expose what is necessary</td></tr>
+            <tr><td><strong>High Cohesion</strong></td><td>High relevance of all a module's functions to its core purpose — do one thing well</td></tr>
+            <tr><td><strong>Low Coupling</strong></td><td>Reduce the run-time effect and change impact of one subsystem on others</td></tr>
+            <tr><td><strong>KISS</strong></td><td>Keep It Simple and Stupid — design simple, focused "stupid objects"; avoid unnecessary complexity</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 7 -->
+      <h2 id="review">Review &amp; Guidelines</h2>
+
+      <h3>Reviewing the Design</h3>
+      <ul>
+        <li>Does the design meet <strong>requirements and architectural objectives</strong>?</li>
+        <li>Does it satisfy <strong>software design principles</strong>?</li>
+        <li>Does it satisfy <strong>security requirements</strong> and secure design principles?</li>
+      </ul>
+
+      <h3>Guidelines for Good Architectural Design</h3>
+      <ol>
+        <li>Adapt an existing architectural style when possible.</li>
+        <li>Apply software design principles throughout.</li>
+        <li>Apply design patterns where appropriate.</li>
+        <li>Check against design objectives and principles.</li>
+        <li>Iterate the steps if needed.</li>
+      </ol>
+
+      <div class="callout tip">
+        <div class="callout-label">Agile Perspective</div>
+        <ul>
+          <li>Value <strong>working software</strong> over comprehensive documentation.</li>
+          <li>Apply the <strong>20/80 rule</strong> — good enough is enough. Do not over-engineer the architecture.</li>
+        </ul>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L09_L10_testing.html"><span class="nav-arrow">←</span> L09/L10: Testing</a>
+  <a href="L12_architectural_tactics.html">L12: Tactics &amp; Patterns <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

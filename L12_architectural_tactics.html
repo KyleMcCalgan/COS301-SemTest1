@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L12 — Architectural Tactics &amp; Patterns | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link active" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L12 &nbsp;·&nbsp; Architecture</div>
+      <h1>Architectural Tactics &amp; Patterns</h1>
+      <p class="hero-sub">How architects engineer quality attributes under real constraints</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#what-is-tactic">What Is a Tactic?</a></li>
+          <li><a href="#scalability">Scalability &amp; Performance</a></li>
+          <li><a href="#reliability">Reliability Tactics</a></li>
+          <li><a href="#security">Security Tactics</a></li>
+          <li><a href="#modifiability">Modifiability Tactics</a></li>
+          <li><a href="#tension">Quality Attributes in Tension</a></li>
+          <li><a href="#deep-dives">Tactic Deep Dives</a></li>
+          <li><a href="#patterns">Architectural Patterns</a></li>
+          <li><a href="#reasoning">How to Reason About Tactics</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="what-is-tactic">What Is a Tactic?</h2>
+      <p>An <strong>architectural tactic</strong> is a specific design decision that influences how a system responds with respect to a quality attribute. Tactics are smaller than a full architecture, but powerful enough to materially change system behaviour.</p>
+
+      <div class="callout key">
+        <div class="callout-label">Core Mental Model</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Layer</th><th>Role</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Architectural style</strong></td><td>Provides structure</td></tr>
+              <tr><td><strong>Architectural tactics</strong></td><td>Shape behaviour</td></tr>
+              <tr><td><strong>Trade-offs</strong></td><td>Determine whether the design is acceptable</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">Critical Point</div>
+        <p>Choosing an architectural style does <strong>not</strong> automatically guarantee any quality attribute. An N-tier system is not automatically scalable. An event-driven system is not automatically reliable. The actual quality response depends on the <strong>tactics used inside the architecture</strong>.</p>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="scalability">Scalability &amp; Performance Tactics</h2>
+
+      <h3>Scale-Up Resources</h3>
+      <p>Increase processing power, communication channel capacity, or storage on existing hardware.</p>
+
+      <h3>Scale-Out Resources</h3>
+      <p>Add more instances: service provider clustering, grids, external resources. Distribute tasks across specialised or commoditised resources.</p>
+
+      <h3>Reduce Load — Spread &amp; Optimise</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Category</th><th>Tactics</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Spread load across resources</strong></td><td>Client-driven / controlled / server-driven load balancing</td></tr>
+            <tr><td><strong>Spread load across time</strong></td><td>Scheduling, queueing, concurrency, pre-processing</td></tr>
+            <tr><td><strong>Efficient communication</strong></td><td>Optimise protocol, compress messages, batch requests, coarse-grained calls</td></tr>
+            <tr><td><strong>Efficient persistence</strong></td><td>Indexing, optimise persistence structure, optimise queries</td></tr>
+            <tr><td><strong>Efficient storage</strong></td><td>Paging, compression, ordering/defragmentation</td></tr>
+            <tr><td><strong>Resource re-use</strong></td><td>Thread pooling, connection pooling, object pooling, <strong>caching</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="reliability">Reliability Tactics</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Goal</th><th>Tactics</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Prevent Faults</strong></td>
+              <td>Resource locking, removal from service, messaging service, active redundancy, contracts-based design, testing framework, remove single points of failure</td>
+            </tr>
+            <tr>
+              <td><strong>Detect Faults</strong></td>
+              <td>Error/exception communication, resource monitoring, checkpoint evaluation, deadlock detection, message integrity, logging, service provider oversight, self-testing</td>
+            </tr>
+            <tr>
+              <td><strong>Recover from Faults</strong></td>
+              <td>Fix problem (RAID, clustering, disaster recovery), passive redundancy, reset service provider, root cause determination, checkpoint rollback, maintain backups</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="security">Security Tactics</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Goal</th><th>Tactics</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Resist Attacks</strong></td>
+              <td>
+                <em>Limit access:</em> minimise access channels &amp; domain, authentication, authorisation, confidentiality, protect in depth.<br/>
+                <em>Limit exposure:</em> ring-fence resources, additional layers for valuables, treat external resources as untrusted, fail securely, enforce secure defaults, minimise complexity.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Detect Attacks</strong></td>
+              <td>Determine message integrity, event logging and analysis, scan for attack signatures, audit and monitor sensitive events</td>
+            </tr>
+            <tr>
+              <td><strong>Recover from Attacks</strong></td>
+              <td>Drop connection / drop requests, update access rules, restore state</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="modifiability">Modifiability Tactics</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Goal</th><th>Tactics</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Process Flexibility</strong></td><td>Dedicated workflow controller, pipes and filters, responsibility localisation, support interception, blackboard</td></tr>
+            <tr><td><strong>Service Provider Flexibility</strong></td><td>Contracts-based, strategy pattern, abstract factories, runtime service provider lookup, dependency injection, messaging</td></tr>
+            <tr><td><strong>Information Flexibility</strong></td><td>Class hierarchies, self-describing data structures, semantic knowledge repositories</td></tr>
+            <tr><td><strong>Flexibility Support</strong></td><td>Automated builds, automated testing, automated environment configuration, model-driven development</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 6 -->
+      <h2 id="tension">Quality Attributes in Tension</h2>
+      <p>Architectural tactics rarely improve only one quality for free. Architects must make defensible trade-offs.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tactic</th><th>Benefit</th><th>Cost</th></tr></thead>
+          <tbody>
+            <tr><td>Caching</td><td>Improves performance</td><td>Can weaken data consistency</td></tr>
+            <tr><td>Replication</td><td>Improves availability</td><td>Can complicate correctness; replication lag</td></tr>
+            <tr><td>Encryption</td><td>Improves security</td><td>Adds computational overhead; usability friction</td></tr>
+            <tr><td>Queuing</td><td>Improves reliability under bursts</td><td>Increases latency; complicates consistency</td></tr>
+            <tr><td>Additional abstraction</td><td>Improves modifiability</td><td>Reduces simplicity; can reduce performance</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote>Architectural design is a <strong>trade-off activity</strong>, not a feature checklist. Architects do not search for perfect solutions — they make defensible trade-offs under constraints.</blockquote>
+
+      <!-- 7 -->
+      <h2 id="deep-dives">Tactic Deep Dives</h2>
+
+      <h3>Caching</h3>
+      <p>Stores previously computed or retrieved results so the system avoids repeated expensive work. Useful when: the same data is read many times; re-fetching cost is high; slightly stale data is acceptable.</p>
+
+      <div class="callout note">
+        <div class="callout-label">Caching Decision Guide</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Data Item</th><th>Decision</th><th>Reasoning</th></tr></thead>
+            <tbody>
+              <tr><td>Marketing banner images</td><td>Cache aggressively</td><td>Read-heavy, rarely changes, staleness acceptable</td></tr>
+              <tr><td>Event descriptions &amp; venue details</td><td>Cache cautiously</td><td>Changes occasionally; use a short TTL</td></tr>
+              <tr><td>Seat availability (nearly sold out)</td><td>Avoid caching</td><td>Highly volatile; stale data → overselling</td></tr>
+              <tr><td>Payment authorisation responses</td><td>Avoid caching</td><td>Must be fresh and authoritative; correctness critical</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label">Hidden Caching Trade-offs</div>
+        <ul>
+          <li>Stale data can be served to users</li>
+          <li>Invalidation rules are often hard to define correctly</li>
+          <li>Cold starts can create sudden load spikes</li>
+          <li>Memory pressure and eviction behaviour affect predictability</li>
+          <li>Different parts of the system may observe different values simultaneously</li>
+        </ul>
+      </div>
+
+      <h3>Replication &amp; Load Balancing</h3>
+      <p>Running more than one instance of a component so failure of one does not stop service. A load balancer distributes requests across healthy replicas. Must decide: how much inconsistency is acceptable and how quickly must replicas converge?</p>
+      <p><strong>Costs:</strong> Write conflicts, replication lag, inconsistent reads, operational complexity, harder debugging and incident analysis.</p>
+
+      <h3>Queuing</h3>
+      <p>Allows one part of the system to accept work quickly and defer processing. Useful when demand arrives in bursts, work can be processed asynchronously, and temporary delay is acceptable.</p>
+
+      <div class="callout warn">
+        <div class="callout-label">Engineering Cost of Queuing</div>
+        <ul>
+          <li>Increased end-to-end latency</li>
+          <li>Duplicate message delivery</li>
+          <li>Out-of-order processing</li>
+          <li>Poison messages that repeatedly fail</li>
+          <li>Backlog growth during downstream slowdown</li>
+          <li>Eventual consistency — "accepted" ≠ "confirmed"</li>
+        </ul>
+      </div>
+
+      <h3>Circuit Breakers</h3>
+      <p>In distributed systems, one failing dependency can trigger cascading failures. A circuit breaker stops repeated calls to a failing dependency for some period, allowing the rest of the system to degrade gracefully. Requires clear fallback behaviour and careful monitoring.</p>
+
+      <h3>Modifiability: Isolate Responsibilities</h3>
+      <ul>
+        <li>Isolate volatile parts of the system</li>
+        <li>Depend on abstractions rather than concrete implementations</li>
+        <li>Use interfaces or contracts at component boundaries</li>
+        <li>Localise change so one modification does not ripple across the system</li>
+      </ul>
+
+      <div class="callout key">
+        <div class="callout-label">Selective Architecture</div>
+        <p>The best architecture is often not uniform. It is <strong>selective</strong>.</p>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Action Type</th><th>Appropriate Tactic</th></tr></thead>
+            <tbody>
+              <tr><td>Browsing catalogue data</td><td>Aggressive caching — read-heavy, tolerant of staleness</td></tr>
+              <tr><td>Search &amp; recommendations</td><td>Asynchronous processing, optimised for speed</td></tr>
+              <tr><td>Final booking / payment / inventory</td><td>Strict consistency, no caching, synchronous confirmation</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <h2 id="patterns">Architectural Patterns</h2>
+
+      <h3>Layered Pattern</h3>
+      <p>Components organised in layers; each layer accesses only the <em>adjacent lower layer</em>. <strong>Benefits:</strong> Pluggable and replaceable layers; improved cohesion; complexity reduction; loose high-level coupling; ability to mock lower layers; layers can be developed by different teams.</p>
+
+      <h3>Client-Server (2-Layer)</h3>
+      <p>Client application provides access to humans or systems. Server is commonly a database with stored procedures.</p>
+
+      <h3>N-Layer</h3>
+      <p>Multiple specialised layers: access layer → processing layer → infrastructure layer → persistence layer.</p>
+
+      <h3>Pipes &amp; Filters</h3>
+      <ul>
+        <li><strong>Filters:</strong> stateless services or pure functions — state does not survive across calls; independent of other filters.</li>
+        <li><strong>Pipes:</strong> input/output connectors between filters.</li>
+      </ul>
+      <p><em>Classic Unix example:</em> <code>ls | head -4 | tail -2 &gt; output.txt</code></p>
+
+      <h3>Pattern Trade-off Summary</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pattern</th><th>Performance</th><th>Flexibility</th><th>Maintainability</th><th>Testability</th></tr></thead>
+          <tbody>
+            <tr><td>Layering</td><td>▽ slight neg</td><td>△ positive</td><td>—</td><td>—</td></tr>
+            <tr><td>Pipes &amp; Filters</td><td>▽ slight neg</td><td>▲ strong pos</td><td>△ positive</td><td>△ positive</td></tr>
+            <tr><td>Microkernel</td><td>▼ strong neg</td><td>▲ strong pos</td><td>▲ strong pos</td><td>—</td></tr>
+            <tr><td>MVC</td><td>▽ slight neg</td><td>▲ strong pos</td><td>△ positive</td><td>▲ strong pos</td></tr>
+            <tr><td>Master-Slave</td><td>△ positive</td><td>—</td><td>▽ slight neg</td><td>▼ strong neg</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 9 -->
+      <h2 id="reasoning">How to Reason About Tactics</h2>
+      <p>Use this framework in exams and in practice. Work through these questions in order:</p>
+
+      <div class="callout key">
+        <div class="callout-label">Tactic Reasoning Framework</div>
+        <ol>
+          <li>What <strong>quality attribute</strong> am I trying to improve?</li>
+          <li>What <strong>exact problem</strong> am I observing?</li>
+          <li>What <strong>workload or failure shape</strong> causes that problem?</li>
+          <li>What <strong>tactic</strong> is appropriate for that specific context?</li>
+          <li>What <strong>trade-offs or new risks</strong> does that tactic introduce?</li>
+          <li>How will the system behave <strong>if the tactic itself fails</strong>?</li>
+        </ol>
+      </div>
+
+      <blockquote>A strong architecture answer does not stop at naming a style. It explains the problem, the tactic, why it fits, the trade-offs, and how the resulting risks will be managed. That is the level of thinking expected from an engineer.</blockquote>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L11_architectural_design.html"><span class="nav-arrow">←</span> L11: Architectural Design</a>
+  <a href="L13_non_functional_testing.html">L13: Non-Functional Testing <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

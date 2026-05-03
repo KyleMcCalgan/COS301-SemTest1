@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L16 — Agile &amp; Scrum Part 2 | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link active" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L16 &nbsp;·&nbsp; Process</div>
+      <h1>Agile &amp; Scrum — Part 2</h1>
+      <p class="hero-sub">UP Airlines Case Study · Cindy Govender · University of Pretoria</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#case-study">UP Airlines — Background</a></li>
+          <li><a href="#backlog">Exercise 1 — Product Backlog</a></li>
+          <li><a href="#epics">Exercise 2 — Epics</a></li>
+          <li><a href="#user-stories">Exercise 3 — User Stories &amp; AC</a></li>
+          <li><a href="#dod">Exercise 4 — Definition of Done</a></li>
+          <li><a href="#test-cases">Writing Test Cases</a></li>
+          <li><a href="#quick-ref">Quick Reference</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="case-study">UP Airlines — Background</h2>
+      <p>UP Airlines is a new player in air travel, currently selling tickets through a global network of travel agents. In the new financial year, the company is building an <strong>online ticket search and booking system</strong>.</p>
+
+      <div class="callout note">
+        <div class="callout-label">Key Requirements</div>
+        <ul>
+          <li>Allow customers to directly book tickets in real-time.</li>
+          <li>Migrate the existing travel agent network to the new platform.</li>
+          <li>Compete with travelstart.co.za, kayak.com, expedia.com.</li>
+        </ul>
+      </div>
+
+      <h3>Scope</h3>
+      <p>Departure/destination airports · One-way and round trips · Class (business, economy, first) · Dates · Seat preference (aisle, middle, window) · Seat location (front, wing, tail) · Number of seats (1–6) · Emergency exit seating restrictions · Price comparison · Hotels, accommodation, rental cars · Real-time reporting and price adjustments.</p>
+
+      <!-- 2 -->
+      <h2 id="backlog">Exercise 1 — Product Backlog</h2>
+      <p>The full list of work items derived from the business requirements, ordered by value:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Product Backlog Item</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Search for a flight</td></tr>
+            <tr><td>2</td><td>Compare flights</td></tr>
+            <tr><td>3</td><td>Complete booking</td></tr>
+            <tr><td>4</td><td>Add extras</td></tr>
+            <tr><td>5</td><td>Pay for the ticket</td></tr>
+            <tr><td>6</td><td>Receive notifications</td></tr>
+            <tr><td>7</td><td>Change booking</td></tr>
+            <tr><td>8</td><td>Migrate current travel agents to new platform</td></tr>
+            <tr><td>9</td><td>Real-time reporting</td></tr>
+            <tr><td>10</td><td>Price adjustments — real-time</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="epics">Exercise 2 — Epics</h2>
+      <p>Each PBI is broken into smaller, deliverable user stories (epics):</p>
+
+      <h3>Search for a Flight</h3>
+      <ul>
+        <li>Search one-way, return, and multi-city trips</li>
+        <li>Find cheapest flight in ±3-day range; monthly cheapest; current specials</li>
+        <li>Search by specific airline, by class (Economy/Business/Premium), by number of tickets (1–6)</li>
+      </ul>
+
+      <h3>Compare Flights</h3>
+      <ul>
+        <li>List all available flights; filter cheapest to most expensive</li>
+        <li>Bookmark a flight; change flight parameters; view flight details</li>
+        <li>View shorter lay-overs; order by price or preferred airline</li>
+        <li>View cost breakdown: base cost, taxes, fuel levy, baggage weight allowance</li>
+      </ul>
+
+      <h3>Complete Booking</h3>
+      <ul>
+        <li>Add personal information (name, DOB, ID/passport)</li>
+        <li>Add contact details; register an account</li>
+        <li>Send OTP/verification to mobile/email; login; add rewards account</li>
+      </ul>
+
+      <h3>Add Extras</h3>
+      <ul>
+        <li>Seat allocation (aisle/middle/window) and seat location (front/wing/tail)</li>
+        <li>Extra baggage, hotel accommodation, car rental</li>
+      </ul>
+
+      <h3>Pay for the Ticket</h3>
+      <ul>
+        <li>Credit card, EFT, loyalty/frequent flyer points, voucher</li>
+      </ul>
+
+      <h3>Receive Notifications</h3>
+      <ul>
+        <li>Confirm booking, receive booking confirmation, receive invoice</li>
+      </ul>
+
+      <h3>Change Booking</h3>
+      <ul>
+        <li>Search by booking reference, flight number, name, or ID/passport</li>
+        <li>Change dates (fees may apply), seat allocation, food preference</li>
+        <li>Add car rental or accommodation</li>
+      </ul>
+
+      <!-- 4 -->
+      <h2 id="user-stories">Exercise 3 — User Stories &amp; Acceptance Criteria</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>User Story</th><th>Value / Size</th><th>Acceptance Criteria</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>As a traveller, I want to search for flights based on departure, destination, dates, adult/child, and number of travellers, so that I can find suitable flight options.</td>
+              <td>40 / Large</td>
+              <td>
+                <ul>
+                  <li>Only five basic inputs required</li>
+                  <li>Validate that dates are in the future</li>
+                  <li>Validate that departure and destination are not the same</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>As a traveller, I want to see flights based on my search criteria, so that I can find suitable options.</td>
+              <td>20 / Medium</td>
+              <td>
+                <ul>
+                  <li>Show departure, destination, date, time, total time, price</li>
+                  <li>Number of connections is out of scope for this story</li>
+                  <li>Check that dates correspond to search</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>As a traveller, I want flights sorted by price by default, so that I can choose the most affordable option.</td>
+              <td>5 / Small</td>
+              <td>
+                <ul>
+                  <li>Flights displayed from lowest to highest price</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>As a traveller, I want to choose between economy, business, and first class, so that I can travel more comfortably.</td>
+              <td>5 / Small</td>
+              <td>
+                <ul>
+                  <li>Three options: Economy, Business, First</li>
+                  <li>Display as a dropdown on the search page</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="dod">Exercise 4 — Definition of Done</h2>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>User Story</th><th>Definition of Done</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Basic flight search (departure, destination, dates)</td>
+              <td>Based on my input criteria, I am taken to the list of the flight details page.</td>
+            </tr>
+            <tr>
+              <td>Pay with a credit card</td>
+              <td>Once valid credentials are inserted, I am taken to the "payment successful" page — OR — I am prompted to accept the OTP on my mobile/banking app — OR — if invalid details are entered, an error message is displayed.</td>
+            </tr>
+            <tr>
+              <td>Send flight confirmation via email</td>
+              <td>The email is received by the customer with correct details AND a PDF file is attached.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 6 -->
+      <h2 id="test-cases">Writing Test Cases</h2>
+
+      <div class="callout key">
+        <div class="callout-label">Golden Rule</div>
+        <p>For every acceptance criterion, write at least one <strong>positive (happy path)</strong> AND one <strong>negative (failure/edge case)</strong> test case.</p>
+      </div>
+
+      <h3>Example: Pay with a Credit Card</h3>
+      <p><strong>Story:</strong> Pay with a credit card &nbsp;|&nbsp; <strong>AC:</strong> Accept Visa &amp; Mastercard only · Validate expiry, CVV · Decline Amex/Diners</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Input / Scenario</th><th>Expected Result</th></tr></thead>
+          <tbody>
+            <tr><td>✅ Positive</td><td>Valid Visa — correct number, expiry, CVV</td><td>Payment Successful page shown</td></tr>
+            <tr><td>✅ Positive</td><td>Valid Mastercard — correct details</td><td>Payment Successful page shown</td></tr>
+            <tr><td>✅ Positive</td><td>Valid card + OTP prompt → accept OTP</td><td>Payment confirmed</td></tr>
+            <tr><td>❌ Negative</td><td>Expired card</td><td>Error: 'Card has expired, please use a valid card'</td></tr>
+            <tr><td>❌ Negative</td><td>Invalid CVV</td><td>Error message displayed</td></tr>
+            <tr><td>❌ Negative</td><td>Card number &lt;16 or &gt;16 digits</td><td>Validation error shown</td></tr>
+            <tr><td>❌ Negative</td><td>Insufficient funds</td><td>Error: 'Insufficient funds'</td></tr>
+            <tr><td>❌ Negative</td><td>Amex card (starts 3711…)</td><td>Error: 'Card type not accepted'</td></tr>
+            <tr><td>❌ Negative</td><td>Diners Club card</td><td>Error: 'Card type not accepted'</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Using AI to Generate Test Cases</div>
+        <p><strong>Example prompt:</strong> <em>"Create test cases for: As a traveller, I want to pay with a credit card. AC: Accept Visa &amp; Mastercard only, validate expiry &amp; CVV, reject Amex."</em></p>
+        <p>AI output is a <strong>starting point, not a finished test suite</strong>. Always review and add domain knowledge and edge cases it misses.</p>
+      </div>
+
+      <!-- 7 -->
+      <h2 id="quick-ref">Quick Reference — Agile Concepts</h2>
+
+      <div class="callout key">
+        <div class="callout-label">Core Concepts at a Glance</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Concept</th><th>Key Point</th></tr></thead>
+            <tbody>
+              <tr><td>User Story</td><td>As a [user], I want [feature], so that [value]</td></tr>
+              <tr><td>Acceptance Criteria</td><td>Given / When / Then — conditions that must pass for a story to be done</td></tr>
+              <tr><td>Definition of Done</td><td>Agreed, realistic, 5–8 items, visible, updated regularly</td></tr>
+              <tr><td>INVEST</td><td>Independent · Negotiable · Valuable · Estimatable · Small · Testable</td></tr>
+              <tr><td>Test case types</td><td>Positive (happy path) + Negative (failure/edge cases) for every AC</td></tr>
+              <tr><td>Epic</td><td>Large PBI broken into multiple smaller user stories</td></tr>
+              <tr><td>Sprint</td><td>Fixed time-box (usually 2 weeks) for delivering working software</td></tr>
+              <tr><td>Velocity</td><td>Story points completed per sprint — the team's measurable pace</td></tr>
+              <tr><td>Story Points</td><td>Relative effort — not hours. Estimated collaboratively by the team.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L15_agile_1.html"><span class="nav-arrow">←</span> L15: Agile &amp; Scrum I</a>
+  <a href="index.html">Back to Home <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>

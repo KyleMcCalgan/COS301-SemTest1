@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L13 — Non-Functional Testing | COS 301</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="brand-course">COS 301</span>
+      <span class="brand-title">Study Notes</span>
+    </a>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-label">Testing</div>
+        <a class="nav-link" href="L09_L10_testing.html">
+          <span class="nav-tag">L09·L10</span>Unit &amp; Integration Testing
+        </a>
+        <a class="nav-link active" href="L13_non_functional_testing.html">
+          <span class="nav-tag">L13</span>Non-Functional Testing
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Architecture</div>
+        <a class="nav-link" href="L11_architectural_design.html">
+          <span class="nav-tag">L11</span>Architectural Design
+        </a>
+        <a class="nav-link" href="L12_architectural_tactics.html">
+          <span class="nav-tag">L12</span>Tactics &amp; Patterns
+        </a>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Process</div>
+        <a class="nav-link" href="L14_presenting.html">
+          <span class="nav-tag">L14</span>Presenting
+        </a>
+        <a class="nav-link" href="L15_agile_1.html">
+          <span class="nav-tag">L15</span>Agile &amp; Scrum I
+        </a>
+        <a class="nav-link" href="L16_agile_2.html">
+          <span class="nav-tag">L16</span>Agile &amp; Scrum II
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="page-hero">
+      <div class="hero-tag">L13 &nbsp;·&nbsp; Testing</div>
+      <h1>Non-Functional Testing</h1>
+      <p class="hero-sub">COS 301 Software Engineering</p>
+    </div>
+
+    <div class="content-body">
+
+      <div class="toc">
+        <div class="toc-title">Contents</div>
+        <ol>
+          <li><a href="#overview">Functional vs. Non-Functional</a></li>
+          <li><a href="#performance">Performance Testing</a></li>
+          <li><a href="#usability">Usability Testing</a></li>
+          <li><a href="#security">Security Testing</a></li>
+          <li><a href="#risk">Risk Assessment</a></li>
+          <li><a href="#reliability">Reliability Testing</a></li>
+          <li><a href="#maintainability">Maintainability Testing</a></li>
+          <li><a href="#portability">Portability Testing</a></li>
+        </ol>
+      </div>
+
+      <!-- 1 -->
+      <h2 id="overview">Functional vs. Non-Functional</h2>
+      <div class="callout key">
+        <div class="callout-label">The Core Analogy</div>
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>Functional Testing</th><th>Non-Functional Testing</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>It can drive from A to B.</td>
+                <td>How fast, how safe, how comfortable, how fuel-efficient.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Functional</th><th>Non-Functional</th></tr></thead>
+          <tbody>
+            <tr><td>Unit</td><td>Usability</td></tr>
+            <tr><td>Integration</td><td>Maintainability</td></tr>
+            <tr><td>End-to-End (E2E)</td><td>Risk Assessment</td></tr>
+            <tr><td>Regression</td><td>Performance</td></tr>
+            <tr><td>Acceptance</td><td>Security · Reliability · Portability</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2 -->
+      <h2 id="performance">Performance Testing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>What It Tests</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Load</strong></td><td>Under expected/normal load conditions</td></tr>
+            <tr><td><strong>Stress</strong></td><td>Under extreme load — beyond normal limits</td></tr>
+            <tr><td><strong>Spike</strong></td><td>Under sudden, dramatic increases in load</td></tr>
+            <tr><td><strong>Endurance</strong></td><td>Over an extended period of time</td></tr>
+            <tr><td><strong>Scalability</strong></td><td>Ability to scale up or down based on demand</td></tr>
+            <tr><td><strong>Volume</strong></td><td>Managing and processing large volumes of data</td></tr>
+            <tr><td><strong>Concurrency</strong></td><td>Multiple users or processes accessing simultaneously</td></tr>
+            <tr><td><strong>Soak</strong></td><td>Identify potential memory leaks and performance degradation over time</td></tr>
+            <tr><td><strong>Configuration</strong></td><td>Performance under various hardware/software configuration settings</td></tr>
+            <tr><td><strong>Isolation</strong></td><td>Independently identify effects of various system components</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> Apache JMeter / LoadRunner (load tests) · AWS/Azure (scaling simulation) · Selenium Grid (concurrent users)</p>
+        <p><strong>Example tests:</strong> Simulate 1,000 users browsing and purchasing during a Black Friday sale. Run a social media application at average user load for a week to detect memory leaks.</p>
+      </div>
+
+      <!-- 3 -->
+      <h2 id="usability">Usability Testing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>User Interface</strong></td><td>Visual elements and layout of the application</td></tr>
+            <tr><td><strong>Navigation</strong></td><td>Ease of navigation and clarity of instructions</td></tr>
+            <tr><td><strong>Accessibility</strong></td><td>Accessible to users with disabilities</td></tr>
+            <tr><td><strong>User Experience (UX)</strong></td><td>Gather user feedback to understand overall experience</td></tr>
+            <tr><td><strong>Error Handling</strong></td><td>How software handles user errors and provides feedback</td></tr>
+            <tr><td><strong>Consistency</strong></td><td>Design and behaviour are consistent throughout</td></tr>
+            <tr><td><strong>Help &amp; Documentation</strong></td><td>Quality and usefulness of help files and documentation</td></tr>
+            <tr><td><strong>Response</strong></td><td>How quickly the software responds to user actions</td></tr>
+            <tr><td><strong>Multilingual</strong></td><td>Usability in different languages</td></tr>
+            <tr><td><strong>Device</strong></td><td>Ease of use on various devices (smartphones, tablets)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> Google Lighthouse (accessibility) · Maze (prototype validation) · UserTesting (remote usability, video feedback, qualitative insights)</p>
+        <p><strong>Example tests:</strong> Test form validation and error messages in a registration form. Test a multilingual website for accurate translations and proper text alignment.</p>
+      </div>
+
+      <!-- 4 -->
+      <h2 id="security">Security Testing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Penetration</strong></td><td>Simulating attacks to identify security vulnerabilities</td></tr>
+            <tr><td><strong>Vulnerability</strong></td><td>Automated tools to detect known vulnerabilities quickly</td></tr>
+            <tr><td><strong>Access Control</strong></td><td>User access levels are correctly implemented and enforced</td></tr>
+            <tr><td><strong>Authentication</strong></td><td>Verifies authentication mechanisms — passwords, MFA</td></tr>
+            <tr><td><strong>Encryption</strong></td><td>Validates implementation of encryption methods</td></tr>
+            <tr><td><strong>Session Management</strong></td><td>How the software manages user sessions</td></tr>
+            <tr><td><strong>Intrusion Detection</strong></td><td>Effectiveness of IDS and monitoring tools</td></tr>
+            <tr><td><strong>DoS Testing</strong></td><td>Simulates Denial-of-Service attacks</td></tr>
+            <tr><td><strong>Data Integrity</strong></td><td>Ensures data remains accurate, consistent, and unaltered</td></tr>
+            <tr><td><strong>Network Security</strong></td><td>Security of the network infrastructure</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> Nessus / Qualys / OpenVAS (vulnerability scans) · OWASP ZAP (XSS, SQL injection) · Metasploit (penetration testing)</p>
+        <p><strong>Example tests:</strong> Simulate a cyber-attack to test IDS response. Verify integrity of financial transaction data in a banking application.</p>
+      </div>
+
+      <!-- 5 -->
+      <h2 id="risk">Risk Assessment</h2>
+      <div class="callout key">
+        <div class="callout-label">Three Pillars</div>
+        <ul>
+          <li><strong>Security Auditing</strong> — Reviews code and configurations to ensure adherence to best practices.</li>
+          <li><strong>Compliance</strong> — Adherence to industry standards and regulations (GDPR, POPIA, HIPAA); avoiding penalties and legal consequences.</li>
+          <li><strong>Security Configuration</strong> — Security settings and configurations are correctly applied across all systems.</li>
+        </ul>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> RiskLens (cyber risk quantification using FAIR model) · Rapid7 InsightVM (vulnerability management with risk prioritisation; integrates into CI/CD)</p>
+        <p><strong>Example tests:</strong> Audit cloud-based application security configurations. Conduct a security audit of a banking application against security standards. Test a healthcare app for HIPAA compliance. Check for GDPR/POPIA data jurisdiction compliance.</p>
+      </div>
+
+      <!-- 6 -->
+      <h2 id="reliability">Reliability Testing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Recovery</strong></td><td>Ability to recover from failures and crashes</td></tr>
+            <tr><td><strong>Failover</strong></td><td>Performance during hardware or software failures</td></tr>
+            <tr><td><strong>Reliability Growth</strong></td><td>Repeated testing cycles measuring improvements in reliability over time</td></tr>
+            <tr><td><strong>Continuous Operation</strong></td><td>Runs software continuously over an extended period</td></tr>
+            <tr><td><strong>MTBF</strong></td><td>Mean Time Between Failures — average time between system failures</td></tr>
+            <tr><td><strong>MTTR</strong></td><td>Mean Time To Repair — average time to repair and restore after a failure</td></tr>
+            <tr><td><strong>Redundancy</strong></td><td>Effectiveness of redundant components in maintaining system operation</td></tr>
+            <tr><td><strong>Error Detection &amp; Correction</strong></td><td>Ability to detect and automatically correct errors</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> Chaos Monkey (tests resilience by killing random services/instances) · Nagios / Zabbix / Prometheus (uptime tracking and monitoring)</p>
+        <p><strong>Example tests:</strong> Test a video conferencing app on various network conditions (3G, 4G, 5G, Wi-Fi). Calculate MTBF for a data centre's server infrastructure to schedule proactive maintenance.</p>
+      </div>
+
+      <!-- 7 -->
+      <h2 id="maintainability">Maintainability Testing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Code Quality</strong></td><td>Quality and readability of the code</td></tr>
+            <tr><td><strong>Documentation</strong></td><td>Software documentation is clear and comprehensive</td></tr>
+            <tr><td><strong>Modularity</strong></td><td>Design is divided into well-defined, independent modules</td></tr>
+            <tr><td><strong>Change Impact</strong></td><td>Potential impacts of changes — which parts will be affected by updates</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-label">Relevant Architecture Styles</div>
+        <p>Layered (n-Tier) · Client-Server · Service-Oriented · Event-Driven · MVC · MVVM · Microservices · Monolithic · MVT</p>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> SonarQube / ESLint (static code analysis) · Sphinx / Doxygen (documentation generation) · JIRA / TFS (tracking changes and dependencies)</p>
+        <p><strong>Example tests:</strong> Refactor a monolithic application into microservices to improve maintainability. Test automation of routine operations.</p>
+      </div>
+
+      <!-- 8 -->
+      <h2 id="portability">Portability Testing</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Installation</strong></td><td>Ease of installing and setting up the software</td></tr>
+            <tr><td><strong>Adaptability</strong></td><td>Functions effectively under various hardware/software configurations</td></tr>
+            <tr><td><strong>Uninstallation</strong></td><td>Can be cleanly uninstalled without residual files or side effects</td></tr>
+            <tr><td><strong>Migration</strong></td><td>Ability to transfer from one environment to another (e.g. local → cloud)</td></tr>
+            <tr><td><strong>Backward/Forward Compatibility</strong></td><td>Functions correctly with future and past versions</td></tr>
+            <tr><td><strong>Driver Compatibility</strong></td><td>Compatible with various device drivers</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout note">
+        <div class="callout-label">Tools &amp; Examples</div>
+        <p><strong>Tools:</strong> Selenium + BrowserStack (cross-browser tests) · Appium (mobile portability) · Kubernetes + Helm (deployment portability)</p>
+        <p><strong>Example tests:</strong> Deploy a web application on AWS, Azure, and Google Cloud to test adaptability. Test migration of a database from on-premises to a cloud-based service.</p>
+      </div>
+
+      <hr />
+
+      <div class="callout key">
+        <div class="callout-label">Complete Non-Functional Test Type List</div>
+        <p>Security · Reliability · Survivability · Availability · Efficiency · Integrity · Usability · Flexibility · Scalability · Reusability · Interportability · Portability</p>
+      </div>
+
+    </div><!-- end content-body -->
+  </div><!-- end main -->
+</div><!-- end layout -->
+
+<div class="page-nav">
+  <a href="L12_architectural_tactics.html"><span class="nav-arrow">←</span> L12: Tactics &amp; Patterns</a>
+  <a href="L14_presenting.html">L14: Presenting <span class="nav-arrow">→</span></a>
+</div>
+
+</body>
+</html>
