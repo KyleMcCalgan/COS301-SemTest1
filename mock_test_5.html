@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COS 301 — Mock Test 5</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; background: #f1f5f9; color: #1e293b; line-height: 1.6; }
+    a { color: #4f46e5; }
+    code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.88em; }
+    .test-header { background: #1e293b; color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .test-title h1 { font-size: 1.3rem; font-weight: 700; }
+    .test-title p { font-size: 0.82rem; color: #94a3b8; margin-top: 0.15rem; }
+    .score-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 0.6rem 1.1rem; border-radius: 8px; text-align: center; min-width: 160px; }
+    .score-box .label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-box .value { font-size: 1.1rem; font-weight: 700; color: #4ade80; margin-top: 0.1rem; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 0.4rem; }
+    .progress-fill { height: 100%; background: #4ade80; border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+    .test-body { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .nav-links { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.85rem; color: #64748b; text-decoration: none; }
+    .nav-links a:hover { color: #4f46e5; }
+    .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .q-header { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; }
+    .q-num { font-weight: 700; font-size: 0.88rem; color: #475569; }
+    .q-badge { padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.76rem; font-weight: 600; }
+    .badge-mcq   { background: #e0e7ff; color: #4338ca; }
+    .badge-multi  { background: #fce7f3; color: #9d174d; }
+    .badge-jumble { background: #d1fae5; color: #065f46; }
+    .badge-fill   { background: #fef3c7; color: #92400e; }
+    .badge-match  { background: #ede9fe; color: #5b21b6; }
+    .q-marks { margin-left: auto; font-size: 0.83rem; color: #64748b; font-weight: 600; }
+    .q-stem { margin-bottom: 1.25rem; }
+    .q-stem p { margin-bottom: 0.5rem; }
+    .neg-warn { background: #fff7ed; border: 1px solid #fb923c; border-radius: 6px; padding: 0.45rem 0.8rem; margin-bottom: 1rem; font-size: 0.82rem; color: #9a3412; }
+    .options { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .opt { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.55rem 0.8rem; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; }
+    .opt:hover { border-color: #a5b4fc; background: #f8f9ff; }
+    .opt input { margin-top: 0.2rem; flex-shrink: 0; }
+    .opt-label { font-weight: 700; color: #64748b; min-width: 1.1rem; font-size: 0.9rem; }
+    .opt-text { font-size: 0.95rem; }
+    .opt.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .opt.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .jumbled-sentence { font-size: 0.95rem; line-height: 2.4; margin-bottom: 1rem; }
+    select.blank { border: none; border-bottom: 2px solid #6366f1; padding: 0.1rem 0.4rem; font-size: 0.95em; background: #f0f4ff; border-radius: 4px 4px 0 0; cursor: pointer; color: #1e293b; }
+    select.blank.revealed-correct { border-color: #16a34a; background: #f0fdf4; color: #14532d; }
+    select.blank.revealed-wrong   { border-color: #dc2626; background: #fef2f2; color: #7f1d1d; }
+    .matching-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .matching-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .matching-table td:first-child { font-weight: 500; font-size: 0.88rem; width: 45%; }
+    .matching-table select { width: 100%; padding: 0.3rem 0.4rem; border: 1.5px solid #cbd5e1; border-radius: 5px; font-size: 0.85rem; background: white; cursor: pointer; }
+    .matching-table select.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .matching-table select.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .fill-row { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+    .fill-label { font-size: 0.88rem; color: #475569; min-width: 80px; flex-shrink: 0; }
+    input.fill-input { border: none; border-bottom: 2px solid #6366f1; padding: 0.15rem 0.4rem; font-size: 0.95em; min-width: 130px; background: transparent; color: #1e293b; }
+    input.fill-input:focus { outline: none; border-color: #4338ca; }
+    input.fill-input.revealed-correct { border-color: #16a34a; color: #15803d; }
+    input.fill-input.revealed-wrong   { border-color: #dc2626; color: #dc2626; }
+    details.ans { margin-top: 1rem; border-radius: 8px; overflow: hidden; }
+    details.ans summary { list-style: none; cursor: pointer; background: #f0f4ff; color: #4338ca; font-weight: 600; font-size: 0.88rem; padding: 0.6rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; user-select: none; }
+    details.ans summary::-webkit-details-marker { display: none; }
+    details.ans[open] summary { border-radius: 8px 8px 0 0; }
+    details.ans summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+    details.ans[open] summary::before { transform: rotate(90deg); }
+    .ans-body { background: #f8fafc; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 1rem 1.1rem; }
+    .ans-correct { color: #15803d; font-weight: 700; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .ans-item { font-size: 0.88rem; margin-bottom: 0.4rem; }
+    .concept { background: #eff6ff; border-left: 3px solid #3b82f6; padding: 0.65rem 0.85rem; margin-top: 0.75rem; font-size: 0.88rem; border-radius: 0 5px 5px 0; line-height: 1.55; }
+    .study-btn { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem; padding: 0.4rem 0.9rem; background: #f0f4ff; border: 1px solid #c7d2fe; border-radius: 6px; color: #4f46e5; font-size: 0.83rem; font-weight: 600; text-decoration: none; }
+    .study-btn:hover { background: #e0e7ff; }
+    .test-footer { background: #1e293b; color: #94a3b8; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .test-nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .test-nav a { color: #94a3b8; text-decoration: none; font-size: 0.83rem; padding: 0.3rem 0.7rem; border: 1px solid #334155; border-radius: 5px; }
+    .test-nav a:hover { border-color: #94a3b8; color: white; }
+    @media (max-width: 600px) { .test-header, .test-body { padding: 1rem; } .question-card { padding: 1rem; } }
+  </style>
+</head>
+<body>
+
+<div class="test-header">
+  <div class="test-title">
+    <h1>COS 301 — Mock Test 5</h1>
+    <p>9 Questions &nbsp;·&nbsp; 30 Marks &nbsp;·&nbsp; Covers L02, L04, L07, L09, L12–L13, L15</p>
+  </div>
+  <div class="score-box">
+    <div class="label">Progress</div>
+    <div class="value" id="score-top">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-top"></div></div>
+  </div>
+</div>
+
+<div class="test-body">
+  <div class="nav-links">
+    <a href="mock_test_4.html">← Test 4</a>
+    <a href="index.html">Study Notes</a>
+    <a href="mock_test_combined.html">Combined Test →</a>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q1</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A new developer joins the team and asks: "What is the first Scrum ceremony of a sprint — the one that officially starts it?"</p>
+      <p><strong>Which ceremony defines the start of a sprint?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q1" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">Daily Scrum — the first daily sync of the new sprint signals its start</span></label>
+      <label class="opt"><input type="radio" name="q1" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">Sprint Planning — the ceremony that creates the Sprint Backlog and sets the Sprint Goal, marking the start of the sprint</span></label>
+      <label class="opt"><input type="radio" name="q1" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">Backlog Refinement — the team grooms stories in preparation for the upcoming sprint</span></label>
+      <label class="opt"><input type="radio" name="q1" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Sprint Review — the team demos completed work to stakeholders</span></label>
+    </div>
+    <details class="ans" data-qid="q1">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B — Sprint Planning</div>
+        <div class="ans-item">✓ <strong>B:</strong> Sprint Planning is the first event of the sprint. It creates the Sprint Backlog (selected items + decomposed tasks) and establishes the Sprint Goal. The sprint clock officially starts when Sprint Planning begins.</div>
+        <div class="ans-item">✗ <strong>A (Daily Scrum):</strong> The Daily Scrum happens throughout the sprint, starting from Day 1. It does not start the sprint — the sprint has already started by Sprint Planning.</div>
+        <div class="ans-item">✗ <strong>C (Backlog Refinement):</strong> Refinement is a recommended practice but is NOT an official Scrum event. It happens mid-sprint in preparation for the next Sprint Planning — not at the start of the current sprint.</div>
+        <div class="ans-item">✗ <strong>D (Sprint Review):</strong> Sprint Review happens at the END of the sprint, not the start.</div>
+        <div class="concept">Sprint order: Sprint Planning → (Daily Scrums throughout) → Sprint Review → Sprint Retrospective → (next) Sprint Planning. Sprint Planning = start. Review + Retro = end.</div>
+        <div class="score-reveal" id="sr-q1"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L15_agile_1.html#sprint" target="_blank" rel="noopener">📖 The Sprint Lifecycle →</a>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2" data-marks="3" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q2</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">3 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A team is designing a UML use case diagram for a hospital patient management system.</p>
+      <p><strong>Select ALL items from the list that are valid use cases for this system. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q2" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">Schedule appointment</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">Write patient ID to the session cookie</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">View medical history</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Execute SQL SELECT query on the patients table</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="E" data-correct="true"><span class="opt-label">E</span><span class="opt-text">Discharge patient</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="F" data-correct="false"><span class="opt-label">F</span><span class="opt-text">Verify insurance code format using regular expression</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="G" data-correct="true"><span class="opt-label">G</span><span class="opt-text">Generate billing invoice</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="H" data-correct="false"><span class="opt-label">H</span><span class="opt-text">Scroll to the bottom of the form</span></label>
+    </div>
+    <details class="ans" data-qid="q2">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, C, E, G</div>
+        <div class="ans-item">✓ <strong>A, C, E, G:</strong> All are user-observable goals — things a doctor, nurse, or administrator wants to accomplish with the system. Each can be phrased as "Actor achieves goal".</div>
+        <div class="ans-item">✗ <strong>B (session cookie):</strong> An internal technical mechanism — the actor never consciously "writes to a session cookie." It's an implementation detail of authentication.</div>
+        <div class="ans-item">✗ <strong>D (SQL query):</strong> Database operations are completely internal. Actors interact with the system's interface, not its data layer.</div>
+        <div class="ans-item">✗ <strong>F (regex validation):</strong> An internal validation step. Actors don't "run a regex" — they enter data and the system validates it transparently.</div>
+        <div class="ans-item">✗ <strong>H (scroll to bottom):</strong> A UI interaction gesture, not a goal. Use cases abstract above interface mechanics.</div>
+        <div class="concept">Quick test: can you write "The [Actor] [verb phrase] in order to [achieve goal]"? If yes — valid use case. If the sentence only makes sense from inside the code — not a use case.</div>
+        <div class="score-reveal" id="sr-q2"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L07_use_cases.html#what-not" target="_blank" rel="noopener">📖 What Is NOT a Use Case →</a>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q3</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A QA team is categorising test activities for an online banking platform. Fill in each blank with the correct non-functional testing type.</p>
+      <p><em>Word bank: load, stress, security, compatibility, availability, usability</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.8rem;"><strong>1.</strong> The team simulates 50,000 simultaneous users making transfers and measures response times, throughput, and error rates at expected peak load. This is
+        <select class="blank" data-correct="load">
+          <option value="">— select —</option><option>load</option><option>stress</option><option>security</option><option>compatibility</option><option>availability</option><option>usability</option>
+        </select>
+        testing.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>2.</strong> The team uses OWASP ZAP to scan the login API for SQL injection and cross-site scripting vulnerabilities, and performs penetration testing on the authentication flow. This is
+        <select class="blank" data-correct="security">
+          <option value="">— select —</option><option>load</option><option>stress</option><option>security</option><option>compatibility</option><option>availability</option><option>usability</option>
+        </select>
+        testing.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>3.</strong> The team verifies the bank's SLA of 99.95% uptime by monitoring whether planned and unplanned outages breach the annual downtime budget. This is
+        <select class="blank" data-correct="availability">
+          <option value="">— select —</option><option>load</option><option>stress</option><option>security</option><option>compatibility</option><option>availability</option><option>usability</option>
+        </select>
+        testing.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>4.</strong> The team asks 10 real customers to perform 5 common banking tasks while a UX researcher observes, measuring task completion rates, error rates, and time-on-task. This is
+        <select class="blank" data-correct="usability">
+          <option value="">— select —</option><option>load</option><option>stress</option><option>security</option><option>compatibility</option><option>availability</option><option>usability</option>
+        </select>
+        testing.
+      </p>
+    </div>
+    <details class="ans" data-qid="q3">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → load &nbsp; 2 → security &nbsp; 3 → availability &nbsp; 4 → usability</div>
+        <div class="ans-item"><strong>Load testing:</strong> Performance under expected (high but realistic) user volumes. Identifies bottlenecks before they affect users.</div>
+        <div class="ans-item"><strong>Security testing:</strong> Identifies vulnerabilities that could allow unauthorised access, data breaches, or system compromise. Tools: OWASP ZAP, Burp Suite. Techniques: penetration testing, static analysis, code review.</div>
+        <div class="ans-item"><strong>Availability testing:</strong> Verifies the system meets uptime SLA targets. Measures MTTF (Mean Time to Failure) and MTTR (Mean Time to Recovery).</div>
+        <div class="ans-item"><strong>Usability testing:</strong> Measures how effectively real users can accomplish tasks. Not automated — requires human participants. Outputs: task success rate, error frequency, user satisfaction scores.</div>
+        <div class="concept">Security testing vs. penetration testing: "pentesting" is a subset of security testing — specifically the active attack simulation component. Broader security testing includes static analysis, threat modelling, and compliance checks. The exam accepted "pentesting" as partially correct for blank 3 — but "security" is the broader and more accurate category name.</div>
+        <div class="score-reveal" id="sr-q3"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L13_non_functional_testing.html#overview" target="_blank" rel="noopener">📖 Functional vs. Non-Functional Testing →</a>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q4</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each integration testing description to the correct test double type or strategy keyword.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>A simplified replacement that simulates a lower-level module not yet built — it returns hardcoded responses when called by the module under test.</td>
+        <td><select class="matching-select" data-correct="Stub">
+          <option value="">— select —</option>
+          <option>Stub</option><option>Driver</option><option>Mock</option><option>Spy</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>A replacement that simulates a higher-level calling module — it invokes the lower-level module being tested so that it can be tested independently.</td>
+        <td><select class="matching-select" data-correct="Driver">
+          <option value="">— select —</option>
+          <option>Stub</option><option>Driver</option><option>Mock</option><option>Spy</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>A test double that, in addition to simulating a dependency, also records how it was called — verifying that the system under test made the expected calls with the expected parameters.</td>
+        <td><select class="matching-select" data-correct="Mock">
+          <option value="">— select —</option>
+          <option>Stub</option><option>Driver</option><option>Mock</option><option>Spy</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>A test double that wraps a real object and records how it is called, but delegates actual execution to the real implementation — useful when you want to observe real behaviour.</td>
+        <td><select class="matching-select" data-correct="Spy">
+          <option value="">— select —</option>
+          <option>Stub</option><option>Driver</option><option>Mock</option><option>Spy</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q4">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → Stub &nbsp; Row 2 → Driver &nbsp; Row 3 → Mock &nbsp; Row 4 → Spy</div>
+        <div class="ans-item"><strong>Stub:</strong> Passive — it stands in place of a not-yet-built lower dependency, returning predetermined responses. Used in Top-Down integration. No verification of calls.</div>
+        <div class="ans-item"><strong>Driver:</strong> Active — it calls the module being tested, simulating a higher-level caller not yet built. Used in Bottom-Up integration.</div>
+        <div class="ans-item"><strong>Mock:</strong> A stub with memory — it verifies that the system under test called it in the right way. Used in unit tests to assert collaboration between components.</div>
+        <div class="ans-item"><strong>Spy:</strong> A wrapper around a real object. The real code runs, but calls are recorded. Useful when you want to observe real behaviour but also track interactions.</div>
+        <div class="concept">Quick summary: Stub = fake with no verification. Driver = fake caller. Mock = fake with call verification. Spy = real object with observation. In practice, "mock" is often used loosely to mean any test double — be precise in exam answers.</div>
+        <div class="score-reveal" id="sr-q4"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L09_L10_testing.html#strategies" target="_blank" rel="noopener">📖 Integration Strategies →</a>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5" data-marks="2" data-type="fill-blank">
+    <div class="q-header">
+      <span class="q-num">Q5</span>
+      <span class="q-badge badge-fill">Fill in the Blank</span>
+      <span class="q-marks">2 marks (0.5 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Complete the sentences about Git's three areas and common commands.</p>
+    </div>
+    <div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 1:</span>
+        <span>The area where you edit files on your local machine — Git tracks them as "modified" but hasn't queued them for a commit — is called the <input class="fill-input" data-correct="working directory|working tree" placeholder="Git area">.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 2:</span>
+        <span>The command that moves a file's snapshot from the working directory into the staging area is <input class="fill-input" data-correct="git add|git add ." placeholder="command">.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 3:</span>
+        <span>To temporarily save uncommitted working directory changes and restore a clean working directory (e.g., before switching branches), a developer uses <input class="fill-input" data-correct="git stash" placeholder="command">.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 4:</span>
+        <span>The command that copies commits from a remote repository to your local repository without merging them into any branch is <input class="fill-input" data-correct="git fetch" placeholder="command">.</span>
+      </div>
+    </div>
+    <details class="ans" data-qid="q5">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Blank 1: working directory &nbsp;| Blank 2: git add &nbsp;| Blank 3: git stash &nbsp;| Blank 4: git fetch</div>
+        <div class="ans-item"><strong>Working directory:</strong> Your actual project files. <code>git status</code> compares them to the staging area and last commit.</div>
+        <div class="ans-item"><strong>git add:</strong> Stages specific files or patterns. <code>git add .</code> stages all tracked changes. Critical: only staged changes are included in the next <code>git commit</code>.</div>
+        <div class="ans-item"><strong>git stash:</strong> Saves modified tracked files to a stash stack. Reverts the working directory to the last commit state. <code>git stash pop</code> restores the stashed changes.</div>
+        <div class="ans-item"><strong>git fetch:</strong> Downloads remote commits to your local repository (FETCH_HEAD / remote tracking branches) but does NOT merge them. <code>git pull</code> = <code>git fetch</code> + <code>git merge</code>.</div>
+        <div class="score-reveal" id="sr-q5"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#three-areas" target="_blank" rel="noopener">📖 The Three Areas of Git →</a>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q6</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A developer is practising Test-Driven Development. She has just identified a new feature to implement.</p>
+      <p><strong>What is the FIRST step in the TDD Red-Green-Refactor cycle?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q6" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">Write the implementation code that will make the feature work</span></label>
+      <label class="opt"><input type="radio" name="q6" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">Write a failing test (Red) that describes the desired behaviour before any implementation exists</span></label>
+      <label class="opt"><input type="radio" name="q6" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">Refactor the existing code to improve its structure without changing behaviour</span></label>
+      <label class="opt"><input type="radio" name="q6" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Run the full test suite to ensure no existing tests are broken before starting</span></label>
+    </div>
+    <details class="ans" data-qid="q6">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B — Write a failing test first (Red)</div>
+        <div class="ans-item">✓ <strong>B (Red):</strong> The test is written BEFORE any implementation. It should fail because the feature doesn't exist yet. A test that passes before implementation suggests either the test is wrong or the feature already exists.</div>
+        <div class="ans-item">✗ <strong>A:</strong> Writing implementation first is traditional development, not TDD. TDD inverts this: tests define the API and expected behaviour first.</div>
+        <div class="ans-item">✗ <strong>C (Refactor):</strong> Refactoring is the THIRD step — after you have green (passing) tests. You never refactor without a green test suite to protect you.</div>
+        <div class="ans-item">✗ <strong>D:</strong> While running the existing suite before starting is good hygiene, it is not the first step of the TDD cycle itself.</div>
+        <div class="concept">TDD cycle: <strong>Red</strong> (write failing test) → <strong>Green</strong> (write minimum code to pass the test) → <strong>Refactor</strong> (clean up code while keeping tests green) → back to Red for the next requirement. The discipline of writing the test first forces you to think about the API before the implementation.</div>
+        <div class="score-reveal" id="sr-q6"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L09_L10_testing.html#tdd" target="_blank" rel="noopener">📖 Test Driven Development (TDD) →</a>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7" data-marks="5" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q7</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">5 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A social media platform has its user profile database sharded by <code>user_id</code>. Each shard has 1 primary write node and 2 async read replicas. A Redis cache with a 10-minute TTL sits in front of profile reads. The system uses no idempotency keys on write operations.</p>
+      <p><strong>Select ALL statements that are technically correct about this system. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q7" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">A write (e.g., profile update) is visible to replica readers only after replication lag — which could be seconds to minutes</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">Sharding by user_id makes ALL query patterns horizontally scalable, including cross-user analytics</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">After a profile update, the cache can serve stale data for up to 10 minutes even after the replica has converged</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="D" data-correct="true"><span class="opt-label">D</span><span class="opt-text">Adding more read replicas improves read throughput but does not improve write throughput</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="E" data-correct="false"><span class="opt-label">E</span><span class="opt-text">Async replication means the primary waits for both replicas to confirm receipt before acknowledging a write to the client</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="F" data-correct="true"><span class="opt-label">F</span><span class="opt-text">Without idempotency keys, a retried write operation (e.g., due to a network timeout) may create duplicate records</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="G" data-correct="false"><span class="opt-label">G</span><span class="opt-text">A failure of Shard 3's primary has zero impact on users whose user_id maps to Shard 1 or Shard 2</span></label>
+    </div>
+    <details class="ans" data-qid="q7">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, C, D, F</div>
+        <div class="ans-item">✓ <strong>A — Replication lag:</strong> Async replication does not guarantee immediate visibility. Reads from replicas immediately after a write may see the old value. This is "eventual consistency."</div>
+        <div class="ans-item">✓ <strong>C — Cache staleness compounds replication lag:</strong> Even if the replica converges quickly, the cache TTL (10 min) can serve the stale cached value for much longer. Total potential staleness = replication lag + cache TTL.</div>
+        <div class="ans-item">✓ <strong>D — Read/write throughput independence:</strong> Read replicas distribute read load. But writes always go to the primary — adding replicas has no effect on write capacity. Write throughput scales with shards, not replicas.</div>
+        <div class="ans-item">✓ <strong>F — No idempotency keys:</strong> Client retries after timeout → server may have already processed the first request. Without idempotency, the operation executes twice → duplicates.</div>
+        <div class="ans-item">✗ <strong>B:</strong> Sharding by user_id is efficient for single-user lookups, but cross-user analytics (e.g., "find all users in Cape Town") require querying ALL shards in parallel — not horizontally scalable for that pattern.</div>
+        <div class="ans-item">✗ <strong>E:</strong> This describes SYNCHRONOUS replication. In async replication, the primary acknowledges the write IMMEDIATELY after writing locally — replicas catch up asynchronously.</div>
+        <div class="ans-item">✗ <strong>G:</strong> The shard router / load balancer is a shared component. If it fails, ALL shards are impacted. Shard-level failures can also affect shared infrastructure (monitoring, routing). This statement is false as written.</div>
+        <div class="score-reveal" id="sr-q7"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L12_architectural_tactics.html#scalability" target="_blank" rel="noopener">📖 Scalability &amp; Performance Tactics →</a>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q8</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each software process model to its defining characteristic.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>Organises work into fixed-length iterations called sprints; teams self-organise, requirements emerge over time, and working software is the primary measure of progress.</td>
+        <td><select class="matching-select" data-correct="Agile / Scrum">
+          <option value="">— select —</option>
+          <option>Waterfall</option><option>Agile / Scrum</option><option>Spiral</option><option>RUP</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>All requirements must be fully defined before design begins; design must be complete before coding; changes to earlier phases are expensive and discouraged.</td>
+        <td><select class="matching-select" data-correct="Waterfall">
+          <option value="">— select —</option>
+          <option>Waterfall</option><option>Agile / Scrum</option><option>Spiral</option><option>RUP</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>At the start of each loop, the team determines objectives; analyses risks; selects a strategy based on risk level; builds and tests a prototype; then plans the next loop.</td>
+        <td><select class="matching-select" data-correct="Spiral">
+          <option value="">— select —</option>
+          <option>Waterfall</option><option>Agile / Scrum</option><option>Spiral</option><option>RUP</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>An iterative and incremental framework with four phases (Inception, Elaboration, Construction, Transition) and six disciplines running in parallel. Use-case driven and architecture-centric.</td>
+        <td><select class="matching-select" data-correct="RUP">
+          <option value="">— select —</option>
+          <option>Waterfall</option><option>Agile / Scrum</option><option>Spiral</option><option>RUP</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q8">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → Agile/Scrum &nbsp; Row 2 → Waterfall &nbsp; Row 3 → Spiral &nbsp; Row 4 → RUP</div>
+        <div class="ans-item"><strong>Agile/Scrum:</strong> Embraces change, ships working software frequently (every sprint), measures success by working software not documentation.</div>
+        <div class="ans-item"><strong>Waterfall:</strong> Sequential and phase-gated. Best for stable, well-understood requirements. The cost of change increases exponentially as the project progresses.</div>
+        <div class="ans-item"><strong>Spiral:</strong> Risk-driven iteration. Each loop = plan objectives → analyse risks → build prototype → review. If risk is too high, the project can be terminated early. Suitable for large, high-uncertainty projects.</div>
+        <div class="ans-item"><strong>RUP:</strong> Iterative but heavyweight. Unlike Agile, RUP produces many artefacts and has specific roles. The architecture is finalised in the Elaboration phase before most development (Construction) begins.</div>
+        <div class="concept">Key discriminator between RUP and Agile: RUP is still largely plan-driven and produces formal artefacts (documents, diagrams, specifications). Agile prioritises "working software over comprehensive documentation." Both are iterative, but their philosophy differs.</div>
+        <div class="score-reveal" id="sr-q8"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L02_software_process.html#process-models" target="_blank" rel="noopener">📖 Software Process Models →</a>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q9</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A municipal services system handles infrastructure fault reports. Fill in the blanks to describe the use-case flow from fault report to resolution.</p>
+      <p><em>Word bank: Fault, Dispatch, Work Order, FieldOps</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.9rem;"><strong>1.</strong> When a resident submits a report about a burst water pipe, a
+        <select class="blank" data-correct="Fault">
+          <option value="">— select —</option><option>Fault</option><option>Dispatch</option><option>Work Order</option><option>FieldOps</option>
+        </select>
+        record is created in the system with the location, category, and priority of the reported issue.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>2.</strong> The
+        <select class="blank" data-correct="Dispatch">
+          <option value="">— select —</option><option>Fault</option><option>Dispatch</option><option>Work Order</option><option>FieldOps</option>
+        </select>
+        team reviews the fault record, validates its priority, and allocates available resources to address it.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>3.</strong> Once resources are allocated, the system creates a
+        <select class="blank" data-correct="Work Order">
+          <option value="">— select —</option><option>Fault</option><option>Dispatch</option><option>Work Order</option><option>FieldOps</option>
+        </select>
+        that specifies the task, assigned crew, equipment, and estimated time of arrival.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>4.</strong> After the pipe is repaired, the
+        <select class="blank" data-correct="FieldOps">
+          <option value="">— select —</option><option>Fault</option><option>Dispatch</option><option>Work Order</option><option>FieldOps</option>
+        </select>
+        team updates the work order status to "Resolved" in the system, triggering a notification to the resident.
+      </p>
+    </div>
+    <details class="ans" data-qid="q9">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → Fault &nbsp; 2 → Dispatch &nbsp; 3 → Work Order &nbsp; 4 → FieldOps</div>
+        <div class="ans-item"><strong>Fault:</strong> The initial record of the reported problem — it captures what was reported, by whom, where, and at what severity.</div>
+        <div class="ans-item"><strong>Dispatch:</strong> The coordination function — evaluates faults, decides priority, assigns resources. This is an actor or organisational role in the use case model.</div>
+        <div class="ans-item"><strong>Work Order:</strong> The operational instruction created after dispatch decides to address a fault. It contains all the information a field crew needs to do the job.</div>
+        <div class="ans-item"><strong>FieldOps:</strong> The field operations team that physically performs the repair. They update the system when work is complete, closing the loop on the fault report.</div>
+        <div class="concept">This flow (Fault → Dispatch → Work Order → FieldOps) is the core use case of a Municipal Services Management System — the type of system commonly used in the COS301 mini-project. The entities map directly to use cases, actors, and domain model classes.</div>
+        <div class="score-reveal" id="sr-q9"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L07_use_cases.html#scope" target="_blank" rel="noopener">📖 Scope, Allocation &amp; Traceability →</a>
+  </div>
+
+</div>
+
+<div class="test-footer">
+  <div class="score-box">
+    <div class="label">Final Score</div>
+    <div class="value" id="score-bottom">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-bottom"></div></div>
+  </div>
+  <div class="test-nav">
+    <a href="mock_test_4.html">← Test 4</a>
+    <a href="mock_test_1.html">Test 1</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+</div>
+
+<script>
+  const TOTAL_MARKS = 30, TOTAL_QS = 9;
+  let answered = new Set(), earned = 0;
+  function updateDisplay() {
+    const pct = (answered.size / TOTAL_QS) * 100, s = earned.toFixed(1).replace(/\.0$/,'') + ' / ' + TOTAL_MARKS;
+    ['score-top','score-bottom'].forEach(id => document.getElementById(id).textContent = s);
+    ['prog-top','prog-bottom'].forEach(id => document.getElementById(id).style.width = pct + '%');
+  }
+  function calcScore(card) {
+    const type = card.dataset.type, marks = parseFloat(card.dataset.marks); let pts = 0;
+    if (type === 'single-mcq') {
+      const sel = card.querySelector('input[type=radio]:checked'); if (sel && sel.dataset.correct === 'true') pts = marks;
+      card.querySelectorAll('.opt').forEach(o => { const i = o.querySelector('input'); if (i.dataset.correct === 'true') o.classList.add('revealed-correct'); else if (i.checked) o.classList.add('revealed-wrong'); });
+    } else if (type === 'multi-mcq') {
+      const boxes = card.querySelectorAll('input[type=checkbox]'), n = boxes.length, per = marks / n;
+      boxes.forEach(b => { if (b.checked) { if (b.dataset.correct === 'true') pts += per; else pts -= per; } const o = b.closest('.opt'); if (b.dataset.correct === 'true') o.classList.add('revealed-correct'); else if (b.checked) o.classList.add('revealed-wrong'); });
+      pts = Math.max(0, pts);
+    } else if (type === 'matching') {
+      const sels = card.querySelectorAll('select.matching-select'), n = sels.length, per = marks / n;
+      sels.forEach(s => { if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); } else if (s.value !== '') { pts -= per; s.classList.add('revealed-wrong'); } s.disabled = true; });
+      pts = Math.max(0, pts);
+    } else if (type === 'jumbled') {
+      const sels = card.querySelectorAll('select.blank'), n = sels.length, per = marks / n;
+      sels.forEach(s => { if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); } else if (s.value !== '') s.classList.add('revealed-wrong'); s.disabled = true; });
+    } else if (type === 'fill-blank') {
+      const inputs = card.querySelectorAll('input.fill-input'), n = inputs.length, per = marks / n;
+      inputs.forEach(i => { const uv = i.value.trim().toLowerCase(), acc = i.dataset.correct.toLowerCase().split('|'); const ok = acc.some(a => uv === a || (uv.length > 2 && a.includes(uv)) || (a.length > 2 && uv.includes(a))); if (ok) { pts += per; i.classList.add('revealed-correct'); } else i.classList.add('revealed-wrong'); i.disabled = true; });
+    }
+    return Math.round(pts * 10) / 10;
+  }
+  document.querySelectorAll('details.ans').forEach(det => {
+    det.addEventListener('toggle', () => {
+      if (!det.open) return; const card = det.closest('.question-card'), qid = card.id; if (answered.has(qid)) return;
+      const pts = calcScore(card); earned += pts; answered.add(qid);
+      const rev = document.getElementById('sr-' + qid);
+      if (rev) { const total = parseFloat(card.dataset.marks); rev.textContent = 'You scored: ' + pts.toFixed(1).replace(/\.0$/,'') + ' / ' + total + ' marks'; rev.style.cssText = 'display:block;padding:0.45rem 0.75rem;border-radius:6px;font-size:0.88rem;font-weight:600;margin-top:0.65rem;border:1px solid '+(pts===total?'#86efac':pts>0?'#fde68a':'#fca5a5')+';background:'+(pts===total?'#f0fdf4':pts>0?'#fefce8':'#fef2f2')+';color:'+(pts===total?'#15803d':pts>0?'#92400e':'#b91c1c'); }
+      updateDisplay();
+    });
+  });
+  updateDisplay();
+</script>
+</body>
+</html>

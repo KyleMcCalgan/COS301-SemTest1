@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COS 301 — Mock Test 4</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; background: #f1f5f9; color: #1e293b; line-height: 1.6; }
+    a { color: #4f46e5; }
+    code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.88em; }
+    .test-header { background: #1e293b; color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .test-title h1 { font-size: 1.3rem; font-weight: 700; }
+    .test-title p { font-size: 0.82rem; color: #94a3b8; margin-top: 0.15rem; }
+    .score-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 0.6rem 1.1rem; border-radius: 8px; text-align: center; min-width: 160px; }
+    .score-box .label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-box .value { font-size: 1.1rem; font-weight: 700; color: #4ade80; margin-top: 0.1rem; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 0.4rem; }
+    .progress-fill { height: 100%; background: #4ade80; border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+    .test-body { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .nav-links { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.85rem; color: #64748b; text-decoration: none; }
+    .nav-links a:hover { color: #4f46e5; }
+    .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .q-header { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; }
+    .q-num { font-weight: 700; font-size: 0.88rem; color: #475569; }
+    .q-badge { padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.76rem; font-weight: 600; }
+    .badge-mcq   { background: #e0e7ff; color: #4338ca; }
+    .badge-multi  { background: #fce7f3; color: #9d174d; }
+    .badge-jumble { background: #d1fae5; color: #065f46; }
+    .badge-fill   { background: #fef3c7; color: #92400e; }
+    .badge-match  { background: #ede9fe; color: #5b21b6; }
+    .q-marks { margin-left: auto; font-size: 0.83rem; color: #64748b; font-weight: 600; }
+    .q-stem { margin-bottom: 1.25rem; }
+    .q-stem p { margin-bottom: 0.5rem; }
+    .neg-warn { background: #fff7ed; border: 1px solid #fb923c; border-radius: 6px; padding: 0.45rem 0.8rem; margin-bottom: 1rem; font-size: 0.82rem; color: #9a3412; }
+    .options { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .opt { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.55rem 0.8rem; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; }
+    .opt:hover { border-color: #a5b4fc; background: #f8f9ff; }
+    .opt input { margin-top: 0.2rem; flex-shrink: 0; }
+    .opt-label { font-weight: 700; color: #64748b; min-width: 1.1rem; font-size: 0.9rem; }
+    .opt-text { font-size: 0.95rem; }
+    .opt.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .opt.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .jumbled-sentence { font-size: 0.95rem; line-height: 2.4; margin-bottom: 1rem; }
+    select.blank { border: none; border-bottom: 2px solid #6366f1; padding: 0.1rem 0.4rem; font-size: 0.95em; background: #f0f4ff; border-radius: 4px 4px 0 0; cursor: pointer; color: #1e293b; }
+    select.blank.revealed-correct { border-color: #16a34a; background: #f0fdf4; color: #14532d; }
+    select.blank.revealed-wrong   { border-color: #dc2626; background: #fef2f2; color: #7f1d1d; }
+    .matching-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .matching-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .matching-table td:first-child { font-weight: 500; font-size: 0.88rem; width: 48%; }
+    .matching-table select { width: 100%; padding: 0.3rem 0.4rem; border: 1.5px solid #cbd5e1; border-radius: 5px; font-size: 0.85rem; background: white; cursor: pointer; }
+    .matching-table select.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .matching-table select.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .fill-row { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+    .fill-label { font-size: 0.88rem; color: #475569; min-width: 80px; flex-shrink: 0; }
+    input.fill-input { border: none; border-bottom: 2px solid #6366f1; padding: 0.15rem 0.4rem; font-size: 0.95em; min-width: 130px; background: transparent; color: #1e293b; }
+    input.fill-input:focus { outline: none; border-color: #4338ca; }
+    input.fill-input.revealed-correct { border-color: #16a34a; color: #15803d; }
+    input.fill-input.revealed-wrong   { border-color: #dc2626; color: #dc2626; }
+    details.ans { margin-top: 1rem; border-radius: 8px; overflow: hidden; }
+    details.ans summary { list-style: none; cursor: pointer; background: #f0f4ff; color: #4338ca; font-weight: 600; font-size: 0.88rem; padding: 0.6rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; user-select: none; }
+    details.ans summary::-webkit-details-marker { display: none; }
+    details.ans[open] summary { border-radius: 8px 8px 0 0; }
+    details.ans summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+    details.ans[open] summary::before { transform: rotate(90deg); }
+    .ans-body { background: #f8fafc; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 1rem 1.1rem; }
+    .ans-correct { color: #15803d; font-weight: 700; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .ans-item { font-size: 0.88rem; margin-bottom: 0.4rem; }
+    .concept { background: #eff6ff; border-left: 3px solid #3b82f6; padding: 0.65rem 0.85rem; margin-top: 0.75rem; font-size: 0.88rem; border-radius: 0 5px 5px 0; line-height: 1.55; }
+    .study-btn { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem; padding: 0.4rem 0.9rem; background: #f0f4ff; border: 1px solid #c7d2fe; border-radius: 6px; color: #4f46e5; font-size: 0.83rem; font-weight: 600; text-decoration: none; }
+    .study-btn:hover { background: #e0e7ff; }
+    .test-footer { background: #1e293b; color: #94a3b8; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .test-nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .test-nav a { color: #94a3b8; text-decoration: none; font-size: 0.83rem; padding: 0.3rem 0.7rem; border: 1px solid #334155; border-radius: 5px; }
+    .test-nav a:hover { border-color: #94a3b8; color: white; }
+    @media (max-width: 600px) { .test-header, .test-body { padding: 1rem; } .question-card { padding: 1rem; } }
+  </style>
+</head>
+<body>
+
+<div class="test-header">
+  <div class="test-title">
+    <h1>COS 301 — Mock Test 4</h1>
+    <p>9 Questions &nbsp;·&nbsp; 30 Marks &nbsp;·&nbsp; Covers L01, L03–L04, L09, L12, L15</p>
+  </div>
+  <div class="score-box">
+    <div class="label">Progress</div>
+    <div class="value" id="score-top">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-top"></div></div>
+  </div>
+</div>
+
+<div class="test-body">
+  <div class="nav-links">
+    <a href="mock_test_3.html">← Test 3</a>
+    <a href="index.html">Study Notes</a>
+    <a href="mock_test_5.html">Test 5 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q1</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Fill in the blanks to correctly sequence and describe the Scrum sprint lifecycle.</p>
+      <p><em>Word bank: Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.8rem;"><strong>1.</strong> Every sprint begins with
+        <select class="blank" data-correct="Sprint Planning">
+          <option value="">— select —</option><option>Sprint Planning</option><option>Daily Scrum</option><option>Sprint Review</option><option>Sprint Retrospective</option>
+        </select>,
+        where the team selects work from the Product Backlog, agrees on a Sprint Goal, and creates the Sprint Backlog.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>2.</strong> Each working day of the sprint, the Developers hold a
+        <select class="blank" data-correct="Daily Scrum">
+          <option value="">— select —</option><option>Sprint Planning</option><option>Daily Scrum</option><option>Sprint Review</option><option>Sprint Retrospective</option>
+        </select>
+        — a 15-minute inspection and adaptation of the team's progress toward the Sprint Goal.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>3.</strong> At the end of the sprint, the team demonstrates working software to stakeholders in the
+        <select class="blank" data-correct="Sprint Review">
+          <option value="">— select —</option><option>Sprint Planning</option><option>Daily Scrum</option><option>Sprint Review</option><option>Sprint Retrospective</option>
+        </select>,
+        inspecting the increment and adapting the Product Backlog based on feedback.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>4.</strong> Before beginning the next sprint, the team reflects on their ways of working in the
+        <select class="blank" data-correct="Sprint Retrospective">
+          <option value="">— select —</option><option>Sprint Planning</option><option>Daily Scrum</option><option>Sprint Review</option><option>Sprint Retrospective</option>
+        </select>
+        and identifies concrete process improvements.
+      </p>
+    </div>
+    <details class="ans" data-qid="q1">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → Sprint Planning &nbsp; 2 → Daily Scrum &nbsp; 3 → Sprint Review &nbsp; 4 → Sprint Retrospective</div>
+        <div class="ans-item"><strong>Sprint Planning</strong> starts the sprint. Two parts: (1) What — select backlog items and set Sprint Goal; (2) How — Developers decompose into tasks.</div>
+        <div class="ans-item"><strong>Daily Scrum</strong> is the inspect-and-adapt heartbeat during the sprint. Owned by Developers. Not a status report. Time-boxed to 15 minutes.</div>
+        <div class="ans-item"><strong>Sprint Review</strong> = inspect the product. Stakeholders attend. The increment is demonstrated. Feedback adjusts the Product Backlog. It is NOT a sign-off meeting.</div>
+        <div class="ans-item"><strong>Sprint Retrospective</strong> = inspect the team's process. Internal. Focus: what went well, what to improve, and commitment to one actionable change next sprint.</div>
+        <div class="concept">Common mistake: confusing Sprint Review and Sprint Retrospective. Review = product focus, external stakeholders invited. Retrospective = team/process focus, internal only.</div>
+        <div class="score-reveal" id="sr-q1"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L15_agile_1.html#sprint" target="_blank" rel="noopener">📖 The Sprint Lifecycle →</a>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q2</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>An architect says: "We need to add a circuit breaker between the OrderService and PaymentService so that if PaymentService is slow, it doesn't block OrderService threads indefinitely."</p>
+      <p><strong>In the vocabulary of software architecture, what has the architect specified?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q2" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">An architectural style — a broad structural pattern for organising components</span></label>
+      <label class="opt"><input type="radio" name="q2" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">An architectural tactic — a design decision targeting a specific quality attribute (reliability/availability)</span></label>
+      <label class="opt"><input type="radio" name="q2" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">A use case — a user-observable interaction with the system</span></label>
+      <label class="opt"><input type="radio" name="q2" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">A functional requirement — a capability the system must provide</span></label>
+    </div>
+    <details class="ans" data-qid="q2">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B — Architectural tactic</div>
+        <div class="ans-item">✓ <strong>B (Tactic):</strong> A tactic is a focused design decision that directly improves a specific quality attribute (here: reliability/availability). The circuit breaker is a well-known reliability tactic — it detects failure and temporarily stops calls to the failing service, preventing cascading failures.</div>
+        <div class="ans-item">✗ <strong>A (Style):</strong> A style describes the macro-level structure (Layered, Microservices, Event-Driven). "Add a circuit breaker" is too specific and localised to be a style.</div>
+        <div class="ans-item">✗ <strong>C (Use case):</strong> Use cases capture actor goals. The circuit breaker is an internal design mechanism, invisible to actors.</div>
+        <div class="ans-item">✗ <strong>D (Functional requirement):</strong> Functional requirements define what the system must do (verifiable behaviour). The circuit breaker is an architectural quality mechanism — a non-functional concern.</div>
+        <div class="concept">Tactics vs. Styles: Styles answer "how is the system structured at large?" Tactics answer "how do we achieve a specific quality attribute?" A single architectural style can employ many tactics. Example: a Microservices style commonly uses circuit breakers (reliability), rate limiters (performance), and service registries (modifiability) as tactics.</div>
+        <div class="score-reveal" id="sr-q2"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L12_architectural_tactics.html#what-is-tactic" target="_blank" rel="noopener">📖 What Is a Tactic? →</a>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3" data-marks="4" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q3</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">4 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A developer starts on branch <code>feature/search</code>. The working directory contains <code>search.py</code> (modified) and <code>config.py</code> (modified). The staging area is empty. The developer runs these commands in order:</p>
+      <ol style="margin: 0.5rem 0 0.5rem 1.5rem; font-size: 0.93rem;">
+        <li><code>git add search.py</code></li>
+        <li><code>git commit -m "add search logic"</code></li>
+        <li><code>git stash</code></li>
+      </ol>
+      <p><strong>Select ALL statements that correctly describe the state after all three commands complete. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q3" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">The commit contains only the changes to <code>search.py</code></span></label>
+      <label class="opt"><input type="checkbox" name="q3" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">After the commit, <code>config.py</code> changes are in the staging area</span></label>
+      <label class="opt"><input type="checkbox" name="q3" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">After <code>git stash</code>, the working directory is clean (both tracked file modifications are saved to the stash)</span></label>
+      <label class="opt"><input type="checkbox" name="q3" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text"><code>git stash</code> also unstages any staged files and commits them</code></span></label>
+      <label class="opt"><input type="checkbox" name="q3" value="E" data-correct="true"><span class="opt-label">E</span><span class="opt-text">After the commit, <code>config.py</code> is still modified in the working directory and NOT staged</span></label>
+      <label class="opt"><input type="checkbox" name="q3" value="F" data-correct="false"><span class="opt-label">F</span><span class="opt-text"><code>git stash</code> permanently deletes the <code>config.py</code> changes</span></label>
+      <label class="opt"><input type="checkbox" name="q3" value="G" data-correct="true"><span class="opt-label">G</span><span class="opt-text">The stash stores the <code>config.py</code> working directory change so it can be restored with <code>git stash pop</code></span></label>
+    </div>
+    <details class="ans" data-qid="q3">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, C, E, G</div>
+        <div class="ans-item">✓ <strong>A:</strong> <code>git add search.py</code> staged only <code>search.py</code>. The commit packages whatever is staged — so only <code>search.py</code> changes are in the commit.</div>
+        <div class="ans-item">✓ <strong>C:</strong> After the commit, the staging area is empty. <code>config.py</code> is still modified in the working directory. <code>git stash</code> takes all tracked modified files (including unstaged) and saves them. After stash, the working directory is clean.</div>
+        <div class="ans-item">✓ <strong>E:</strong> <code>config.py</code> was never <code>git add</code>-ed, so it was never staged. After the commit, it remains in a "modified but unstaged" state.</div>
+        <div class="ans-item">✓ <strong>G:</strong> <code>git stash</code> is a temporary stack — it stores your work-in-progress. <code>git stash pop</code> (or <code>git stash apply</code>) restores the stashed changes.</div>
+        <div class="ans-item">✗ <strong>B:</strong> <code>config.py</code> was NEVER staged — it remained in the working directory, not the staging area.</div>
+        <div class="ans-item">✗ <strong>D:</strong> <code>git stash</code> does not commit — it saves to a stash stack and reverts the working directory. No new commit is created.</div>
+        <div class="ans-item">✗ <strong>F:</strong> Stash is reversible. The changes are safely stored and can be reapplied.</div>
+        <div class="concept">Stash is useful when you need a clean working directory (e.g., to <code>git pull</code> or switch branches) without committing work-in-progress. It stashes tracked modified files by default; use <code>git stash -u</code> to also stash untracked files.</div>
+        <div class="score-reveal" id="sr-q3"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#three-areas" target="_blank" rel="noopener">📖 The Three Areas of Git →</a>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q4</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each security tactic to the threat or scenario it addresses.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>A healthcare API requires a valid JWT token signed with RS256 in the <code>Authorization</code> header. Requests without a valid token receive HTTP 401.</td>
+        <td><select class="matching-select" data-correct="Authenticate Actors">
+          <option value="">— select —</option>
+          <option>Authenticate Actors</option><option>Authorise Actors</option><option>Encrypt Data</option><option>Limit Exposure</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Even after authenticating, a junior doctor can view patient records but cannot delete them or access billing information — that is restricted to administrators.</td>
+        <td><select class="matching-select" data-correct="Authorise Actors">
+          <option value="">— select —</option>
+          <option>Authenticate Actors</option><option>Authorise Actors</option><option>Encrypt Data</option><option>Limit Exposure</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Patient data is stored in AES-256 encrypted columns. Even if an attacker obtains the database file, the data is unreadable without the encryption key.</td>
+        <td><select class="matching-select" data-correct="Encrypt Data">
+          <option value="">— select —</option>
+          <option>Authenticate Actors</option><option>Authorise Actors</option><option>Encrypt Data</option><option>Limit Exposure</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>The API only exposes the minimum fields needed per endpoint. Patient SSN is never returned in list responses — only in the specific "Get Patient Detail" endpoint accessible to authorised roles.</td>
+        <td><select class="matching-select" data-correct="Limit Exposure">
+          <option value="">— select —</option>
+          <option>Authenticate Actors</option><option>Authorise Actors</option><option>Encrypt Data</option><option>Limit Exposure</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q4">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → Authenticate Actors &nbsp; Row 2 → Authorise Actors &nbsp; Row 3 → Encrypt Data &nbsp; Row 4 → Limit Exposure</div>
+        <div class="ans-item"><strong>Authenticate Actors:</strong> Verifies identity — "who are you?" Mechanisms: JWT, OAuth, API keys, passwords + MFA.</div>
+        <div class="ans-item"><strong>Authorise Actors:</strong> Controls what an authenticated actor can do — "what are you allowed to do?" Mechanisms: RBAC (Role-Based Access Control), ABAC, permission scopes.</div>
+        <div class="ans-item"><strong>Encrypt Data:</strong> Protects data confidentiality at rest and in transit. Even if an attacker accesses the storage layer, encrypted data is useless without the key.</div>
+        <div class="ans-item"><strong>Limit Exposure:</strong> Reduce the attack surface by exposing only what is necessary. Principle of least privilege applied at the data/API level. Complementary to authorisation.</div>
+        <div class="concept">Security is layered: Authenticate (who?) → Authorise (what can they do?) → Encrypt (protect data) → Limit Exposure (reduce what can be exploited). Each layer defends against different attack vectors.</div>
+        <div class="score-reveal" id="sr-q4"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L12_architectural_tactics.html#security" target="_blank" rel="noopener">📖 Security Tactics →</a>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5" data-marks="2" data-type="fill-blank">
+    <div class="q-header">
+      <span class="q-num">Q5</span>
+      <span class="q-badge badge-fill">Fill in the Blank</span>
+      <span class="q-marks">2 marks (0.5 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Complete the following statements about the Software Development Life Cycle (SDLC).</p>
+    </div>
+    <div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 1:</span>
+        <span>The SDLC is a structured process that provides a framework for <input class="fill-input" data-correct="planning|planning and controlling|developing" placeholder="activity"> and controlling the development of a software system.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 2:</span>
+        <span>A key principle of modern SDLCs is that <input class="fill-input" data-correct="testing|quality|verification" placeholder="activity"> should occur throughout all phases, not just at the end.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 3:</span>
+        <span>The phase that typically consumes the most cost over the entire lifetime of a software system is <input class="fill-input" data-correct="maintenance" placeholder="phase name">.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 4:</span>
+        <span>The phase where the team elicits, analyses, and documents what the system must do is called the <input class="fill-input" data-correct="requirements|requirements engineering|requirements analysis" placeholder="phase name"> phase.</span>
+      </div>
+    </div>
+    <details class="ans" data-qid="q5">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Blank 1: planning &nbsp;| Blank 2: testing/quality &nbsp;| Blank 3: maintenance &nbsp;| Blank 4: requirements</div>
+        <div class="ans-item"><strong>Blank 1:</strong> The SDLC provides a structured, repeatable framework — not just for building but for planning, monitoring, and controlling the entire development effort.</div>
+        <div class="ans-item"><strong>Blank 2:</strong> Shift-left testing — move testing earlier in the lifecycle. The later a defect is found, the more expensive it is to fix (the "exponential cost of late defects" principle).</div>
+        <div class="ans-item"><strong>Blank 3:</strong> Maintenance can account for 60–80% of total lifetime cost. This includes bug fixes, enhancements, and adapting to changing environments.</div>
+        <div class="ans-item"><strong>Blank 4:</strong> Requirements Engineering captures functional requirements (what the system must do) and non-functional requirements (quality attributes). Poor requirements are the #1 cause of project failure.</div>
+        <div class="score-reveal" id="sr-q5"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L01_software_engineering_intro.html#sdlc" target="_blank" rel="noopener">📖 The SDLC →</a>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q6</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A QA engineer says: "We need to ensure the system does what the specification says it should do." A product manager says: "We need to ensure the system actually solves the user's real problem."</p>
+      <p><strong>Which statement correctly maps these two concerns to their testing counterparts?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q6" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">Both describe Verification — making sure the product is built correctly according to specifications</span></label>
+      <label class="opt"><input type="radio" name="q6" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">Both describe Validation — making sure the right product is built for the user</span></label>
+      <label class="opt"><input type="radio" name="q6" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">The QA engineer describes Verification ("are we building the product right?") and the product manager describes Validation ("are we building the right product?")</span></label>
+      <label class="opt"><input type="radio" name="q6" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">The QA engineer describes Validation and the product manager describes Verification</span></label>
+    </div>
+    <details class="ans" data-qid="q6">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: C</div>
+        <div class="ans-item">✓ <strong>C:</strong> The classic V&V distinction: <strong>Verification</strong> = "are we building the product right?" — checks the system against its specification. <strong>Validation</strong> = "are we building the right product?" — checks the system meets actual user needs.</div>
+        <div class="ans-item">✗ <strong>A:</strong> Only the QA engineer describes verification. The product manager is asking about real-world user needs — that is validation.</div>
+        <div class="ans-item">✗ <strong>B:</strong> Only the product manager describes validation. The QA engineer is checking against the spec — that is verification.</div>
+        <div class="ans-item">✗ <strong>D:</strong> These are reversed. The spec-checking activity is verification, not validation.</div>
+        <div class="concept">Memory hook: <strong>Verification</strong> = internal document review, inspections, static analysis, unit tests against spec. <strong>Validation</strong> = user acceptance testing (UAT), usability studies, customer sign-off. You can pass verification (spec is met) but fail validation (the spec was wrong).</div>
+        <div class="score-reveal" id="sr-q6"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L09_L10_testing.html#vv" target="_blank" rel="noopener">📖 Verification &amp; Validation →</a>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q7</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each description to the correct software engineering term or methodology.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>A standardised visual modelling language used to specify, visualise, construct, and document the artefacts of object-oriented software systems.</td>
+        <td><select class="matching-select" data-correct="UML">
+          <option value="">— select —</option>
+          <option>UML</option><option>SQA</option><option>RUP</option><option>OOSE</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>A set of planned and systematic activities that ensure software artefacts conform to requirements, standards, and quality goals throughout the development lifecycle.</td>
+        <td><select class="matching-select" data-correct="SQA">
+          <option value="">— select —</option>
+          <option>UML</option><option>SQA</option><option>RUP</option><option>OOSE</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>An iterative software process framework that organises development into Inception, Elaboration, Construction, and Transition phases, driven by use cases and centred on architecture.</td>
+        <td><select class="matching-select" data-correct="RUP">
+          <option value="">— select —</option>
+          <option>UML</option><option>SQA</option><option>RUP</option><option>OOSE</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>A specialisation of software engineering that views the world as interacting objects with encapsulated state and behaviour — use cases are used to capture requirements.</td>
+        <td><select class="matching-select" data-correct="OOSE">
+          <option value="">— select —</option>
+          <option>UML</option><option>SQA</option><option>RUP</option><option>OOSE</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q7">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → UML &nbsp; Row 2 → SQA &nbsp; Row 3 → RUP &nbsp; Row 4 → OOSE</div>
+        <div class="ans-item"><strong>UML (Unified Modelling Language):</strong> Created by Booch, Rumbaugh, and Jacobson. A visual language, not a process. Diagrams include use cases, class diagrams, sequence diagrams, state machines, and more.</div>
+        <div class="ans-item"><strong>SQA (Software Quality Assurance):</strong> A cross-cutting concern that spans all phases. Includes code reviews, inspections, audits, and standards compliance checks — not just testing.</div>
+        <div class="ans-item"><strong>RUP (Rational Unified Process):</strong> Iterative but heavyweight. Customisable — teams select which RUP artefacts to produce. Key characteristics: use-case driven, architecture-centric, iterative and incremental.</div>
+        <div class="ans-item"><strong>OOSE (Object-Oriented Software Engineering):</strong> Ivar Jacobson's methodology. Introduced use cases as the primary mechanism for capturing requirements and driving design. Objects are the central abstraction.</div>
+        <div class="concept">Common CT trap: SQA and RUP descriptions are often swapped. Remember — SQA is about quality assurance processes and standards (broad, lifecycle-spanning). RUP is a specific process model with four phases and six disciplines.</div>
+        <div class="score-reveal" id="sr-q7"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L03_systems_and_uml.html#uml-diagrams" target="_blank" rel="noopener">📖 UML Diagram Types →</a>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8" data-marks="4" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q8</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">4 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>An architect is adding scalability tactics to a high-traffic e-commerce product catalogue service. <strong>Select ALL options that represent valid scalability tactics. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q8" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">Add read replicas so that read-heavy catalogue queries are distributed across multiple database instances</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">Use a single, powerful monolithic server to handle all requests (vertical scaling to the maximum)</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">Cache frequently-read product listings in Redis with a 5-minute TTL to reduce database read load</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="D" data-correct="true"><span class="opt-label">D</span><span class="opt-text">Shard the product database by category, so each category's data lives on a different database node</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="E" data-correct="false"><span class="opt-label">E</span><span class="opt-text">Encrypt all database columns to prevent unauthorised access under load</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="F" data-correct="true"><span class="opt-label">F</span><span class="opt-text">Use a CDN (Content Delivery Network) to serve static product images from edge nodes closest to users</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="G" data-correct="false"><span class="opt-label">G</span><span class="opt-text">Write all logs synchronously in the critical request path to ensure complete auditability</span></label>
+    </div>
+    <details class="ans" data-qid="q8">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, C, D, F</div>
+        <div class="ans-item">✓ <strong>A — Read Replicas:</strong> Horizontal scaling of read capacity. Write traffic still goes to the primary, but read queries are distributed across replicas. Classic scalability pattern.</div>
+        <div class="ans-item">✓ <strong>C — Caching:</strong> Reduces load on the database by serving frequently-read data from fast in-memory storage. TTL controls staleness. A core performance/scalability tactic.</div>
+        <div class="ans-item">✓ <strong>D — Sharding:</strong> Horizontal partitioning of data. Each shard handles a subset of the data, allowing the write throughput and storage capacity to scale with the number of shards.</div>
+        <div class="ans-item">✓ <strong>F — CDN:</strong> Offloads static asset delivery from the origin server to geographically distributed edge nodes. Reduces latency for users and eliminates origin server bandwidth for static content.</div>
+        <div class="ans-item">✗ <strong>B — Single monolith (vertical only):</strong> Vertical scaling has a hard ceiling (the largest available machine). It is not a scalability tactic — it is a stopgap. The question asks for scalability tactics, implying sustainable horizontal scale.</div>
+        <div class="ans-item">✗ <strong>E — Encryption:</strong> A security tactic, not a scalability tactic. Encrypting columns adds CPU overhead and can slightly reduce throughput — the opposite of a scalability improvement.</div>
+        <div class="ans-item">✗ <strong>G — Synchronous logging in critical path:</strong> This is an antipattern for scalability — synchronous I/O in the request path adds latency and reduces throughput. Logging should be asynchronous.</div>
+        <div class="score-reveal" id="sr-q8"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L12_architectural_tactics.html#scalability" target="_blank" rel="noopener">📖 Scalability &amp; Performance Tactics →</a>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q9</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A test team is choosing an integration testing strategy for each project scenario. Select the best-fit strategy from the word bank.</p>
+      <p><em>Word bank: Big Bang, Top-Down, Bottom-Up, Sandwich</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.8rem;"><strong>1.</strong> The team needs to test the user-facing navigation flow early, before lower-level data services are ready. They create stub responses for the database layer. Strategy:
+        <select class="blank" data-correct="Top-Down">
+          <option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>2.</strong> The team's shared utility libraries (logging, authentication, data access) are ready first. They write driver programs that call these libraries and verify them independently before building higher-level components. Strategy:
+        <select class="blank" data-correct="Bottom-Up">
+          <option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>3.</strong> A startup with a tight deadline integrates all 12 modules on the final day of development and runs a full system test — hoping it all works together. Strategy:
+        <select class="blank" data-correct="Big Bang">
+          <option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>4.</strong> A large banking system simultaneously tests the UI workflow from the top using stubs and tests the transaction processing layer from the bottom using drivers, converging toward the middle business logic layer. Strategy:
+        <select class="blank" data-correct="Sandwich">
+          <option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option>
+        </select>
+      </p>
+    </div>
+    <details class="ans" data-qid="q9">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → Top-Down &nbsp; 2 → Bottom-Up &nbsp; 3 → Big Bang &nbsp; 4 → Sandwich</div>
+        <div class="ans-item"><strong>Top-Down (stubs):</strong> Start from the highest-level module and work downward. Stubs simulate lower modules. Advantage: user-visible flows can be demonstrated early. Risk: lower-level bugs found late.</div>
+        <div class="ans-item"><strong>Bottom-Up (drivers):</strong> Start from utility/foundation modules and work upward. Drivers simulate the calling modules. Advantage: foundational code is solid before higher layers depend on it. Risk: no end-to-end visibility until late.</div>
+        <div class="ans-item"><strong>Big Bang:</strong> Integrate everything at once. Simple to set up but very hard to diagnose when something fails — "which module broke it?" Suitable only for very small systems.</div>
+        <div class="ans-item"><strong>Sandwich (Hybrid):</strong> Combines Top-Down and Bottom-Up in parallel. Two teams can work simultaneously, meeting in the middle. Reduces overall time but requires careful coordination.</div>
+        <div class="score-reveal" id="sr-q9"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L09_L10_testing.html#strategies" target="_blank" rel="noopener">📖 Integration Strategies →</a>
+  </div>
+
+</div>
+
+<div class="test-footer">
+  <div class="score-box">
+    <div class="label">Final Score</div>
+    <div class="value" id="score-bottom">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-bottom"></div></div>
+  </div>
+  <div class="test-nav">
+    <a href="mock_test_3.html">← Test 3</a>
+    <a href="mock_test_5.html">Test 5 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+</div>
+
+<script>
+  const TOTAL_MARKS = 30, TOTAL_QS = 9;
+  let answered = new Set(), earned = 0;
+  function updateDisplay() {
+    const pct = (answered.size / TOTAL_QS) * 100, s = earned.toFixed(1).replace(/\.0$/,'') + ' / ' + TOTAL_MARKS;
+    ['score-top','score-bottom'].forEach(id => document.getElementById(id).textContent = s);
+    ['prog-top','prog-bottom'].forEach(id => document.getElementById(id).style.width = pct + '%');
+  }
+  function calcScore(card) {
+    const type = card.dataset.type, marks = parseFloat(card.dataset.marks); let pts = 0;
+    if (type === 'single-mcq') {
+      const sel = card.querySelector('input[type=radio]:checked'); if (sel && sel.dataset.correct === 'true') pts = marks;
+      card.querySelectorAll('.opt').forEach(o => { const i = o.querySelector('input'); if (i.dataset.correct === 'true') o.classList.add('revealed-correct'); else if (i.checked) o.classList.add('revealed-wrong'); });
+    } else if (type === 'multi-mcq') {
+      const boxes = card.querySelectorAll('input[type=checkbox]'), n = boxes.length, per = marks / n;
+      boxes.forEach(b => { if (b.checked) { if (b.dataset.correct === 'true') pts += per; else pts -= per; } const o = b.closest('.opt'); if (b.dataset.correct === 'true') o.classList.add('revealed-correct'); else if (b.checked) o.classList.add('revealed-wrong'); });
+      pts = Math.max(0, pts);
+    } else if (type === 'matching') {
+      const sels = card.querySelectorAll('select.matching-select'), n = sels.length, per = marks / n;
+      sels.forEach(s => { if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); } else if (s.value !== '') { pts -= per; s.classList.add('revealed-wrong'); } s.disabled = true; });
+      pts = Math.max(0, pts);
+    } else if (type === 'jumbled') {
+      const sels = card.querySelectorAll('select.blank'), n = sels.length, per = marks / n;
+      sels.forEach(s => { if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); } else if (s.value !== '') s.classList.add('revealed-wrong'); s.disabled = true; });
+    } else if (type === 'fill-blank') {
+      const inputs = card.querySelectorAll('input.fill-input'), n = inputs.length, per = marks / n;
+      inputs.forEach(i => { const uv = i.value.trim().toLowerCase(), acc = i.dataset.correct.toLowerCase().split('|'); const ok = acc.some(a => uv === a || (uv.length > 2 && a.includes(uv)) || (a.length > 2 && uv.includes(a))); if (ok) { pts += per; i.classList.add('revealed-correct'); } else i.classList.add('revealed-wrong'); i.disabled = true; });
+    }
+    return Math.round(pts * 10) / 10;
+  }
+  document.querySelectorAll('details.ans').forEach(det => {
+    det.addEventListener('toggle', () => {
+      if (!det.open) return; const card = det.closest('.question-card'), qid = card.id; if (answered.has(qid)) return;
+      const pts = calcScore(card); earned += pts; answered.add(qid);
+      const rev = document.getElementById('sr-' + qid);
+      if (rev) { const total = parseFloat(card.dataset.marks); rev.textContent = 'You scored: ' + pts.toFixed(1).replace(/\.0$/,'') + ' / ' + total + ' marks'; rev.style.cssText = 'display:block;padding:0.45rem 0.75rem;border-radius:6px;font-size:0.88rem;font-weight:600;margin-top:0.65rem;border:1px solid '+(pts===total?'#86efac':pts>0?'#fde68a':'#fca5a5')+';background:'+(pts===total?'#f0fdf4':pts>0?'#fefce8':'#fef2f2')+';color:'+(pts===total?'#15803d':pts>0?'#92400e':'#b91c1c'); }
+      updateDisplay();
+    });
+  });
+  updateDisplay();
+</script>
+</body>
+</html>

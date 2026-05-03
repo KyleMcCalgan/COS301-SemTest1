@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COS 301 — Mock Test 3</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; background: #f1f5f9; color: #1e293b; line-height: 1.6; }
+    a { color: #4f46e5; }
+    code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.88em; }
+    .test-header { background: #1e293b; color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .test-title h1 { font-size: 1.3rem; font-weight: 700; }
+    .test-title p { font-size: 0.82rem; color: #94a3b8; margin-top: 0.15rem; }
+    .score-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 0.6rem 1.1rem; border-radius: 8px; text-align: center; min-width: 160px; }
+    .score-box .label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-box .value { font-size: 1.1rem; font-weight: 700; color: #4ade80; margin-top: 0.1rem; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 0.4rem; }
+    .progress-fill { height: 100%; background: #4ade80; border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+    .test-body { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .nav-links { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.85rem; color: #64748b; text-decoration: none; }
+    .nav-links a:hover { color: #4f46e5; }
+    .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .q-header { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; }
+    .q-num { font-weight: 700; font-size: 0.88rem; color: #475569; }
+    .q-badge { padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.76rem; font-weight: 600; }
+    .badge-mcq   { background: #e0e7ff; color: #4338ca; }
+    .badge-multi  { background: #fce7f3; color: #9d174d; }
+    .badge-jumble { background: #d1fae5; color: #065f46; }
+    .badge-fill   { background: #fef3c7; color: #92400e; }
+    .badge-match  { background: #ede9fe; color: #5b21b6; }
+    .q-marks { margin-left: auto; font-size: 0.83rem; color: #64748b; font-weight: 600; }
+    .q-stem { margin-bottom: 1.25rem; }
+    .q-stem p { margin-bottom: 0.5rem; }
+    .neg-warn { background: #fff7ed; border: 1px solid #fb923c; border-radius: 6px; padding: 0.45rem 0.8rem; margin-bottom: 1rem; font-size: 0.82rem; color: #9a3412; }
+    .options { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .opt { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.55rem 0.8rem; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; }
+    .opt:hover { border-color: #a5b4fc; background: #f8f9ff; }
+    .opt input { margin-top: 0.2rem; flex-shrink: 0; }
+    .opt-label { font-weight: 700; color: #64748b; min-width: 1.1rem; font-size: 0.9rem; }
+    .opt-text { font-size: 0.95rem; }
+    .opt.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .opt.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .jumbled-sentence { font-size: 0.95rem; line-height: 2.4; margin-bottom: 1rem; }
+    select.blank { border: none; border-bottom: 2px solid #6366f1; padding: 0.1rem 0.4rem; font-size: 0.95em; background: #f0f4ff; border-radius: 4px 4px 0 0; cursor: pointer; color: #1e293b; }
+    select.blank:focus { outline: none; border-color: #4338ca; }
+    select.blank.revealed-correct { border-color: #16a34a; background: #f0fdf4; color: #14532d; }
+    select.blank.revealed-wrong   { border-color: #dc2626; background: #fef2f2; color: #7f1d1d; }
+    .matching-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .matching-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .matching-table td:first-child { font-weight: 500; font-size: 0.88rem; width: 48%; }
+    .matching-table select { width: 100%; padding: 0.3rem 0.4rem; border: 1.5px solid #cbd5e1; border-radius: 5px; font-size: 0.85rem; background: white; cursor: pointer; }
+    .matching-table select.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .matching-table select.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .fill-row { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+    .fill-label { font-size: 0.88rem; color: #475569; min-width: 80px; flex-shrink: 0; }
+    input.fill-input { border: none; border-bottom: 2px solid #6366f1; padding: 0.15rem 0.4rem; font-size: 0.95em; min-width: 130px; background: transparent; color: #1e293b; }
+    input.fill-input:focus { outline: none; border-color: #4338ca; }
+    input.fill-input.revealed-correct { border-color: #16a34a; color: #15803d; }
+    input.fill-input.revealed-wrong   { border-color: #dc2626; color: #dc2626; }
+    details.ans { margin-top: 1rem; border-radius: 8px; overflow: hidden; }
+    details.ans summary { list-style: none; cursor: pointer; background: #f0f4ff; color: #4338ca; font-weight: 600; font-size: 0.88rem; padding: 0.6rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; user-select: none; }
+    details.ans summary::-webkit-details-marker { display: none; }
+    details.ans[open] summary { border-radius: 8px 8px 0 0; }
+    details.ans summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+    details.ans[open] summary::before { transform: rotate(90deg); }
+    .ans-body { background: #f8fafc; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 1rem 1.1rem; }
+    .ans-correct { color: #15803d; font-weight: 700; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .ans-item { font-size: 0.88rem; margin-bottom: 0.4rem; }
+    .concept { background: #eff6ff; border-left: 3px solid #3b82f6; padding: 0.65rem 0.85rem; margin-top: 0.75rem; font-size: 0.88rem; border-radius: 0 5px 5px 0; line-height: 1.55; }
+    .study-btn { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem; padding: 0.4rem 0.9rem; background: #f0f4ff; border: 1px solid #c7d2fe; border-radius: 6px; color: #4f46e5; font-size: 0.83rem; font-weight: 600; text-decoration: none; }
+    .study-btn:hover { background: #e0e7ff; }
+    .test-footer { background: #1e293b; color: #94a3b8; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .test-nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .test-nav a { color: #94a3b8; text-decoration: none; font-size: 0.83rem; padding: 0.3rem 0.7rem; border: 1px solid #334155; border-radius: 5px; }
+    .test-nav a:hover { border-color: #94a3b8; color: white; }
+    @media (max-width: 600px) { .test-header, .test-body { padding: 1rem; } .question-card { padding: 1rem; } }
+  </style>
+</head>
+<body>
+
+<div class="test-header">
+  <div class="test-title">
+    <h1>COS 301 — Mock Test 3</h1>
+    <p>9 Questions &nbsp;·&nbsp; 30 Marks &nbsp;·&nbsp; Covers L01–L03, L07–L08, L12, L14–L15</p>
+  </div>
+  <div class="score-box">
+    <div class="label">Progress</div>
+    <div class="value" id="score-top">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-top"></div></div>
+  </div>
+</div>
+
+<div class="test-body">
+  <div class="nav-links">
+    <a href="mock_test_2.html">← Test 2</a>
+    <a href="index.html">Study Notes</a>
+    <a href="mock_test_4.html">Test 4 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q1</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p><strong>Which statement most accurately describes a domain model in UML?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q1" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">It represents the static structure of the problem domain using classes, attributes, and relationships — without showing operations or implementation details</span></label>
+      <label class="opt"><input type="radio" name="q1" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">It is equivalent to the database schema and is used to design relational tables</span></label>
+      <label class="opt"><input type="radio" name="q1" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">It shows the dynamic behaviour of the system, including state transitions and message sequences</span></label>
+      <label class="opt"><input type="radio" name="q1" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">It is identical to an implementation class diagram — both include operations, visibility modifiers, and constructor signatures</span></label>
+    </div>
+    <details class="ans" data-qid="q1">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: A</div>
+        <div class="ans-item">✓ <strong>A:</strong> A domain model captures the conceptual entities in the problem domain — what things exist, their attributes, and how they relate. It intentionally omits operations and implementation detail to stay at the analysis level.</div>
+        <div class="ans-item">✗ <strong>B:</strong> Although domain models can inform database design, they are not schemas. Domain models show conceptual entities; schemas show tables, columns, and constraints.</div>
+        <div class="ans-item">✗ <strong>C:</strong> Static structure only. Dynamic behaviour is shown in sequence diagrams, activity diagrams, or state machine diagrams.</div>
+        <div class="ans-item">✗ <strong>D:</strong> An implementation class diagram includes operations, visibility (<code>+/-/#</code>), data types, and constructor signatures. A domain model omits all of these — it is intentionally abstract.</div>
+        <div class="concept">Domain model ≠ implementation class diagram. The domain model is an analysis artefact used to understand the problem. The class diagram is a design artefact used to guide implementation. The domain model informs but does not equal the class diagram.</div>
+        <div class="score-reveal" id="sr-q1"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L08_domain_modelling.html#what-is-model" target="_blank" rel="noopener">📖 What Is a Domain Model? →</a>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2" data-marks="4" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q2</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">4 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A ride-hailing platform uses a queue-based dispatch system with these design decisions:</p>
+      <ul style="margin: 0.5rem 0 0.5rem 1.5rem; font-size: 0.95rem;">
+        <li>API responds "driver assigned" as soon as the ride request enters the queue</li>
+        <li>Driver locations are cached for 60 seconds</li>
+        <li>Failed queue messages are retried 10 times immediately with no backoff</li>
+        <li>The Ride-State DB uses async replication with no idempotency keys</li>
+      </ul>
+      <p><strong>Select ALL options that correctly identify design flaws. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q2" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">Without idempotency keys, a message processed twice can create duplicate ride records or double payment authorisations</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">Responding "driver assigned" before a driver is actually confirmed is a misleading premature response</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">A FIFO queue guarantees no duplicate driver assignments regardless of worker concurrency</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="D" data-correct="true"><span class="opt-label">D</span><span class="opt-text">Retrying 10 times with no backoff amplifies load on a degraded downstream service, potentially cascading the failure</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="E" data-correct="false"><span class="opt-label">E</span><span class="opt-text">Async replication blocks the primary database during peak write load, creating a write bottleneck</span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="F" data-correct="true"><span class="opt-label">F</span><span class="opt-text">A 60-second cache can cause two concurrent workers to both read the same driver as "available" and assign that driver to two different riders</span></label>
+    </div>
+    <details class="ans" data-qid="q2">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, B, D, F</div>
+        <div class="ans-item">✓ <strong>A — No idempotency keys:</strong> If a worker crashes mid-processing, the message is re-queued and processed again. Without idempotency keys, the operation runs twice — creating duplicates. This is a fundamental queue-based design requirement.</div>
+        <div class="ans-item">✓ <strong>B — Premature "assigned" response:</strong> Placing a request in a queue is not the same as securing a driver. The user is told an assignment happened when it hasn't yet — misleading and problematic if the queue processing fails.</div>
+        <div class="ans-item">✓ <strong>D — Retry storm:</strong> 10 immediate retries means a single failing message generates 10 rapid requests to the downstream service. Under degraded conditions this amplifies load — the pattern should use exponential backoff with jitter.</div>
+        <div class="ans-item">✓ <strong>F — Cache coherence bug:</strong> Two workers reading from the same 60-second cache can both see driver X as available. Both assign driver X. Result: one driver, two riders. The assignment must lock or use compare-and-swap at commit time.</div>
+        <div class="ans-item">✗ <strong>C — FIFO does NOT prevent duplicate assignment:</strong> FIFO orders messages but cannot prevent concurrent workers from both reading the same driver-location cache entry and assigning independently. Concurrency control requires locking, not just ordering.</div>
+        <div class="ans-item">✗ <strong>E — Async replication does NOT block the primary:</strong> That is the definition of SYNCHRONOUS replication. Async means the primary commits and continues immediately; replicas catch up later. Async replication reduces write latency at the cost of potential data lag.</div>
+        <div class="concept">Queue-based design anti-patterns to memorise: (1) no idempotency keys → duplicates; (2) premature success response → misleading state; (3) no backoff → retry storms; (4) stale cache → race conditions at assignment.</div>
+        <div class="score-reveal" id="sr-q2"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L12_architectural_tactics.html#deep-dives" target="_blank" rel="noopener">📖 Tactic Deep Dives →</a>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3" data-marks="3" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q3</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">3 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Software engineering is organised into three parallel tracks. Fill in the blanks.</p>
+      <p><em>Word bank: quality assurance, project management, software development, testing, deployment</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.9rem;"><strong>1.</strong> The first track,
+        <select class="blank" data-correct="software development">
+          <option value="">— select —</option><option>quality assurance</option><option>project management</option><option>software development</option><option>testing</option><option>deployment</option>
+        </select>,
+        encompasses requirements engineering, design, implementation, and all activities that directly produce the software artefacts.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>2.</strong> The second track,
+        <select class="blank" data-correct="quality assurance">
+          <option value="">— select —</option><option>quality assurance</option><option>project management</option><option>software development</option><option>testing</option><option>deployment</option>
+        </select>,
+        ensures that software artefacts meet defined requirements and quality standards throughout the lifecycle — not just at the end.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>3.</strong> The third track,
+        <select class="blank" data-correct="project management">
+          <option value="">— select —</option><option>quality assurance</option><option>project management</option><option>software development</option><option>testing</option><option>deployment</option>
+        </select>,
+        covers planning, scheduling, risk management, resource allocation, and team coordination to ensure the project is delivered on time and within budget.
+      </p>
+    </div>
+    <details class="ans" data-qid="q3">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → software development &nbsp; 2 → quality assurance &nbsp; 3 → project management</div>
+        <div class="ans-item"><strong>Software Development:</strong> The primary production track — directly building the system. Includes requirements, design, coding, unit testing.</div>
+        <div class="ans-item"><strong>Quality Assurance (SQA):</strong> A meta-level track that monitors and verifies the quality of artefacts and processes across the entire project, not just the code. Includes audits, reviews, and standards compliance.</div>
+        <div class="ans-item"><strong>Project Management:</strong> The coordination track — ensuring the right resources are in the right place at the right time. Handles risk, schedule, and budget.</div>
+        <div class="concept">These three tracks run in parallel throughout the project. QA is often misunderstood as synonymous with "testing" — but QA is broader. It includes process audits and artefact reviews, ensuring quality is built in rather than inspected in at the end.</div>
+        <div class="score-reveal" id="sr-q3"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L02_software_process.html#sqa" target="_blank" rel="noopener">📖 Quality Assurance &amp; Project Management →</a>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q4</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each Scrum ceremony to its correct description.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td><strong>Sprint Planning</strong></td>
+        <td><select class="matching-select" data-correct="Defines what will be built in the sprint and how — answers 'What can be done?' and 'How will it be done?'; creates the Sprint Backlog">
+          <option value="">— select —</option>
+          <option>Defines what will be built in the sprint and how — answers 'What can be done?' and 'How will it be done?'; creates the Sprint Backlog</option>
+          <option>A 15-minute daily event where Developers inspect progress toward the Sprint Goal and adapt their plan</option>
+          <option>The team demonstrates the product increment to stakeholders and inspects what was done</option>
+          <option>The team reflects on their process and identifies improvements for the next sprint</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Daily Scrum</strong></td>
+        <td><select class="matching-select" data-correct="A 15-minute daily event where Developers inspect progress toward the Sprint Goal and adapt their plan">
+          <option value="">— select —</option>
+          <option>Defines what will be built in the sprint and how — answers 'What can be done?' and 'How will it be done?'; creates the Sprint Backlog</option>
+          <option>A 15-minute daily event where Developers inspect progress toward the Sprint Goal and adapt their plan</option>
+          <option>The team demonstrates the product increment to stakeholders and inspects what was done</option>
+          <option>The team reflects on their process and identifies improvements for the next sprint</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Sprint Review</strong></td>
+        <td><select class="matching-select" data-correct="The team demonstrates the product increment to stakeholders and inspects what was done">
+          <option value="">— select —</option>
+          <option>Defines what will be built in the sprint and how — answers 'What can be done?' and 'How will it be done?'; creates the Sprint Backlog</option>
+          <option>A 15-minute daily event where Developers inspect progress toward the Sprint Goal and adapt their plan</option>
+          <option>The team demonstrates the product increment to stakeholders and inspects what was done</option>
+          <option>The team reflects on their process and identifies improvements for the next sprint</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Sprint Retrospective</strong></td>
+        <td><select class="matching-select" data-correct="The team reflects on their process and identifies improvements for the next sprint">
+          <option value="">— select —</option>
+          <option>Defines what will be built in the sprint and how — answers 'What can be done?' and 'How will it be done?'; creates the Sprint Backlog</option>
+          <option>A 15-minute daily event where Developers inspect progress toward the Sprint Goal and adapt their plan</option>
+          <option>The team demonstrates the product increment to stakeholders and inspects what was done</option>
+          <option>The team reflects on their process and identifies improvements for the next sprint</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q4">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Sprint Planning → "What/How"; Daily Scrum → 15-min inspect/adapt; Review → demo to stakeholders; Retrospective → process improvement</div>
+        <div class="ans-item"><strong>Sprint Planning (timebox: up to 8h for 1-month sprint):</strong> Product Owner presents priorities. Developers select items and create the Sprint Goal. Part 2: Developers plan how to deliver the selected work.</div>
+        <div class="ans-item"><strong>Daily Scrum (timebox: 15 min):</strong> Owned by Developers. Not a status report. Three questions are a starting point: what did I do, what will I do, any impediments?</div>
+        <div class="ans-item"><strong>Sprint Review (timebox: up to 4h for 1-month sprint):</strong> The team shows working software to stakeholders. The Product Backlog may be adjusted based on feedback. It is an inspect-and-adapt event on the product.</div>
+        <div class="ans-item"><strong>Sprint Retrospective (timebox: up to 3h for 1-month sprint):</strong> Internal team event. Focus: process, relationships, and tools — not the product. Produces action items for the next sprint. It is an inspect-and-adapt event on the team's way of working.</div>
+        <div class="concept">Order: Planning → Daily Scrum (throughout) → Review → Retrospective → next Planning. Review = inspect the product; Retrospective = inspect the team's process. Both happen at the end of each sprint.</div>
+        <div class="score-reveal" id="sr-q4"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L15_agile_1.html#ceremonies" target="_blank" rel="noopener">📖 Ceremonies &amp; Artifacts →</a>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5" data-marks="2" data-type="fill-blank">
+    <div class="q-header">
+      <span class="q-num">Q5</span>
+      <span class="q-badge badge-fill">Fill in the Blank</span>
+      <span class="q-marks">2 marks (0.5 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A student is drawing a UML use case diagram for an online library system. Fill in the blanks using correct UML terminology.</p>
+    </div>
+    <div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 1:</span>
+        <span>The <input class="fill-input" data-correct="actor|actors" placeholder="UML element"> represents a person, organisation, or external system that interacts with the system to achieve a goal.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 2:</span>
+        <span>Each oval in the use case diagram represents a <input class="fill-input" data-correct="use case" placeholder="UML element"> — a user-observable goal the actor wants to achieve.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 3:</span>
+        <span>When "Borrow Book" always executes "Update Loan Record" as part of its flow, the relationship from "Borrow Book" to "Update Loan Record" is an <input class="fill-input" data-correct="include|<<include>>" placeholder="relationship type"> relationship.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 4:</span>
+        <span>When "Search Catalogue" may optionally trigger "Send Recommendation Email" under certain conditions, that optional extension is an <input class="fill-input" data-correct="extend|<<extend>>" placeholder="relationship type"> relationship.</span>
+      </div>
+    </div>
+    <details class="ans" data-qid="q5">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Blank 1: actor &nbsp;| Blank 2: use case &nbsp;| Blank 3: include &nbsp;| Blank 4: extend</div>
+        <div class="ans-item"><strong>Actor:</strong> Drawn as a stick figure (person) or rectangle (external system). Actors are outside the system boundary.</div>
+        <div class="ans-item"><strong>Use Case (oval):</strong> A named, user-observable goal. The name should be a verb phrase: "Borrow Book", "Search Catalogue", "Return Book".</div>
+        <div class="ans-item"><strong>&lt;&lt;include&gt;&gt;:</strong> Always executes the included use case. Modelled as a dashed arrow from the base use case to the included use case, labelled &lt;&lt;include&gt;&gt;.</div>
+        <div class="ans-item"><strong>&lt;&lt;extend&gt;&gt;:</strong> Optional extension that occurs under specific conditions. The extension point is defined in the base use case. Dashed arrow points FROM the extending use case TO the base.</div>
+        <div class="concept">Memory hook: include = mandatory (it always happens); extend = optional (it extends under a condition). The arrow direction differs: include arrow points TO the sub-use-case; extend arrow points TO the base use case being extended.</div>
+        <div class="score-reveal" id="sr-q5"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L07_use_cases.html#notation" target="_blank" rel="noopener">📖 UML Use Case Diagram Notation →</a>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q6</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A municipality hires a software team to build a system for managing water outages. Every stakeholder has conflicting priorities, requirements keep shifting as the team learns more about the domain, there is no single "correct" solution, and every attempt at a solution changes the understanding of the problem.</p>
+      <p><strong>This project exhibits the characteristics of a:</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q6" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">Tame problem — it has a well-defined solution space and can be solved by standard engineering methods</span></label>
+      <label class="opt"><input type="radio" name="q6" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">Wicked problem — the requirements are ill-defined, the problem changes with each attempt at a solution, and stakeholders have conflicting views of what "correct" means</span></label>
+      <label class="opt"><input type="radio" name="q6" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">Spiral problem — it can be resolved by applying multiple risk-analysis cycles</span></label>
+      <label class="opt"><input type="radio" name="q6" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Waterfall problem — it requires all requirements to be gathered before development begins</span></label>
+    </div>
+    <details class="ans" data-qid="q6">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B — Wicked problem</div>
+        <div class="ans-item">✓ <strong>B:</strong> Rittel and Webber's wicked problem characteristics all appear: ill-defined requirements, no definitive solution, every solution attempt changes the problem, stakeholder conflicts, and no "stop" rule. Software engineering deals with wicked problems — which is why rigid Waterfall fails for most real projects.</div>
+        <div class="ans-item">✗ <strong>A (Tame):</strong> A tame problem is well-defined with a known solution approach (e.g., "implement a sorting algorithm"). It may be difficult but the problem itself is understood.</div>
+        <div class="ans-item">✗ <strong>C, D:</strong> Spiral and Waterfall are process models, not problem classifications. The tame/wicked distinction describes the nature of the problem, not the methodology for solving it.</div>
+        <div class="concept">The tame/wicked distinction justifies iterative development. If software problems were tame, Waterfall would work perfectly — you'd gather all requirements, build, and ship. Because requirements are wicked (they evolve as understanding grows), iterative/Agile approaches that embrace change are more successful.</div>
+        <div class="score-reveal" id="sr-q6"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L02_software_process.html#tame-wicked" target="_blank" rel="noopener">📖 Tame vs. Wicked Problems →</a>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7" data-marks="5" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q7</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">5 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A student team demonstrates their Smart Campus app to examiners. During the demo: the app takes 12 seconds to load a map (they blame it on the venue WiFi); sensor readings are visibly wrong; one presenter says "it works on my machine"; they cannot answer "how does this scale to 10,000 users?"; and they skip the notification feature saying "we ran out of time."</p>
+      <p><strong>Select ALL statements that correctly analyse the failures of this demo. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q7" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">The presenters handled the load time failure professionally by explaining it was a venue network issue</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">The team demonstrated inadequate preparation — a demo environment should be pre-tested and not rely on the presentation venue's network</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">The presenters showed insufficient architectural knowledge — they could not explain the scalability characteristics of their own system</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">The sensor data inaccuracies were acceptable since hardware issues are beyond the software team's control</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="E" data-correct="true"><span class="opt-label">E</span><span class="opt-text">The "works on my machine" response indicates likely integration or environment configuration issues not caught before the demo</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="F" data-correct="true"><span class="opt-label">F</span><span class="opt-text">The system exhibited performance issues — a 12-second map load is a significant regression regardless of network conditions</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="G" data-correct="true"><span class="opt-label">G</span><span class="opt-text">Skipping a feature during the demo signals incomplete implementation or insufficient rehearsal of the presentation flow</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="H" data-correct="false"><span class="opt-label">H</span><span class="opt-text">The wrong sensor readings demonstrate that the system correctly adapts to real-world sensor variability</span></label>
+    </div>
+    <details class="ans" data-qid="q7">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: B, C, E, F, G</div>
+        <div class="ans-item">✓ <strong>B — Poor preparation:</strong> Production-grade demos must be tested in the target environment (or against a local mock). Blaming venue WiFi is a preparation failure.</div>
+        <div class="ans-item">✓ <strong>C — Architecture knowledge gap:</strong> Every team member presenting should be able to explain scalability, technology choices, and trade-offs. Not knowing your own architecture is a critical presentation failure.</div>
+        <div class="ans-item">✓ <strong>E — Integration issues:</strong> "Works on my machine" is the classic symptom of environment-specific configuration, missing dependencies, or unmerged code paths. Demo environments must mirror the tested environment.</div>
+        <div class="ans-item">✓ <strong>F — Performance issue:</strong> 12 seconds is objectively a performance problem. Blaming the network is not an analysis — it is an excuse. The team should have cached the map tiles or tested offline performance.</div>
+        <div class="ans-item">✓ <strong>G — Incomplete demo / insufficient rehearsal:</strong> Skipping a feature reveals either it doesn't work or the team didn't allocate enough time. Both reflect poorly on preparation and project completion status.</div>
+        <div class="ans-item">✗ <strong>A:</strong> Blaming venue network is not professional handling — it is deflection. Professional handling would be switching to pre-recorded video, local server, or offline mode.</div>
+        <div class="ans-item">✗ <strong>D:</strong> Software teams are responsible for graceful handling of hardware errors — showing "N/A" or "sensor offline" is better than displaying wrong values.</div>
+        <div class="ans-item">✗ <strong>H:</strong> Wrong readings are a bug, not an adaptive feature.</div>
+        <div class="concept">Demo preparation rule: "Never demo code you haven't run in the demo environment." Run end-to-end in the exact setup (laptop, network, projector) at least once before the actual demo.</div>
+        <div class="score-reveal" id="sr-q7"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L14_presenting.html#demos" target="_blank" rel="noopener">📖 Demo Anti-Patterns →</a>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q8</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>A system architect is decomposing a large home automation project into subsystems. Match each decomposition example to the strategy it represents.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>The project is split into a "Hardware Integration" workstream, a "Mobile App" workstream, and a "Cloud Backend" workstream — each handled by a specialist team.</td>
+        <td><select class="matching-select" data-correct="By Discipline">
+          <option value="">— select —</option>
+          <option>By Discipline</option><option>By System Functions</option><option>By Existing Architecture</option><option>By Functional Units of the Organisation</option><option>By Models of the Application</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>The system is divided into "Motion Detection," "Climate Control," and "Security Alerts" subsystems — each corresponding to a distinct requirement cluster.</td>
+        <td><select class="matching-select" data-correct="By System Functions">
+          <option value="">— select —</option>
+          <option>By Discipline</option><option>By System Functions</option><option>By Existing Architecture</option><option>By Functional Units of the Organisation</option><option>By Models of the Application</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>The team re-uses the Zigbee communication protocol from the client's previous home automation system as the backbone, structuring new components around it.</td>
+        <td><select class="matching-select" data-correct="By Existing Architecture">
+          <option value="">— select —</option>
+          <option>By Discipline</option><option>By System Functions</option><option>By Existing Architecture</option><option>By Functional Units of the Organisation</option><option>By Models of the Application</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>The system components are structured to mirror the client company's departments: "Installation Team," "Support Desk," and "Billing" each get their own module.</td>
+        <td><select class="matching-select" data-correct="By Functional Units of the Organisation">
+          <option value="">— select —</option>
+          <option>By Discipline</option><option>By System Functions</option><option>By Existing Architecture</option><option>By Functional Units of the Organisation</option><option>By Models of the Application</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q8">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → By Discipline &nbsp; Row 2 → By System Functions &nbsp; Row 3 → By Existing Architecture &nbsp; Row 4 → By Functional Units of the Org</div>
+        <div class="ans-item"><strong>By Discipline:</strong> Separates work by the type of expertise required (hardware, software, UX, QA). Team structure drives system structure.</div>
+        <div class="ans-item"><strong>By System Functions:</strong> Divides by what the system does — each subsystem corresponds to a distinct functional requirement cluster.</div>
+        <div class="ans-item"><strong>By Existing Architecture:</strong> Leverages constraints or assets already in place (legacy protocols, existing codebase). Pragmatic — avoids reinventing the wheel but can constrain design choices.</div>
+        <div class="ans-item"><strong>By Functional Units of the Organisation:</strong> Aligns system boundaries with the client's org chart — each department gets its own module. Risk: if the org restructures, so must the system (Conway's Law).</div>
+        <div class="concept">Conway's Law: "Organizations design systems that mirror their own communication structure." Decomposing by organisational units is natural but can create long-term coupling between system architecture and org structure.</div>
+        <div class="score-reveal" id="sr-q8"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L03_systems_and_uml.html#se-activities" target="_blank" rel="noopener">📖 Core System Engineering Activities →</a>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q9</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each SDLC activity description to the correct phase name from the word bank.</p>
+      <p><em>Word bank: Requirements, Design, Implementation, Testing, Maintenance</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.8rem;"><strong>1.</strong> The team interviews stakeholders, writes user stories, and produces a Software Requirements Specification (SRS) document. This is the
+        <select class="blank" data-correct="Requirements">
+          <option value="">— select —</option><option>Requirements</option><option>Design</option><option>Implementation</option><option>Testing</option><option>Maintenance</option>
+        </select>
+        phase.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>2.</strong> The architect produces the system architecture diagram, the database schema, and the interface specifications. This is the
+        <select class="blank" data-correct="Design">
+          <option value="">— select —</option><option>Requirements</option><option>Design</option><option>Implementation</option><option>Testing</option><option>Maintenance</option>
+        </select>
+        phase.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>3.</strong> Developers write code, commit to version control, and run automated builds on the CI server. This is the
+        <select class="blank" data-correct="Implementation">
+          <option value="">— select —</option><option>Requirements</option><option>Design</option><option>Implementation</option><option>Testing</option><option>Maintenance</option>
+        </select>
+        phase.
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>4.</strong> After production deployment, the team applies security patches, fixes reported bugs, and adds small features requested by users. This is the
+        <select class="blank" data-correct="Maintenance">
+          <option value="">— select —</option><option>Requirements</option><option>Design</option><option>Implementation</option><option>Testing</option><option>Maintenance</option>
+        </select>
+        phase.
+      </p>
+    </div>
+    <details class="ans" data-qid="q9">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → Requirements &nbsp; 2 → Design &nbsp; 3 → Implementation &nbsp; 4 → Maintenance</div>
+        <div class="ans-item"><strong>Requirements:</strong> Answers "what should the system do?" — elicitation, analysis, specification, and validation of requirements. Artefact: SRS.</div>
+        <div class="ans-item"><strong>Design:</strong> Answers "how will the system be built?" — architectural decisions, component design, data modelling. Artefact: design documents, diagrams.</div>
+        <div class="ans-item"><strong>Implementation:</strong> Writing code and integrating components. Artefact: source code, executable.</div>
+        <div class="ans-item"><strong>Testing:</strong> (not shown above) Verifying the implementation against requirements — unit, integration, system, UAT.</div>
+        <div class="ans-item"><strong>Maintenance:</strong> Post-deployment. Corrective (bug fixes), adaptive (env changes), perfective (feature additions), preventive (refactoring). Typically the longest and most costly phase over the system's lifetime.</div>
+        <div class="concept">A key fact: Maintenance typically consumes 60–80% of total software lifecycle cost. This is why design quality (maintainability, modularity) has such an enormous ROI — small improvements in code quality compound massively over years of maintenance.</div>
+        <div class="score-reveal" id="sr-q9"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L01_software_engineering_intro.html#sdlc-phases" target="_blank" rel="noopener">📖 SDLC Phases in Detail →</a>
+  </div>
+
+</div>
+
+<div class="test-footer">
+  <div class="score-box">
+    <div class="label">Final Score</div>
+    <div class="value" id="score-bottom">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-bottom"></div></div>
+  </div>
+  <div class="test-nav">
+    <a href="mock_test_2.html">← Test 2</a>
+    <a href="mock_test_4.html">Test 4 →</a>
+    <a href="mock_test_5.html">Test 5 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+</div>
+
+<script>
+  const TOTAL_MARKS = 30, TOTAL_QS = 9;
+  let answered = new Set(), earned = 0;
+  function updateDisplay() {
+    const pct = (answered.size / TOTAL_QS) * 100;
+    const s = earned.toFixed(1).replace(/\.0$/,'') + ' / ' + TOTAL_MARKS;
+    document.getElementById('score-top').textContent = s;
+    document.getElementById('score-bottom').textContent = s;
+    document.getElementById('prog-top').style.width = pct + '%';
+    document.getElementById('prog-bottom').style.width = pct + '%';
+  }
+  function calcScore(card) {
+    const type = card.dataset.type, marks = parseFloat(card.dataset.marks);
+    let pts = 0;
+    if (type === 'single-mcq') {
+      const sel = card.querySelector('input[type=radio]:checked');
+      if (sel && sel.dataset.correct === 'true') pts = marks;
+      card.querySelectorAll('.opt').forEach(o => { const i = o.querySelector('input'); if (i.dataset.correct === 'true') o.classList.add('revealed-correct'); else if (i.checked) o.classList.add('revealed-wrong'); });
+    } else if (type === 'multi-mcq') {
+      const boxes = card.querySelectorAll('input[type=checkbox]'), n = boxes.length, per = marks / n;
+      boxes.forEach(b => { if (b.checked) { if (b.dataset.correct === 'true') pts += per; else pts -= per; } const o = b.closest('.opt'); if (b.dataset.correct === 'true') o.classList.add('revealed-correct'); else if (b.checked) o.classList.add('revealed-wrong'); });
+      pts = Math.max(0, pts);
+    } else if (type === 'matching') {
+      const sels = card.querySelectorAll('select.matching-select'), n = sels.length, per = marks / n;
+      sels.forEach(s => { if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); } else if (s.value !== '') { pts -= per; s.classList.add('revealed-wrong'); } s.disabled = true; });
+      pts = Math.max(0, pts);
+    } else if (type === 'jumbled') {
+      const sels = card.querySelectorAll('select.blank'), n = sels.length, per = marks / n;
+      sels.forEach(s => { if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); } else if (s.value !== '') s.classList.add('revealed-wrong'); s.disabled = true; });
+    } else if (type === 'fill-blank') {
+      const inputs = card.querySelectorAll('input.fill-input'), n = inputs.length, per = marks / n;
+      inputs.forEach(i => { const uv = i.value.trim().toLowerCase(), acc = i.dataset.correct.toLowerCase().split('|'); const ok = acc.some(a => uv === a || (uv.length > 2 && a.includes(uv)) || (a.length > 2 && uv.includes(a))); if (ok) { pts += per; i.classList.add('revealed-correct'); } else i.classList.add('revealed-wrong'); i.disabled = true; });
+    }
+    return Math.round(pts * 10) / 10;
+  }
+  document.querySelectorAll('details.ans').forEach(det => {
+    det.addEventListener('toggle', () => {
+      if (!det.open) return;
+      const card = det.closest('.question-card'), qid = card.id;
+      if (answered.has(qid)) return;
+      const pts = calcScore(card); earned += pts; answered.add(qid);
+      const rev = document.getElementById('sr-' + qid);
+      if (rev) { const total = parseFloat(card.dataset.marks); rev.textContent = 'You scored: ' + pts.toFixed(1).replace(/\.0$/,'') + ' / ' + total + ' marks'; rev.style.cssText = 'display:block;padding:0.45rem 0.75rem;border-radius:6px;font-size:0.88rem;font-weight:600;margin-top:0.65rem;border:1px solid ' + (pts===total?'#86efac':pts>0?'#fde68a':'#fca5a5') + ';background:' + (pts===total?'#f0fdf4':pts>0?'#fefce8':'#fef2f2') + ';color:' + (pts===total?'#15803d':pts>0?'#92400e':'#b91c1c'); }
+      updateDisplay();
+    });
+  });
+  updateDisplay();
+</script>
+</body>
+</html>

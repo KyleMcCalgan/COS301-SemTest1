@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COS 301 — Mock Test 1</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; background: #f1f5f9; color: #1e293b; line-height: 1.6; }
+    a { color: #4f46e5; }
+    code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.88em; }
+
+    .test-header { background: #1e293b; color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .test-title h1 { font-size: 1.3rem; font-weight: 700; }
+    .test-title p { font-size: 0.82rem; color: #94a3b8; margin-top: 0.15rem; }
+    .score-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 0.6rem 1.1rem; border-radius: 8px; text-align: center; min-width: 160px; }
+    .score-box .label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-box .value { font-size: 1.1rem; font-weight: 700; color: #4ade80; margin-top: 0.1rem; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 0.4rem; }
+    .progress-fill { height: 100%; background: #4ade80; border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+
+    .test-body { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .nav-links { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.85rem; color: #64748b; text-decoration: none; }
+    .nav-links a:hover { color: #4f46e5; }
+
+    .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .q-header { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; }
+    .q-num { font-weight: 700; font-size: 0.88rem; color: #475569; }
+    .q-badge { padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.76rem; font-weight: 600; }
+    .badge-mcq   { background: #e0e7ff; color: #4338ca; }
+    .badge-multi  { background: #fce7f3; color: #9d174d; }
+    .badge-jumble { background: #d1fae5; color: #065f46; }
+    .badge-fill   { background: #fef3c7; color: #92400e; }
+    .badge-match  { background: #ede9fe; color: #5b21b6; }
+    .q-marks { margin-left: auto; font-size: 0.83rem; color: #64748b; font-weight: 600; }
+
+    .q-stem { margin-bottom: 1.25rem; }
+    .q-stem p { margin-bottom: 0.5rem; }
+    .q-stem strong { color: #1e293b; }
+
+    .neg-warn { background: #fff7ed; border: 1px solid #fb923c; border-radius: 6px; padding: 0.45rem 0.8rem; margin-bottom: 1rem; font-size: 0.82rem; color: #9a3412; display: flex; align-items: center; gap: 0.4rem; }
+
+    .options { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .opt { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.55rem 0.8rem; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; }
+    .opt:hover { border-color: #a5b4fc; background: #f8f9ff; }
+    .opt input { margin-top: 0.2rem; flex-shrink: 0; }
+    .opt-label { font-weight: 700; color: #64748b; min-width: 1.1rem; font-size: 0.9rem; }
+    .opt-text { font-size: 0.95rem; }
+    .opt.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .opt.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .opt.revealed-missed  { border-color: #16a34a; background: #f0fdf4; }
+
+    .jumbled-sentence { font-size: 0.95rem; line-height: 2.2; margin-bottom: 1rem; }
+    select.blank { border: none; border-bottom: 2px solid #6366f1; padding: 0.1rem 0.4rem; font-size: 0.95em; background: #f0f4ff; border-radius: 4px 4px 0 0; cursor: pointer; color: #1e293b; }
+    select.blank:focus { outline: none; border-color: #4338ca; }
+    select.blank.revealed-correct { border-color: #16a34a; background: #f0fdf4; color: #14532d; }
+    select.blank.revealed-wrong   { border-color: #dc2626; background: #fef2f2; color: #7f1d1d; }
+
+    .matching-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .matching-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .matching-table td:first-child { font-weight: 600; font-size: 0.9rem; width: 45%; }
+    .matching-table select { width: 100%; padding: 0.3rem 0.4rem; border: 1.5px solid #cbd5e1; border-radius: 5px; font-size: 0.88rem; background: white; cursor: pointer; }
+    .matching-table select.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .matching-table select.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+
+    .fill-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+    .fill-label { font-size: 0.88rem; color: #475569; min-width: 80px; }
+    input.fill-input { border: none; border-bottom: 2px solid #6366f1; padding: 0.15rem 0.4rem; font-size: 0.95em; min-width: 140px; background: transparent; color: #1e293b; }
+    input.fill-input:focus { outline: none; border-color: #4338ca; }
+    input.fill-input.revealed-correct { border-color: #16a34a; color: #15803d; }
+    input.fill-input.revealed-wrong   { border-color: #dc2626; color: #dc2626; }
+
+    details.ans { margin-top: 1rem; border-radius: 8px; overflow: hidden; }
+    details.ans summary { list-style: none; cursor: pointer; background: #f0f4ff; color: #4338ca; font-weight: 600; font-size: 0.88rem; padding: 0.6rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; user-select: none; }
+    details.ans summary::-webkit-details-marker { display: none; }
+    details.ans[open] summary { border-radius: 8px 8px 0 0; }
+    details.ans summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+    details.ans[open] summary::before { transform: rotate(90deg); }
+    .ans-body { background: #f8fafc; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 1rem 1.1rem; }
+    .ans-correct { color: #15803d; font-weight: 700; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .ans-item { font-size: 0.88rem; margin-bottom: 0.4rem; padding-left: 0.2rem; }
+    .ans-item .tick { color: #16a34a; }
+    .ans-item .cross { color: #dc2626; }
+    .concept { background: #eff6ff; border-left: 3px solid #3b82f6; padding: 0.65rem 0.85rem; margin-top: 0.75rem; font-size: 0.88rem; border-radius: 0 5px 5px 0; line-height: 1.55; }
+    .score-reveal { margin-top: 0.65rem; padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.88rem; font-weight: 600; display: none; }
+
+    .study-btn { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem; padding: 0.4rem 0.9rem; background: #f0f4ff; border: 1px solid #c7d2fe; border-radius: 6px; color: #4f46e5; font-size: 0.83rem; font-weight: 600; text-decoration: none; }
+    .study-btn:hover { background: #e0e7ff; }
+
+    .test-footer { background: #1e293b; color: #94a3b8; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .test-footer .score-box { background: rgba(255,255,255,0.05); }
+    .footer-nav a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; }
+    .footer-nav a:hover { color: white; }
+    .test-nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .test-nav a { color: #94a3b8; text-decoration: none; font-size: 0.83rem; padding: 0.3rem 0.7rem; border: 1px solid #334155; border-radius: 5px; }
+    .test-nav a:hover { border-color: #94a3b8; color: white; }
+
+    @media (max-width: 600px) {
+      .test-header { padding: 1rem; }
+      .test-body { padding: 1rem; }
+      .question-card { padding: 1rem; }
+      .matching-table td:first-child { width: 40%; font-size: 0.82rem; }
+      .matching-table select { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="test-header">
+  <div class="test-title">
+    <h1>COS 301 — Mock Test 1</h1>
+    <p>10 Questions &nbsp;·&nbsp; 30 Marks &nbsp;·&nbsp; Covers L01–L13, L15</p>
+  </div>
+  <div class="score-box">
+    <div class="label">Progress</div>
+    <div class="value" id="score-top">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-top"></div></div>
+  </div>
+</div>
+
+<div class="test-body">
+  <div class="nav-links">
+    <a href="index.html">← Study Notes</a>
+    <a href="mock_test_2.html">Mock Test 2 →</a>
+    <a href="mock_test_combined.html">Combined Test →</a>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q1</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>You are the lead engineer for a banking mobile app releasing a new transaction flow. Your constraints: zero downtime is mandatory, rollback must complete in under 2 minutes if error rates spike, and the monitoring team wants real-user performance data before committing to a full rollout. Synthetic CI tests have already passed.</p>
+      <p><strong>Which deployment strategy best satisfies all three constraints?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q1" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">Blue-Green — maintain two identical environments; flip DNS when ready</span></label>
+      <label class="opt"><input type="radio" name="q1" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">Canary — route a small percentage of real traffic to the new version; monitor metrics; expand or rollback</span></label>
+      <label class="opt"><input type="radio" name="q1" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">Rolling — progressively replace old instances with new ones across the cluster</span></label>
+      <label class="opt"><input type="radio" name="q1" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Big Bang — deploy everything at once during a maintenance window</span></label>
+    </div>
+    <details class="ans" data-qid="q1">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B — Canary</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>B is correct:</strong> Canary routes a configurable percentage of real traffic to the new version. Real-user metrics are collected before full rollout. Rollback is instant — redirect that traffic slice back to the old version.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A (Blue-Green) is wrong:</strong> Blue-Green does achieve zero-downtime but it switches ALL traffic at once. It does not collect gradual real-user performance data before full exposure.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C (Rolling) is wrong:</strong> Rolling replaces instances gradually but gives no fine-grained traffic control. You cannot limit exposure to 1% of users — eventually all instances are updated.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D (Big Bang) is wrong:</strong> Big Bang requires downtime and has no gradual detection mechanism at all.</div>
+        <div class="concept">Canary is named after the canary-in-a-coal-mine practice. It uniquely satisfies both "real traffic data" and "easy rollback" because the traffic split is controlled by a router/load balancer percentage, not by which code version is deployed to which server.</div>
+        <div class="score-reveal" id="sr-q1"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#cicd" target="_blank" rel="noopener">📖 CI/CD Deployment Strategies →</a>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2" data-marks="3" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q2</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">3 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>Your team has a protected-branch policy: <em>"Never rewrite history on any branch that has been pushed to the shared remote."</em></p>
+      <p><strong>Select ALL commands that would violate this policy if run on a branch already pushed to <code>origin</code>. (Select all that apply.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q2" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text"><code>git commit --amend</code> then <code>git push --force</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text"><code>git rebase main</code> then <code>git push --force-with-lease</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text"><code>git revert HEAD</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text"><code>git merge main</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="E" data-correct="true"><span class="opt-label">E</span><span class="opt-text"><code>git reset --hard HEAD~2</code> then <code>git push --force</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="F" data-correct="false"><span class="opt-label">F</span><span class="opt-text"><code>git cherry-pick abc1234</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="G" data-correct="false"><span class="opt-label">G</span><span class="opt-text"><code>git stash</code> then <code>git stash pop</code></span></label>
+      <label class="opt"><input type="checkbox" name="q2" value="H" data-correct="true"><span class="opt-label">H</span><span class="opt-text"><code>git rebase -i HEAD~3</code> to squash commits, then force-push</span></label>
+    </div>
+    <details class="ans" data-qid="q2">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, B, E, H</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>A:</strong> <code>--amend</code> replaces the last commit with a new SHA. Force-pushing overwrites the remote — history is rewritten.</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>B:</strong> <code>rebase</code> replays commits onto a new base, assigning new SHAs. <code>--force-with-lease</code> still overwrites remote history (it just checks nobody else pushed first).</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>E:</strong> <code>reset --hard HEAD~2</code> removes two commits from the local branch. Force-pushing makes the remote match — those commits are gone from shared history.</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>H:</strong> Interactive rebase rewrites commit SHAs (squash, reword, drop). Force-pushing propagates those rewrites.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C (revert):</strong> Creates a <em>new</em> commit that undoes changes. Existing commits are untouched — safe on shared branches.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D (merge):</strong> Adds a merge commit. Does not remove or change existing commits.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>F (cherry-pick):</strong> Copies a commit as a new commit. Does not alter history.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>G (stash):</strong> Temporarily shelves working directory changes. No commits are created or modified.</div>
+        <div class="concept">A command "rewrites history" when it changes existing commit SHAs or removes commits. The danger: collaborators' local branches diverge from the rewritten remote, causing messy force-pull situations. <code>revert</code> is always the safe alternative on shared branches.</div>
+        <div class="score-reveal" id="sr-q2"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#git-commits" target="_blank" rel="noopener">📖 Git Commits &amp; the DAG →</a>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q3</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>For each system description below, select the architectural style that best fits. Each style may only be used once.</p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.8rem;"><strong>1.</strong> The UI layer calls the business-logic layer, which calls the data-access layer. Each layer only knows about the layer directly below it, and changes in the database layer do not propagate upward. →
+        <select class="blank" data-correct="Layered">
+          <option value="">— select —</option>
+          <option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>2.</strong> The system is split into an Order Service, Inventory Service, and Payment Service. Each has its own database, is deployed independently, and communicates over lightweight REST APIs. →
+        <select class="blank" data-correct="Microservices">
+          <option value="">— select —</option>
+          <option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>3.</strong> Raw sensor readings enter a pipeline. Filter A normalises units, Filter B removes outliers, Filter C aggregates by region. Each filter passes its output to the next with no shared state. →
+        <select class="blank" data-correct="Pipe-and-Filter">
+          <option value="">— select —</option>
+          <option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>4.</strong> When a user uploads a file, no component directly calls another. Instead, an "upload complete" event is published; a transcription service and a thumbnail service each subscribe and act independently. →
+        <select class="blank" data-correct="Event-Driven">
+          <option value="">— select —</option>
+          <option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+    </div>
+    <details class="ans" data-qid="q3">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → Layered &nbsp; 2 → Microservices &nbsp; 3 → Pipe-and-Filter &nbsp; 4 → Event-Driven</div>
+        <div class="ans-item"><strong>Layered:</strong> Strict dependency hierarchy — each layer only uses the layer below. Protects upper layers from lower-layer changes.</div>
+        <div class="ans-item"><strong>Microservices:</strong> Independently deployable services, each owning its own data store, communicating via APIs. Enables team autonomy and independent scaling.</div>
+        <div class="ans-item"><strong>Pipe-and-Filter:</strong> Sequential transformation pipeline. Each filter is stateless and reusable. Excellent for data processing workflows.</div>
+        <div class="ans-item"><strong>Event-Driven:</strong> Publishers emit events without knowing who handles them. Subscribers react independently. Decouples components temporally and spatially.</div>
+        <div class="concept">The key discriminator between Pipe-and-Filter and Event-Driven: P&amp;F is sequential and the output of one filter flows directly into the next; Event-Driven has no direct flow — any number of subscribers react to an event broadcast.</div>
+        <div class="score-reveal" id="sr-q3"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L11_architectural_design.html#styles" target="_blank" rel="noopener">📖 Architectural Styles →</a>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q4</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each software process model description to the correct model name.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>A linear, sequential model where each phase (Requirements → Design → Implementation → Testing → Maintenance) must be fully completed before the next begins.</td>
+        <td><select class="matching-select" data-correct="Waterfall"><option value="">— select —</option><option>Waterfall</option><option>RUP</option><option>Spiral</option><option>PSP</option></select></td>
+      </tr>
+      <tr>
+        <td>Structures development into four phases: Inception, Elaboration, Construction, and Transition — with multiple iterations inside each phase. Use-case driven and architecture-centric.</td>
+        <td><select class="matching-select" data-correct="RUP"><option value="">— select —</option><option>Waterfall</option><option>RUP</option><option>Spiral</option><option>PSP</option></select></td>
+      </tr>
+      <tr>
+        <td>Each cycle involves risk analysis before proceeding. Represented as a spiral where each loop addresses a new development objective and risk level determines how far to proceed.</td>
+        <td><select class="matching-select" data-correct="Spiral"><option value="">— select —</option><option>Waterfall</option><option>RUP</option><option>Spiral</option><option>PSP</option></select></td>
+      </tr>
+      <tr>
+        <td>A discipline framework targeting individual developers — focuses on personal planning, time tracking, size and defect measurement, and quality goals for one engineer's work.</td>
+        <td><select class="matching-select" data-correct="PSP"><option value="">— select —</option><option>Waterfall</option><option>RUP</option><option>Spiral</option><option>PSP</option></select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q4">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → Waterfall &nbsp; Row 2 → RUP &nbsp; Row 3 → Spiral &nbsp; Row 4 → PSP</div>
+        <div class="ans-item"><strong>Waterfall:</strong> Sequential phases. Simple to manage but inflexible — you cannot go back once a phase ends. Best for well-understood, stable requirements.</div>
+        <div class="ans-item"><strong>RUP (Rational Unified Process):</strong> Iterative and use-case driven. The four phases are not equal — most development happens in Construction, but architecture is locked down during Elaboration.</div>
+        <div class="ans-item"><strong>Spiral:</strong> Risk-driven. Each spiral loop asks: what are the objectives? what are the risks? prototype/build. plan next iteration. Suitable for large, high-risk projects.</div>
+        <div class="ans-item"><strong>PSP (Personal Software Process):</strong> Watts Humphrey's model for individual engineers. Scales up to TSP (Team Software Process) for team-level discipline.</div>
+        <div class="concept">Common trap: confusing RUP with Agile. RUP is iterative but not Agile — it is heavyweight, document-driven, and prescribes specific roles and artefacts. Agile (Scrum, XP) is lightweight and adaptive.</div>
+        <div class="score-reveal" id="sr-q4"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L02_software_process.html#process-models" target="_blank" rel="noopener">📖 Software Process Models →</a>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5" data-marks="1" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q5</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">1 mark</span>
+    </div>
+    <div class="q-stem">
+      <p><strong>Which statement most accurately captures the primary aim of software engineering as a discipline?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q5" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">To produce source code as quickly as possible, minimising time-to-first-commit</span></label>
+      <label class="opt"><input type="radio" name="q5" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">To eliminate all software defects before a system is shipped to users</span></label>
+      <label class="opt"><input type="radio" name="q5" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">To significantly improve software productivity and quality while reducing development cost and time to market</span></label>
+      <label class="opt"><input type="radio" name="q5" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">To apply computer science theory directly to hardware design problems</span></label>
+    </div>
+    <details class="ans" data-qid="q5">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: C</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>C is correct:</strong> SE aims to improve both productivity (getting more done faster) and quality (fewer defects, better maintainability) — simultaneously, and at lower cost. These are in tension, which is why systematic engineering methods exist.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A:</strong> Speed alone without quality is the opposite of software engineering — it produces technical debt.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>B:</strong> "Eliminate all defects" is not realistic. SE aims to reduce defects cost-effectively, not achieve perfection.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D:</strong> Software engineering is distinct from hardware engineering and from theoretical computer science.</div>
+        <div class="score-reveal" id="sr-q5"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L01_software_engineering_intro.html#objectives" target="_blank" rel="noopener">📖 Core Objectives of SE →</a>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6" data-marks="2" data-type="fill-blank">
+    <div class="q-header">
+      <span class="q-num">Q6</span>
+      <span class="q-badge badge-fill">Fill in the Blank</span>
+      <span class="q-marks">2 marks (0.5 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Consider a domain model with the following entities: <strong>Customer</strong>, <strong>Order</strong>, <strong>OrderItem</strong>, and <strong>Product</strong>. Fill in the blanks based on your understanding of UML domain modelling.</p>
+    </div>
+    <div style="margin-bottom:1rem;">
+      <div class="fill-row">
+        <span class="fill-label">Blank 1:</span>
+        <span>A Customer can place <input class="fill-input" data-correct="one or many|1..*|many|0..*" placeholder="multiplicity"> Orders (use UML notation or describe in words).</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 2:</span>
+        <span>The <strong>OrderItem</strong> entity, which connects Order and Product to record quantity and price per line, is an example of an <input class="fill-input" data-correct="associative|association class|associative class|associative entity" placeholder="class type"> class.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 3:</span>
+        <span>An OrderItem <strong>cannot exist</strong> without a parent Order. This is a <input class="fill-input" data-correct="composition|composite" placeholder="relationship type"> relationship.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 4:</span>
+        <span>A Library contains Books, but the Books could exist independently in another library. This is an <input class="fill-input" data-correct="aggregation" placeholder="relationship type"> relationship.</span>
+      </div>
+    </div>
+    <details class="ans" data-qid="q6">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Blank 1: 1..* (one or many) &nbsp;|&nbsp; Blank 2: associative &nbsp;|&nbsp; Blank 3: composition &nbsp;|&nbsp; Blank 4: aggregation</div>
+        <div class="ans-item"><strong>Blank 1 (1..*):</strong> A customer must place at least one order to be meaningful in this system (or zero if they registered but haven't ordered — could also be 0..*). The key is understanding multiplicity notation.</div>
+        <div class="ans-item"><strong>Blank 2 (associative class):</strong> OrderItem exists purely because of the relationship between Order and Product — it holds attributes of that relationship (quantity, price at time of purchase). This is the classic pattern for resolving many-to-many relationships with additional attributes.</div>
+        <div class="ans-item"><strong>Blank 3 (composition):</strong> In composition (filled diamond), the child's lifecycle depends entirely on the parent. If the Order is deleted, all its OrderItems are deleted too.</div>
+        <div class="ans-item"><strong>Blank 4 (aggregation):</strong> In aggregation (hollow diamond), the part can exist without the whole. Books outlive any one library's collection.</div>
+        <div class="concept">The composition vs. aggregation distinction is frequently tested. Remember: <strong>composition = cannot exist without parent</strong> (filled diamond), <strong>aggregation = can exist independently</strong> (hollow diamond).</div>
+        <div class="score-reveal" id="sr-q6"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L08_domain_modelling.html#relationships" target="_blank" rel="noopener">📖 Relationships &amp; Multiplicity →</a>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7" data-marks="4" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q7</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">4 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A student team is modelling a university portal. They have brainstormed the following items for their use case diagram.</p>
+      <p><strong>Select ALL items that qualify as valid use cases. (Select all that apply.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q7" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">Register for a module</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">Validate student ID format against regex pattern</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">View examination timetable</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Insert registration record into the database</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="E" data-correct="true"><span class="opt-label">E</span><span class="opt-text">Submit assignment</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="F" data-correct="false"><span class="opt-label">F</span><span class="opt-text">Hash password using SHA-256</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="G" data-correct="true"><span class="opt-label">G</span><span class="opt-text">Download academic transcript</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="H" data-correct="false"><span class="opt-label">H</span><span class="opt-text">Click the "Submit" button on the registration form</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="I" data-correct="true"><span class="opt-label">I</span><span class="opt-text">Appeal a grade</span></label>
+      <label class="opt"><input type="checkbox" name="q7" value="J" data-correct="false"><span class="opt-label">J</span><span class="opt-text">Maintain user session token in memory</span></label>
+    </div>
+    <details class="ans" data-qid="q7">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: A, C, E, G, I</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>A, C, E, G, I</strong> are valid use cases — they are user-observable goals: things an actor wants to accomplish with the system. Each can be described as "actor does X to achieve Y outcome."</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>B (regex validation):</strong> An internal implementation detail. The actor's goal is "submit valid data" — the validation mechanism is hidden inside the system.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D (insert DB record):</strong> A database operation triggered internally. Actors do not interact with the database directly.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>F (hash password):</strong> A security implementation step, not a user-visible goal. Actors never "choose to hash" — they log in.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>H (click button):</strong> A UI interaction, not a goal. Use cases abstract above UI mechanics.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>J (session management):</strong> Internal system infrastructure, invisible to actors.</div>
+        <div class="concept">The test for a valid use case: can you phrase it as "Actor <em>verb-phrase</em> in order to <em>achieve goal</em>"? If the sentence only makes sense from inside the system's implementation, it is not a use case.</div>
+        <div class="score-reveal" id="sr-q7"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L07_use_cases.html#what-not" target="_blank" rel="noopener">📖 What Is NOT a Use Case →</a>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8" data-marks="5" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q8</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">5 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each integration testing strategy to the description that best characterises it.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td>All modules are developed and tested in isolation, then integrated and tested together all at once at the end.</td>
+        <td><select class="matching-select" data-correct="Big Bang"><option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option><option>Incremental</option></select></td>
+      </tr>
+      <tr>
+        <td>Integration begins from the highest-level control modules. Lower-level modules that are not yet available are replaced by <strong>stubs</strong>.</td>
+        <td><select class="matching-select" data-correct="Top-Down"><option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option><option>Incremental</option></select></td>
+      </tr>
+      <tr>
+        <td>Integration begins with the lowest-level utility modules. Higher-level modules that call them are replaced by <strong>drivers</strong> until they are ready.</td>
+        <td><select class="matching-select" data-correct="Bottom-Up"><option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option><option>Incremental</option></select></td>
+      </tr>
+      <tr>
+        <td>Combines top-down and bottom-up simultaneously: top layers are tested with stubs while bottom layers are tested with drivers; the two fronts meet in the middle.</td>
+        <td><select class="matching-select" data-correct="Sandwich"><option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option><option>Incremental</option></select></td>
+      </tr>
+      <tr>
+        <td>Each new component is integrated and tested as soon as it is ready, without waiting for all modules to be complete. Defects are found close to when the component was built.</td>
+        <td><select class="matching-select" data-correct="Incremental"><option value="">— select —</option><option>Big Bang</option><option>Top-Down</option><option>Bottom-Up</option><option>Sandwich</option><option>Incremental</option></select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q8">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Row 1 → Big Bang &nbsp; Row 2 → Top-Down &nbsp; Row 3 → Bottom-Up &nbsp; Row 4 → Sandwich &nbsp; Row 5 → Incremental</div>
+        <div class="ans-item"><strong>Big Bang:</strong> Simple but risky — when integration fails you don't know which module caused it. Fault isolation is very hard.</div>
+        <div class="ans-item"><strong>Top-Down + Stubs:</strong> Can demonstrate the high-level flow early. Stubs simulate lower modules with hardcoded responses. Real lower modules replace stubs progressively.</div>
+        <div class="ans-item"><strong>Bottom-Up + Drivers:</strong> Solid foundation testing. Drivers simulate the calling module. No end-to-end flow visible until near the end.</div>
+        <div class="ans-item"><strong>Sandwich:</strong> Hybrid that captures benefits of both. Complex to coordinate but reduces overall integration risk for large systems.</div>
+        <div class="ans-item"><strong>Incremental:</strong> Best aligned with Agile practices — continuous integration adds new modules to a running test suite continuously.</div>
+        <div class="concept">Key memory hook — <strong>Top-Down uses stubs</strong> (stubs go below, standing in for not-yet-built lower modules); <strong>Bottom-Up uses drivers</strong> (drivers go above, calling the lower modules being tested).</div>
+        <div class="score-reveal" id="sr-q8"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L09_L10_testing.html#strategies" target="_blank" rel="noopener">📖 Integration Strategies →</a>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q9</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A Scrum team's Daily Scrum consistently overruns by 25 minutes. Developers use it to give detailed implementation updates, discuss architectural decisions, and report to the Scrum Master. The Product Owner attends to re-prioritise the backlog mid-meeting.</p>
+      <p><strong>What is the fundamental purpose of the Daily Scrum that is being violated?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q9" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">It is a status report where each developer tells the Scrum Master their progress percentage</span></label>
+      <label class="opt"><input type="radio" name="q9" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">It is a 15-minute daily event for the Developers to inspect progress toward the Sprint Goal and adapt their Sprint Backlog plan for the next 24 hours</span></label>
+      <label class="opt"><input type="radio" name="q9" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">It is an opportunity for the Product Owner to re-rank backlog items based on daily feedback</span></label>
+      <label class="opt"><input type="radio" name="q9" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">It is a technical design meeting for resolving architectural blockers</span></label>
+    </div>
+    <details class="ans" data-qid="q9">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>B is correct:</strong> The Daily Scrum is owned by the Developers (not the Scrum Master). It is time-boxed to 15 minutes. The Developers inspect their sprint progress and adapt their daily plan — it is an inspect-and-adapt event, not a reporting ceremony.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A:</strong> The Daily Scrum is not a status report to anyone. Reporting to the Scrum Master turns it into a hierarchical check-in, which undermines team self-management.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C:</strong> Backlog prioritisation is the Product Owner's responsibility and happens in Backlog Refinement or Sprint Planning — not the Daily Scrum.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D:</strong> Technical deep-dives should be separate meetings ("after-parties") attended only by relevant people, not the whole team for 15 minutes.</div>
+        <div class="concept">A common CT trap: the question may say "raises impediments with the Scrum Master" — this sounds plausible but is wrong. Impediments may surface during the Daily Scrum, but the Scrum Master addresses them <em>outside</em> it. The core purpose is the Developers' own inspection-adaptation loop.</div>
+        <div class="score-reveal" id="sr-q9"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L15_agile_1.html#ceremonies" target="_blank" rel="noopener">📖 Ceremonies &amp; Artifacts →</a>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q10" data-marks="3" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q10</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">3 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A test engineer is categorising test activities for a healthcare platform. Fill in each blank with the correct non-functional testing type from the word bank.</p>
+      <p><em>Word bank: load, stress, compatibility, availability, security, usability, performance</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.9rem;"><strong>1.</strong> The team gradually increases the number of concurrent users from 100 to 10,000 while measuring response times and throughput to find the system's degradation threshold. This is
+        <select class="blank" data-correct="load">
+          <option value="">— select —</option>
+          <option>load</option><option>stress</option><option>compatibility</option><option>availability</option><option>security</option><option>usability</option><option>performance</option>
+        </select>
+        testing.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>2.</strong> The team pushes the system to 300% of its expected peak traffic to observe whether it crashes gracefully or corrupts data, and how it recovers when load is removed. This is
+        <select class="blank" data-correct="stress">
+          <option value="">— select —</option>
+          <option>load</option><option>stress</option><option>compatibility</option><option>availability</option><option>security</option><option>usability</option><option>performance</option>
+        </select>
+        testing.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>3.</strong> The team verifies that the patient portal works correctly on Chrome, Firefox, Safari, Android 13, iOS 17, desktop, and tablet screen sizes. This is
+        <select class="blank" data-correct="compatibility">
+          <option value="">— select —</option>
+          <option>load</option><option>stress</option><option>compatibility</option><option>availability</option><option>security</option><option>usability</option><option>performance</option>
+        </select>
+        testing.
+      </p>
+    </div>
+    <details class="ans" data-qid="q10">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → load &nbsp; 2 → stress &nbsp; 3 → compatibility</div>
+        <div class="ans-item"><strong>Load testing:</strong> Operates <em>within</em> expected capacity — the goal is to measure performance characteristics at realistic and peak expected usage levels.</div>
+        <div class="ans-item"><strong>Stress testing:</strong> Operates <em>beyond</em> expected capacity — the goal is to find the breaking point and observe failure modes. Questions answered: does the system crash or degrade gracefully? Does it recover?</div>
+        <div class="ans-item"><strong>Compatibility testing:</strong> Verifies consistent behaviour across different environments — operating systems, browsers, devices, screen resolutions, and sometimes network conditions.</div>
+        <div class="concept">Load vs. Stress: load = "how does it perform?" (still within bounds); stress = "how does it fail?" (pushed beyond bounds). The exam question often uses phrases like "until degradation" for load and "beyond capacity" or "observe crashes" for stress.</div>
+        <div class="score-reveal" id="sr-q10"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L13_non_functional_testing.html#overview" target="_blank" rel="noopener">📖 Functional vs. Non-Functional Testing →</a>
+  </div>
+
+</div><!-- end test-body -->
+
+<div class="test-footer">
+  <div class="score-box">
+    <div class="label">Final Score</div>
+    <div class="value" id="score-bottom">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-bottom"></div></div>
+  </div>
+  <div class="test-nav">
+    <a href="index.html">← Notes</a>
+    <a href="mock_test_2.html">Test 2 →</a>
+    <a href="mock_test_3.html">Test 3 →</a>
+    <a href="mock_test_4.html">Test 4 →</a>
+    <a href="mock_test_5.html">Test 5 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+</div>
+
+<script>
+  const TOTAL_MARKS = 30;
+  const TOTAL_QS = 10;
+  let answered = new Set();
+  let earned = 0;
+
+  function updateDisplay() {
+    const pct = (answered.size / TOTAL_QS) * 100;
+    const scoreStr = earned.toFixed(1).replace(/\.0$/, '') + ' / ' + TOTAL_MARKS;
+    document.getElementById('score-top').textContent = scoreStr;
+    document.getElementById('score-bottom').textContent = scoreStr;
+    document.getElementById('prog-top').style.width = pct + '%';
+    document.getElementById('prog-bottom').style.width = pct + '%';
+  }
+
+  function calcScore(card) {
+    const type = card.dataset.type;
+    const marks = parseFloat(card.dataset.marks);
+    const qid = card.id;
+    let pts = 0;
+
+    if (type === 'single-mcq') {
+      const sel = card.querySelector('input[type=radio]:checked');
+      if (sel && sel.dataset.correct === 'true') pts = marks;
+      // Reveal colours
+      card.querySelectorAll('.opt').forEach(opt => {
+        const inp = opt.querySelector('input');
+        if (inp.dataset.correct === 'true') opt.classList.add('revealed-correct');
+        else if (inp.checked) opt.classList.add('revealed-wrong');
+      });
+
+    } else if (type === 'multi-mcq') {
+      const boxes = card.querySelectorAll('input[type=checkbox]');
+      const n = boxes.length;
+      const per = marks / n;
+      boxes.forEach(b => {
+        if (b.checked) {
+          if (b.dataset.correct === 'true') pts += per;
+          else pts -= per;
+        }
+        const opt = b.closest('.opt');
+        if (b.dataset.correct === 'true') opt.classList.add('revealed-correct');
+        else if (b.checked) opt.classList.add('revealed-wrong');
+      });
+      pts = Math.max(0, pts);
+
+    } else if (type === 'matching') {
+      const sels = card.querySelectorAll('select.matching-select');
+      const n = sels.length;
+      const per = marks / n;
+      sels.forEach(s => {
+        if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); }
+        else if (s.value !== '') { pts -= per; s.classList.add('revealed-wrong'); }
+        s.disabled = true;
+      });
+      pts = Math.max(0, pts);
+
+    } else if (type === 'jumbled') {
+      const sels = card.querySelectorAll('select.blank');
+      const n = sels.length;
+      const per = marks / n;
+      sels.forEach(s => {
+        if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); }
+        else if (s.value !== '') s.classList.add('revealed-wrong');
+        s.disabled = true;
+      });
+
+    } else if (type === 'fill-blank') {
+      const inputs = card.querySelectorAll('input.fill-input');
+      const n = inputs.length;
+      const per = marks / n;
+      inputs.forEach(inp => {
+        const userVal = inp.value.trim().toLowerCase();
+        const accepted = inp.dataset.correct.toLowerCase().split('|');
+        const ok = accepted.some(a => userVal === a || (userVal.length > 2 && a.includes(userVal)) || (a.length > 2 && userVal.includes(a)));
+        if (ok) { pts += per; inp.classList.add('revealed-correct'); }
+        else inp.classList.add('revealed-wrong');
+        inp.disabled = true;
+      });
+    }
+
+    return Math.round(pts * 10) / 10;
+  }
+
+  document.querySelectorAll('details.ans').forEach(det => {
+    det.addEventListener('toggle', () => {
+      if (!det.open) return;
+      const card = det.closest('.question-card');
+      const qid = card.id;
+      if (answered.has(qid)) return;
+
+      const pts = calcScore(card);
+      earned += pts;
+      answered.add(qid);
+
+      const rev = document.getElementById('sr-' + qid);
+      if (rev) {
+        const total = parseFloat(card.dataset.marks);
+        rev.textContent = 'You scored: ' + pts.toFixed(1).replace(/\.0$/,'') + ' / ' + total + ' marks';
+        rev.style.display = 'block';
+        rev.style.background = pts === total ? '#f0fdf4' : pts > 0 ? '#fefce8' : '#fef2f2';
+        rev.style.border = '1px solid ' + (pts === total ? '#86efac' : pts > 0 ? '#fde68a' : '#fca5a5');
+        rev.style.color = pts === total ? '#15803d' : pts > 0 ? '#92400e' : '#b91c1c';
+        rev.style.borderRadius = '6px';
+        rev.style.padding = '0.45rem 0.75rem';
+        rev.style.fontSize = '0.88rem';
+        rev.style.fontWeight = '600';
+        rev.style.marginTop = '0.65rem';
+      }
+      updateDisplay();
+    });
+  });
+
+  updateDisplay();
+</script>
+</body>
+</html>

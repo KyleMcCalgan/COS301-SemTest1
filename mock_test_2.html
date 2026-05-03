@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COS 301 — Mock Test 2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; background: #f1f5f9; color: #1e293b; line-height: 1.6; }
+    a { color: #4f46e5; }
+    code { background: #f1f5f9; padding: 0.1rem 0.35rem; border-radius: 3px; font-family: 'Courier New', monospace; font-size: 0.88em; }
+    .test-header { background: #1e293b; color: white; padding: 1.25rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    .test-title h1 { font-size: 1.3rem; font-weight: 700; }
+    .test-title p { font-size: 0.82rem; color: #94a3b8; margin-top: 0.15rem; }
+    .score-box { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 0.6rem 1.1rem; border-radius: 8px; text-align: center; min-width: 160px; }
+    .score-box .label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .score-box .value { font-size: 1.1rem; font-weight: 700; color: #4ade80; margin-top: 0.1rem; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 0.4rem; }
+    .progress-fill { height: 100%; background: #4ade80; border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+    .test-body { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .nav-links { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-links a { font-size: 0.85rem; color: #64748b; text-decoration: none; }
+    .nav-links a:hover { color: #4f46e5; }
+    .question-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .q-header { display: flex; gap: 0.6rem; align-items: center; margin-bottom: 1.1rem; flex-wrap: wrap; }
+    .q-num { font-weight: 700; font-size: 0.88rem; color: #475569; }
+    .q-badge { padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.76rem; font-weight: 600; }
+    .badge-mcq   { background: #e0e7ff; color: #4338ca; }
+    .badge-multi  { background: #fce7f3; color: #9d174d; }
+    .badge-jumble { background: #d1fae5; color: #065f46; }
+    .badge-fill   { background: #fef3c7; color: #92400e; }
+    .badge-match  { background: #ede9fe; color: #5b21b6; }
+    .q-marks { margin-left: auto; font-size: 0.83rem; color: #64748b; font-weight: 600; }
+    .q-stem { margin-bottom: 1.25rem; }
+    .q-stem p { margin-bottom: 0.5rem; }
+    .neg-warn { background: #fff7ed; border: 1px solid #fb923c; border-radius: 6px; padding: 0.45rem 0.8rem; margin-bottom: 1rem; font-size: 0.82rem; color: #9a3412; }
+    .options { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .opt { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.55rem 0.8rem; border: 1.5px solid #e2e8f0; border-radius: 7px; cursor: pointer; transition: border-color 0.15s; }
+    .opt:hover { border-color: #a5b4fc; background: #f8f9ff; }
+    .opt input { margin-top: 0.2rem; flex-shrink: 0; }
+    .opt-label { font-weight: 700; color: #64748b; min-width: 1.1rem; font-size: 0.9rem; }
+    .opt-text { font-size: 0.95rem; }
+    .opt.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .opt.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .jumbled-sentence { font-size: 0.95rem; line-height: 2.4; margin-bottom: 1rem; }
+    select.blank { border: none; border-bottom: 2px solid #6366f1; padding: 0.1rem 0.4rem; font-size: 0.95em; background: #f0f4ff; border-radius: 4px 4px 0 0; cursor: pointer; color: #1e293b; }
+    select.blank:focus { outline: none; border-color: #4338ca; }
+    select.blank.revealed-correct { border-color: #16a34a; background: #f0fdf4; color: #14532d; }
+    select.blank.revealed-wrong   { border-color: #dc2626; background: #fef2f2; color: #7f1d1d; }
+    .matching-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+    .matching-table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .matching-table td:first-child { font-weight: 500; font-size: 0.9rem; width: 50%; }
+    .matching-table select { width: 100%; padding: 0.3rem 0.4rem; border: 1.5px solid #cbd5e1; border-radius: 5px; font-size: 0.88rem; background: white; cursor: pointer; }
+    .matching-table select.revealed-correct { border-color: #16a34a; background: #f0fdf4; }
+    .matching-table select.revealed-wrong   { border-color: #dc2626; background: #fef2f2; }
+    .fill-row { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+    .fill-label { font-size: 0.88rem; color: #475569; min-width: 80px; flex-shrink: 0; }
+    input.fill-input { border: none; border-bottom: 2px solid #6366f1; padding: 0.15rem 0.4rem; font-size: 0.95em; min-width: 140px; background: transparent; color: #1e293b; }
+    input.fill-input:focus { outline: none; border-color: #4338ca; }
+    input.fill-input.revealed-correct { border-color: #16a34a; color: #15803d; }
+    input.fill-input.revealed-wrong   { border-color: #dc2626; color: #dc2626; }
+    details.ans { margin-top: 1rem; border-radius: 8px; overflow: hidden; }
+    details.ans summary { list-style: none; cursor: pointer; background: #f0f4ff; color: #4338ca; font-weight: 600; font-size: 0.88rem; padding: 0.6rem 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.5rem; user-select: none; }
+    details.ans summary::-webkit-details-marker { display: none; }
+    details.ans[open] summary { border-radius: 8px 8px 0 0; }
+    details.ans summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+    details.ans[open] summary::before { transform: rotate(90deg); }
+    .ans-body { background: #f8fafc; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 8px 8px; padding: 1rem 1.1rem; }
+    .ans-correct { color: #15803d; font-weight: 700; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .ans-item { font-size: 0.88rem; margin-bottom: 0.4rem; padding-left: 0.2rem; }
+    .ans-item .tick { color: #16a34a; }
+    .ans-item .cross { color: #dc2626; }
+    .concept { background: #eff6ff; border-left: 3px solid #3b82f6; padding: 0.65rem 0.85rem; margin-top: 0.75rem; font-size: 0.88rem; border-radius: 0 5px 5px 0; line-height: 1.55; }
+    .study-btn { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.85rem; padding: 0.4rem 0.9rem; background: #f0f4ff; border: 1px solid #c7d2fe; border-radius: 6px; color: #4f46e5; font-size: 0.83rem; font-weight: 600; text-decoration: none; }
+    .study-btn:hover { background: #e0e7ff; }
+    .test-footer { background: #1e293b; color: #94a3b8; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .test-nav { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .test-nav a { color: #94a3b8; text-decoration: none; font-size: 0.83rem; padding: 0.3rem 0.7rem; border: 1px solid #334155; border-radius: 5px; }
+    .test-nav a:hover { border-color: #94a3b8; color: white; }
+    @media (max-width: 600px) { .test-header, .test-body { padding: 1rem; } .question-card { padding: 1rem; } }
+  </style>
+</head>
+<body>
+
+<div class="test-header">
+  <div class="test-title">
+    <h1>COS 301 — Mock Test 2</h1>
+    <p>10 Questions &nbsp;·&nbsp; 30 Marks &nbsp;·&nbsp; Covers L03–L04, L08–L09, L11, L13, L15–L16</p>
+  </div>
+  <div class="score-box">
+    <div class="label">Progress</div>
+    <div class="value" id="score-top">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-top"></div></div>
+  </div>
+</div>
+
+<div class="test-body">
+  <div class="nav-links">
+    <a href="mock_test_1.html">← Test 1</a>
+    <a href="index.html">Study Notes</a>
+    <a href="mock_test_3.html">Test 3 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card" id="q1" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q1</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A software architect is choosing an architectural style for each new project below. Select the best-fit style from the word bank.</p>
+      <p><em>Word bank: Layered, Microservices, Pipe-and-Filter, Client-Server, Event-Driven</em></p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.8rem;"><strong>1.</strong> A desktop accounting application connects to a central database server. Multiple workstations request data and the server manages all data access and business rules. →
+        <select class="blank" data-correct="Client-Server">
+          <option value="">— select —</option><option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>2.</strong> A continuous integration system reads source code, runs a linter, then a compiler, then unit tests, then a code-coverage analyser — each step consumes the previous step's output. →
+        <select class="blank" data-correct="Pipe-and-Filter">
+          <option value="">— select —</option><option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>3.</strong> A large fintech platform has a Payments team, a Fraud Detection team, and a Notifications team — each team owns its own service, deploys independently, and calls others only via versioned APIs. →
+        <select class="blank" data-correct="Microservices">
+          <option value="">— select —</option><option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+      <p style="margin-bottom:0.8rem;"><strong>4.</strong> A smart home system: when a motion sensor fires, a security camera starts recording, a mobile notification is pushed, and exterior lights turn on — none of these components know about each other. →
+        <select class="blank" data-correct="Event-Driven">
+          <option value="">— select —</option><option>Layered</option><option>Microservices</option><option>Pipe-and-Filter</option><option>Client-Server</option><option>Event-Driven</option>
+        </select>
+      </p>
+    </div>
+    <details class="ans" data-qid="q1">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → Client-Server &nbsp; 2 → Pipe-and-Filter &nbsp; 3 → Microservices &nbsp; 4 → Event-Driven</div>
+        <div class="ans-item"><strong>Client-Server:</strong> Clients make requests; one central server manages shared resources and responds. The distinction from Microservices is that there is a single controlling server, not independent peer services.</div>
+        <div class="ans-item"><strong>Pipe-and-Filter:</strong> Sequential processing pipeline — output of step N is the input to step N+1. Each filter is independent and stateless. Classic for data transformation workflows like CI pipelines and ETL.</div>
+        <div class="ans-item"><strong>Microservices:</strong> Independently deployable units owning their own data. Teams are autonomous. Key markers: own database per service, communicate via API.</div>
+        <div class="ans-item"><strong>Event-Driven:</strong> Publishers emit events; subscribers react with no knowledge of each other. Key marker: "none of these components know about each other" — decoupled via an event bus/broker.</div>
+        <div class="concept">Distinguishing Client-Server from Microservices: Client-Server has a central, authoritative server that all clients depend on. Microservices have many peer services — each can be both a "client" and a "server" to others.</div>
+        <div class="score-reveal" id="sr-q1"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L11_architectural_design.html#styles" target="_blank" rel="noopener">📖 Architectural Styles →</a>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2" data-marks="1" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q2</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">1 mark</span>
+    </div>
+    <div class="q-stem">
+      <p><strong>In Git's internal object model, what exactly is a commit?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q2" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">A compressed diff of only the files that changed since the previous commit</span></label>
+      <label class="opt"><input type="radio" name="q2" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">A folder containing copies of every file that was modified in that change</span></label>
+      <label class="opt"><input type="radio" name="q2" value="C" data-correct="true"><span class="opt-label">C</span><span class="opt-text">A snapshot of the entire project's file tree at a point in time, with a pointer to the parent commit(s)</span></label>
+      <label class="opt"><input type="radio" name="q2" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">A remote backup of the current branch stored on the origin server</span></label>
+    </div>
+    <details class="ans" data-qid="q2">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: C</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>C:</strong> Git stores the full state of every tracked file as a tree of objects. Unchanged files are referenced by their hash (deduplication), not re-stored. The commit object also points to its parent(s), forming the DAG (Directed Acyclic Graph).</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A (delta/diff):</strong> This is how many older VCS (SVN, CVS) work. Git is snapshot-based, not delta-based. This is why Git operations like branching and log are fast — you don't need to reconstruct state by replaying diffs.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>B:</strong> Only changed files would still be a partial picture. Git stores the complete tree (though it re-uses blob objects for unchanged files).</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D:</strong> A commit is a local object. Pushing sends it to origin, but the commit itself exists locally first.</div>
+        <div class="concept">The snapshot model is foundational to understanding why <code>git checkout</code>, <code>git reset</code>, and branching are cheap operations — Git just moves a pointer to a different snapshot node in the DAG.</div>
+        <div class="score-reveal" id="sr-q2"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#git-commits" target="_blank" rel="noopener">📖 Git Commits &amp; the DAG →</a>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q3</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each testing tool to its primary purpose.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td><strong>JMeter</strong></td>
+        <td><select class="matching-select" data-correct="Load and performance testing of web applications and APIs">
+          <option value="">— select —</option>
+          <option>Load and performance testing of web applications and APIs</option>
+          <option>Security testing — identifying common web vulnerabilities (OWASP)</option>
+          <option>Assessing web page performance, accessibility, and SEO</option>
+          <option>Static code analysis and technical debt measurement</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>OWASP ZAP</strong></td>
+        <td><select class="matching-select" data-correct="Security testing — identifying common web vulnerabilities (OWASP)">
+          <option value="">— select —</option>
+          <option>Load and performance testing of web applications and APIs</option>
+          <option>Security testing — identifying common web vulnerabilities (OWASP)</option>
+          <option>Assessing web page performance, accessibility, and SEO</option>
+          <option>Static code analysis and technical debt measurement</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Google Lighthouse</strong></td>
+        <td><select class="matching-select" data-correct="Assessing web page performance, accessibility, and SEO">
+          <option value="">— select —</option>
+          <option>Load and performance testing of web applications and APIs</option>
+          <option>Security testing — identifying common web vulnerabilities (OWASP)</option>
+          <option>Assessing web page performance, accessibility, and SEO</option>
+          <option>Static code analysis and technical debt measurement</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>SonarQube</strong></td>
+        <td><select class="matching-select" data-correct="Static code analysis and technical debt measurement">
+          <option value="">— select —</option>
+          <option>Load and performance testing of web applications and APIs</option>
+          <option>Security testing — identifying common web vulnerabilities (OWASP)</option>
+          <option>Assessing web page performance, accessibility, and SEO</option>
+          <option>Static code analysis and technical debt measurement</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q3">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ JMeter → Load/performance &nbsp; OWASP ZAP → Security &nbsp; Lighthouse → Performance/accessibility/SEO &nbsp; SonarQube → Static analysis</div>
+        <div class="ans-item"><strong>JMeter (Apache):</strong> Open-source load testing tool. Simulates concurrent users sending HTTP requests. Measures throughput, response time, and error rates. Used for load and stress testing.</div>
+        <div class="ans-item"><strong>OWASP ZAP (Zed Attack Proxy):</strong> Free security testing tool that intercepts and analyses web traffic, actively scanning for OWASP Top-10 vulnerabilities like SQL injection and XSS.</div>
+        <div class="ans-item"><strong>Google Lighthouse:</strong> Automated auditing tool built into Chrome DevTools. Scores web pages on performance (Core Web Vitals), accessibility (WCAG), best practices, and SEO.</div>
+        <div class="ans-item"><strong>SonarQube:</strong> Runs static analysis on source code without executing it. Reports code smells, bugs, vulnerabilities, and tracks technical debt over time. Integrates with CI pipelines.</div>
+        <div class="concept">Common exam trap: confusing JMeter with SonarQube. JMeter tests the running application under load (dynamic, black-box). SonarQube analyses the source code without running it (static, white-box).</div>
+        <div class="score-reveal" id="sr-q3"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L13_non_functional_testing.html#performance" target="_blank" rel="noopener">📖 Performance Testing &amp; Tools →</a>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4" data-marks="3" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q4</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">3 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A Scrum team is beginning Sprint Planning. The Scrum Master reminds the team of the two key questions Sprint Planning must answer.</p>
+      <p><strong>Select the TWO questions that Sprint Planning is designed to answer. (Negative marking applies.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q4" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">Who will do the work and how long will it take each person?</span></label>
+      <label class="opt"><input type="checkbox" name="q4" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">What can be done in this sprint? (selecting from the Product Backlog)</span></label>
+      <label class="opt"><input type="checkbox" name="q4" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">How long should the sprint be?</span></label>
+      <label class="opt"><input type="checkbox" name="q4" value="D" data-correct="true"><span class="opt-label">D</span><span class="opt-text">How will the selected work be done? (the team's delivery plan)</span></label>
+      <label class="opt"><input type="checkbox" name="q4" value="E" data-correct="false"><span class="opt-label">E</span><span class="opt-text">What must be done in the entire project?</span></label>
+      <label class="opt"><input type="checkbox" name="q4" value="F" data-correct="false"><span class="opt-label">F</span><span class="opt-text">What impediments are blocking the team right now?</span></label>
+    </div>
+    <details class="ans" data-qid="q4">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: B and D</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>B — "What can be done?":</strong> The team and Product Owner select items from the top of the Product Backlog that can be completed within the sprint timebox. This creates the Sprint Backlog.</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>D — "How will it be done?":</strong> The Developers plan the technical work — breaking stories into tasks, identifying dependencies, and creating a delivery approach. This is owned by the Developers, not the Product Owner.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A:</strong> Individual task assignment is not mandated by Scrum. Teams are self-organising — who does what emerges during the sprint.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C:</strong> Sprint length is set once (usually 2–4 weeks) and is consistent across sprints. It is not decided during each Sprint Planning.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>E:</strong> The entire project scope is in the Product Backlog, managed by the Product Owner. Sprint Planning only deals with one sprint's worth of work.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>F:</strong> Impediments are addressed in the Daily Scrum and by the Scrum Master throughout the sprint — not during Sprint Planning.</div>
+        <div class="concept">Sprint Planning has two distinct parts: (1) "What" — the Product Owner presents priorities and the team selects items, forming the Sprint Goal; (2) "How" — Developers decompose selected items into tasks and estimate effort.</div>
+        <div class="score-reveal" id="sr-q4"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L15_agile_1.html#ceremonies" target="_blank" rel="noopener">📖 Ceremonies &amp; Artifacts →</a>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5" data-marks="2" data-type="fill-blank">
+    <div class="q-header">
+      <span class="q-num">Q5</span>
+      <span class="q-badge badge-fill">Fill in the Blank</span>
+      <span class="q-marks">2 marks (0.5 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>A domain model shows: <strong>Doctor</strong> and <strong>Patient</strong> have a many-to-many relationship. An <strong>Appointment</strong> entity sits between them, recording date, time, and diagnosis notes. A <strong>Hospital</strong> has many Doctors; if the Hospital closes, the Doctors' employment records are deleted too.</p>
+    </div>
+    <div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 1:</span>
+        <span>The <strong>Appointment</strong> entity is an example of an <input class="fill-input" data-correct="associative|association class|associative class|associative entity" placeholder="entity type"> class, because it resolves the many-to-many relationship and holds its own attributes.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 2:</span>
+        <span>The relationship between Doctor and Patient is <input class="fill-input" data-correct="many-to-many|many to many|m:n|m:n|*.*" placeholder="multiplicity"> (before Appointment resolves it).</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 3:</span>
+        <span>The relationship between Hospital and Doctor's employment record (deleted when Hospital closes) is a <input class="fill-input" data-correct="composition|composite" placeholder="relationship type">.</span>
+      </div>
+      <div class="fill-row">
+        <span class="fill-label">Blank 4:</span>
+        <span>The UML symbol used for composition is a <input class="fill-input" data-correct="filled diamond|solid diamond|black diamond|filled" placeholder="symbol description">.</span>
+      </div>
+    </div>
+    <details class="ans" data-qid="q5">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Blank 1: associative &nbsp;| Blank 2: many-to-many &nbsp;| Blank 3: composition &nbsp;| Blank 4: filled diamond</div>
+        <div class="ans-item"><strong>Associative class:</strong> Needed whenever a many-to-many relationship has its own attributes. Without it, there is nowhere to store the appointment-specific data (time, diagnosis).</div>
+        <div class="ans-item"><strong>Many-to-many:</strong> Before introducing Appointment, Doctor treats many Patients and Patient sees many Doctors. This is resolved by the associative class to two one-to-many relationships.</div>
+        <div class="ans-item"><strong>Composition (filled/solid diamond):</strong> The employment record's lifecycle is fully dependent on the Hospital entity. Hospital deleted → employment records deleted.</div>
+        <div class="ans-item"><strong>Aggregation (hollow diamond):</strong> For contrast, if the Doctor entity itself existed independently of the Hospital (e.g., freelance doctors), that would be aggregation.</div>
+        <div class="score-reveal" id="sr-q5"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L08_domain_modelling.html#relationships" target="_blank" rel="noopener">📖 Relationships &amp; Multiplicity →</a>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6" data-marks="4" data-type="matching">
+    <div class="q-header">
+      <span class="q-num">Q6</span>
+      <span class="q-badge badge-match">Matching</span>
+      <span class="q-marks">4 marks (1 per match)</span>
+    </div>
+    <div class="q-stem">
+      <p>Match each Agile/Scrum governance concept to its correct definition.</p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect match deducts marks.</div>
+    <table class="matching-table">
+      <tr>
+        <td><strong>Velocity</strong></td>
+        <td><select class="matching-select" data-correct="The amount of work (story points) a team completes per sprint, used for forecasting future sprints">
+          <option value="">— select —</option>
+          <option>The amount of work (story points) a team completes per sprint, used for forecasting future sprints</option>
+          <option>A chart showing remaining work over time; should trend to zero by sprint end</option>
+          <option>Criteria a backlog item must meet before the team may pull it into a sprint</option>
+          <option>A concise objective that gives the sprint a unified focus and purpose</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Burndown Chart</strong></td>
+        <td><select class="matching-select" data-correct="A chart showing remaining work over time; should trend to zero by sprint end">
+          <option value="">— select —</option>
+          <option>The amount of work (story points) a team completes per sprint, used for forecasting future sprints</option>
+          <option>A chart showing remaining work over time; should trend to zero by sprint end</option>
+          <option>Criteria a backlog item must meet before the team may pull it into a sprint</option>
+          <option>A concise objective that gives the sprint a unified focus and purpose</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Definition of Ready</strong></td>
+        <td><select class="matching-select" data-correct="Criteria a backlog item must meet before the team may pull it into a sprint">
+          <option value="">— select —</option>
+          <option>The amount of work (story points) a team completes per sprint, used for forecasting future sprints</option>
+          <option>A chart showing remaining work over time; should trend to zero by sprint end</option>
+          <option>Criteria a backlog item must meet before the team may pull it into a sprint</option>
+          <option>A concise objective that gives the sprint a unified focus and purpose</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td><strong>Sprint Goal</strong></td>
+        <td><select class="matching-select" data-correct="A concise objective that gives the sprint a unified focus and purpose">
+          <option value="">— select —</option>
+          <option>The amount of work (story points) a team completes per sprint, used for forecasting future sprints</option>
+          <option>A chart showing remaining work over time; should trend to zero by sprint end</option>
+          <option>Criteria a backlog item must meet before the team may pull it into a sprint</option>
+          <option>A concise objective that gives the sprint a unified focus and purpose</option>
+        </select></td>
+      </tr>
+    </table>
+    <details class="ans" data-qid="q6">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Velocity → story points/sprint &nbsp; Burndown → remaining work chart &nbsp; DoR → entry criteria &nbsp; Sprint Goal → sprint objective</div>
+        <div class="ans-item"><strong>Velocity:</strong> Measured in story points completed per sprint. After several sprints it stabilises and can be used to forecast release dates ("at this velocity we'll complete the backlog in ~5 more sprints").</div>
+        <div class="ans-item"><strong>Burndown Chart:</strong> X-axis = sprint days, Y-axis = remaining story points. Ideal trend is a diagonal line to zero. A flat or rising line signals the team is behind.</div>
+        <div class="ans-item"><strong>Definition of Ready (DoR):</strong> A backlog item is "ready" when: the acceptance criteria are written, it is estimated, dependencies are identified, and the team understands it well enough to start. DoR prevents half-baked stories from entering sprints.</div>
+        <div class="ans-item"><strong>Sprint Goal:</strong> A single sentence agreed during Sprint Planning that describes what value the sprint will deliver. It gives the team flexibility: if one story blocks, they can pivot to another story that still serves the same goal.</div>
+        <div class="concept">Don't confuse Definition of Ready (DoR) with Definition of Done (DoD). DoR = <em>entry</em> criteria for pulling a story into a sprint. DoD = <em>exit</em> criteria for declaring a story complete.</div>
+        <div class="score-reveal" id="sr-q6"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L16_agile_2.html#quick-ref" target="_blank" rel="noopener">📖 Quick Reference — Agile Concepts →</a>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q7</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A platform team is deploying a new API gateway. Requirements: (a) if the new version causes errors, the team must be able to roll back in under 30 seconds; (b) both the old and new versions must be able to run simultaneously so A/B testing is possible; (c) downtime is unacceptable.</p>
+      <p><strong>Which deployment strategy satisfies all three requirements?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q7" value="A" data-correct="true"><span class="opt-label">A</span><span class="opt-text">Blue-Green — maintain two identical environments, route all traffic to one; switch instantly by updating the load balancer</span></label>
+      <label class="opt"><input type="radio" name="q7" value="B" data-correct="false"><span class="opt-label">B</span><span class="opt-text">Canary — route a small percentage of real traffic to the new version first</span></label>
+      <label class="opt"><input type="radio" name="q7" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">Rolling — gradually replace old instances with new ones</span></label>
+      <label class="opt"><input type="radio" name="q7" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">Feature Flag — toggle the new feature on/off in code without redeployment</span></label>
+    </div>
+    <details class="ans" data-qid="q7">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: A — Blue-Green</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>A (Blue-Green):</strong> Both environments run simultaneously. Rollback = flip the load balancer back to Blue, which takes seconds. Zero downtime because traffic switches at the LB level, not at the instance level.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>B (Canary):</strong> Canary also satisfies zero-downtime and simultaneous versions, BUT rollback requires re-routing traffic percentage — it is not typically sub-30-second for full rollback. Also, the scenario doesn't mention gradual real-traffic testing, which is Canary's distinguishing advantage.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C (Rolling):</strong> Rolling updates instances one by one. During the update window, both versions serve traffic, but rollback requires re-rolling all instances back — not instantaneous.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D (Feature Flag):</strong> A code-level toggle, not a deployment strategy. Does not maintain two separate environments.</div>
+        <div class="concept">Blue-Green's key advantages: instant rollback and clean environment separation. Its cost: maintaining double the infrastructure at all times. Canary is better when you want gradual real-user validation; Blue-Green is better when you want instant switchover.</div>
+        <div class="score-reveal" id="sr-q7"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#cicd" target="_blank" rel="noopener">📖 CI/CD Deployment Strategies →</a>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8" data-marks="4" data-type="multi-mcq">
+    <div class="q-header">
+      <span class="q-num">Q8</span>
+      <span class="q-badge badge-multi">Multi-Select MCQ</span>
+      <span class="q-marks">4 marks</span>
+    </div>
+    <div class="q-stem">
+      <p>A developer writes an integration test for <code>OrderService</code>. The test calls the real <code>PaymentService</code>, the real <code>InventoryService</code>, and the real <code>CartService</code> — no mocks are used. The test asserts only that a successful order returns HTTP 200.</p>
+      <p><strong>Select ALL statements that correctly identify issues with this test. (Select all that apply.)</strong></p>
+    </div>
+    <div class="neg-warn">⚠ Negative Marking — each incorrect selection deducts marks.</div>
+    <div class="options">
+      <label class="opt"><input type="checkbox" name="q8" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">The test correctly simulates a fully controlled environment with fixed, predictable outputs</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">The test may produce non-deterministic results because real services have real state, network latency, and can fail independently</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">The test is invalid because integration tests must always use a test database, not production services</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="D" data-correct="true"><span class="opt-label">D</span><span class="opt-text">The test does not validate intermediate interactions — it does not check what happens when PaymentService fails mid-order</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="E" data-correct="false"><span class="opt-label">E</span><span class="opt-text">The test only verifies unit-level behaviour since it only tests the OrderService</span></label>
+      <label class="opt"><input type="checkbox" name="q8" value="F" data-correct="false"><span class="opt-label">F</span><span class="opt-text">The test correctly verifies the full integration path including all failure scenarios</span></label>
+    </div>
+    <details class="ans" data-qid="q8">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct: B and D</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>B — Non-determinism:</strong> Real services introduce unpredictable outcomes: network timeouts, database state from other tests, external payment gateway rate limits. The test can pass today and fail tomorrow with no code change.</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>D — No intermediate validation:</strong> The test only checks the happy path (HTTP 200). It does not verify: inventory rollback on payment failure, partial-order states, idempotency, or error message format. These are critical integration concerns.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A:</strong> The opposite is true — real services mean the environment is NOT controlled or predictable.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C:</strong> Integration tests CAN use real services in a staging environment. The issue is not which environment — it's that the test is non-deterministic and incomplete.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>E:</strong> The test calls three real services — it is absolutely an integration test, not a unit test. Unit tests isolate a single unit with mocks for all dependencies.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>F:</strong> Only the success path is tested. Full integration testing requires error, boundary, and failure scenario coverage.</div>
+        <div class="concept">Integration tests should test the contract between services, including failure modes. Mocks/stubs are typically used to control the environment and test specific scenarios (e.g., "payment gateway returns 402") — not to avoid real code paths.</div>
+        <div class="score-reveal" id="sr-q8"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L09_L10_testing.html#integration" target="_blank" rel="noopener">📖 Integration Testing →</a>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9" data-marks="4" data-type="jumbled">
+    <div class="q-header">
+      <span class="q-num">Q9</span>
+      <span class="q-badge badge-jumble">Jumbled Sentence</span>
+      <span class="q-marks">4 marks (1 per blank)</span>
+    </div>
+    <div class="q-stem">
+      <p>Fill in the blanks to correctly describe the three areas of Git and how files flow between them.</p>
+    </div>
+    <div class="jumbled-sentence">
+      <p style="margin-bottom:0.9rem;"><strong>1.</strong> When you edit a file in your project directory, the change exists in the
+        <select class="blank" data-correct="working directory">
+          <option value="">— select —</option><option>working directory</option><option>staging area</option><option>local repository</option><option>remote repository</option>
+        </select>
+        and Git considers it "modified" but not yet tracked for the next commit.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>2.</strong> Running <code>git add &lt;file&gt;</code> moves the snapshot of that file into the
+        <select class="blank" data-correct="staging area">
+          <option value="">— select —</option><option>working directory</option><option>staging area</option><option>local repository</option><option>remote repository</option>
+        </select>
+        (also called the index), marking it as part of the next commit.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>3.</strong> Running <code>git commit</code> saves the staged snapshot permanently into the
+        <select class="blank" data-correct="local repository">
+          <option value="">— select —</option><option>working directory</option><option>staging area</option><option>local repository</option><option>remote repository</option>
+        </select>
+        as a new commit object in the DAG.
+      </p>
+      <p style="margin-bottom:0.9rem;"><strong>4.</strong> Running <code>git push</code> uploads the new commits from the local repository to the
+        <select class="blank" data-correct="remote repository">
+          <option value="">— select —</option><option>working directory</option><option>staging area</option><option>local repository</option><option>remote repository</option>
+        </select>
+        (e.g., GitHub/origin).
+      </p>
+    </div>
+    <details class="ans" data-qid="q9">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ 1 → working directory &nbsp; 2 → staging area &nbsp; 3 → local repository &nbsp; 4 → remote repository</div>
+        <div class="ans-item"><strong>Working Directory:</strong> Your actual files on disk. Modified files here are tracked by Git but not yet queued for commit. <code>git status</code> shows them as "Changes not staged".</div>
+        <div class="ans-item"><strong>Staging Area (Index):</strong> A preparation zone. <code>git add</code> snapshots the file's current state into the index. You can stage some files but not others, giving fine-grained control over commits.</div>
+        <div class="ans-item"><strong>Local Repository (.git folder):</strong> The permanent history store. Each <code>git commit</code> creates a new immutable commit object pointing to a tree of blobs.</div>
+        <div class="ans-item"><strong>Remote Repository (origin):</strong> A shared server copy. <code>git push</code> sends local commits to origin; <code>git pull/fetch</code> retrieves remote commits.</div>
+        <div class="concept">The staging area is Git's unique advantage over simpler VCS tools. It lets you craft precise, atomic commits — stage only the changes relevant to one logical unit of work, even if multiple files changed at the same time.</div>
+        <div class="score-reveal" id="sr-q9"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L04_version_control.html#three-areas" target="_blank" rel="noopener">📖 The Three Areas of Git →</a>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q10" data-marks="2" data-type="single-mcq">
+    <div class="q-header">
+      <span class="q-num">Q10</span>
+      <span class="q-badge badge-mcq">Single MCQ</span>
+      <span class="q-marks">2 marks</span>
+    </div>
+    <div class="q-stem">
+      <p><strong>In Object-Oriented Software Engineering (OOSE), how is the world fundamentally viewed?</strong></p>
+    </div>
+    <div class="options">
+      <label class="opt"><input type="radio" name="q10" value="A" data-correct="false"><span class="opt-label">A</span><span class="opt-text">As a hierarchy of procedures that transform data through sequential steps</span></label>
+      <label class="opt"><input type="radio" name="q10" value="B" data-correct="true"><span class="opt-label">B</span><span class="opt-text">As a collection of objects that interact with each other to achieve system behaviour</span></label>
+      <label class="opt"><input type="radio" name="q10" value="C" data-correct="false"><span class="opt-label">C</span><span class="opt-text">As a set of mathematical functions that map inputs to outputs without side effects</span></label>
+      <label class="opt"><input type="radio" name="q10" value="D" data-correct="false"><span class="opt-label">D</span><span class="opt-text">As a relational database where entities are linked by foreign key constraints</span></label>
+    </div>
+    <details class="ans" data-qid="q10">
+      <summary>▶ Show Answer</summary>
+      <div class="ans-body">
+        <div class="ans-correct">✓ Correct Answer: B</div>
+        <div class="ans-item"><span class="tick">✓</span> <strong>B:</strong> OOSE views the world as objects — entities that encapsulate state (attributes) and behaviour (methods) — interacting via messages/method calls to produce system behaviour. This is the foundational paradigm of OO design.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>A:</strong> This describes procedural/structured programming — the paradigm OOSE was designed to improve upon by moving from "procedures acting on data" to "objects responsible for their own data and behaviour."</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>C:</strong> This describes functional programming — no mutable state, pure functions. The opposite of the stateful, message-passing OO model.</div>
+        <div class="ans-item"><span class="cross">✗</span> <strong>D:</strong> A relational model — a data storage paradigm, not a software design worldview.</div>
+        <div class="concept">OOSE (Ivar Jacobson) introduced use cases as the mechanism for capturing how objects collaborate to deliver system behaviour. The key insight: objects are first-class citizens with identity, state, and responsibility — not passive data containers.</div>
+        <div class="score-reveal" id="sr-q10"></div>
+      </div>
+    </details>
+    <a class="study-btn" href="L03_systems_and_uml.html#uml-diagrams" target="_blank" rel="noopener">📖 UML Diagram Types →</a>
+  </div>
+
+</div>
+
+<div class="test-footer">
+  <div class="score-box">
+    <div class="label">Final Score</div>
+    <div class="value" id="score-bottom">0 / 30</div>
+    <div class="progress-track"><div class="progress-fill" id="prog-bottom"></div></div>
+  </div>
+  <div class="test-nav">
+    <a href="mock_test_1.html">← Test 1</a>
+    <a href="mock_test_3.html">Test 3 →</a>
+    <a href="mock_test_4.html">Test 4 →</a>
+    <a href="mock_test_5.html">Test 5 →</a>
+    <a href="mock_test_combined.html">Combined →</a>
+  </div>
+</div>
+
+<script>
+  const TOTAL_MARKS = 30;
+  const TOTAL_QS = 10;
+  let answered = new Set();
+  let earned = 0;
+  function updateDisplay() {
+    const pct = (answered.size / TOTAL_QS) * 100;
+    const s = earned.toFixed(1).replace(/\.0$/,'') + ' / ' + TOTAL_MARKS;
+    document.getElementById('score-top').textContent = s;
+    document.getElementById('score-bottom').textContent = s;
+    document.getElementById('prog-top').style.width = pct + '%';
+    document.getElementById('prog-bottom').style.width = pct + '%';
+  }
+  function calcScore(card) {
+    const type = card.dataset.type, marks = parseFloat(card.dataset.marks), qid = card.id;
+    let pts = 0;
+    if (type === 'single-mcq') {
+      const sel = card.querySelector('input[type=radio]:checked');
+      if (sel && sel.dataset.correct === 'true') pts = marks;
+      card.querySelectorAll('.opt').forEach(o => {
+        const i = o.querySelector('input');
+        if (i.dataset.correct === 'true') o.classList.add('revealed-correct');
+        else if (i.checked) o.classList.add('revealed-wrong');
+      });
+    } else if (type === 'multi-mcq') {
+      const boxes = card.querySelectorAll('input[type=checkbox]'), n = boxes.length, per = marks / n;
+      boxes.forEach(b => {
+        if (b.checked) { if (b.dataset.correct === 'true') pts += per; else pts -= per; }
+        const o = b.closest('.opt');
+        if (b.dataset.correct === 'true') o.classList.add('revealed-correct');
+        else if (b.checked) o.classList.add('revealed-wrong');
+      });
+      pts = Math.max(0, pts);
+    } else if (type === 'matching') {
+      const sels = card.querySelectorAll('select.matching-select'), n = sels.length, per = marks / n;
+      sels.forEach(s => {
+        if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); }
+        else if (s.value !== '') { pts -= per; s.classList.add('revealed-wrong'); }
+        s.disabled = true;
+      });
+      pts = Math.max(0, pts);
+    } else if (type === 'jumbled') {
+      const sels = card.querySelectorAll('select.blank'), n = sels.length, per = marks / n;
+      sels.forEach(s => {
+        if (s.value === s.dataset.correct) { pts += per; s.classList.add('revealed-correct'); }
+        else if (s.value !== '') s.classList.add('revealed-wrong');
+        s.disabled = true;
+      });
+    } else if (type === 'fill-blank') {
+      const inputs = card.querySelectorAll('input.fill-input'), n = inputs.length, per = marks / n;
+      inputs.forEach(i => {
+        const uv = i.value.trim().toLowerCase(), acc = i.dataset.correct.toLowerCase().split('|');
+        const ok = acc.some(a => uv === a || (uv.length > 2 && a.includes(uv)) || (a.length > 2 && uv.includes(a)));
+        if (ok) { pts += per; i.classList.add('revealed-correct'); } else i.classList.add('revealed-wrong');
+        i.disabled = true;
+      });
+    }
+    return Math.round(pts * 10) / 10;
+  }
+  document.querySelectorAll('details.ans').forEach(det => {
+    det.addEventListener('toggle', () => {
+      if (!det.open) return;
+      const card = det.closest('.question-card'), qid = card.id;
+      if (answered.has(qid)) return;
+      const pts = calcScore(card);
+      earned += pts; answered.add(qid);
+      const rev = document.getElementById('sr-' + qid);
+      if (rev) {
+        const total = parseFloat(card.dataset.marks);
+        rev.textContent = 'You scored: ' + pts.toFixed(1).replace(/\.0$/,'') + ' / ' + total + ' marks';
+        rev.style.cssText = 'display:block;padding:0.45rem 0.75rem;border-radius:6px;font-size:0.88rem;font-weight:600;margin-top:0.65rem;border:1px solid ' +
+          (pts===total?'#86efac':pts>0?'#fde68a':'#fca5a5') + ';background:' +
+          (pts===total?'#f0fdf4':pts>0?'#fefce8':'#fef2f2') + ';color:' +
+          (pts===total?'#15803d':pts>0?'#92400e':'#b91c1c');
+      }
+      updateDisplay();
+    });
+  });
+  updateDisplay();
+</script>
+</body>
+</html>
