@@ -197,6 +197,76 @@
         <p>Only use cases (and relationships between them) belong <strong>inside</strong> the system boundary box. <strong>All actors must remain outside</strong>, without exception.</p>
       </div>
 
+      <!-- UML DIAGRAM -->
+      <h3>Example UML Use Case Diagram</h3>
+      <p>The diagram below shows a library system with two actors, three use cases inside the system boundary, and an association line connecting each actor to the use cases they initiate.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Figure 1 — Library System: actors, system boundary, associations</div>
+        <svg viewBox="0 0 520 310" width="100%" style="max-width:520px;display:block;margin:0 auto;" aria-label="UML Use Case Diagram for a Library System">
+          <defs>
+            <!-- hollow arrowhead for generalization (points toward parent) -->
+            <marker id="uc-inherit" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
+              <polygon points="0,0 11,5 0,10" fill="#faf7f2" stroke="#4a3220" stroke-width="1.4"/>
+            </marker>
+          </defs>
+
+          <!-- System boundary -->
+          <rect x="138" y="14" width="270" height="278" rx="4"
+                fill="none" stroke="#6088a8" stroke-width="1.8"/>
+          <text x="273" y="10" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="700" fill="#6088a8" letter-spacing="0.08em">LIBRARY SYSTEM</text>
+
+          <!-- Use case: Search Catalogue -->
+          <ellipse cx="273" cy="68" rx="82" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="273" y="72" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Search Catalogue</text>
+
+          <!-- Use case: Borrow Book -->
+          <ellipse cx="210" cy="170" rx="62" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="210" y="174" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Borrow Book</text>
+
+          <!-- Use case: Return Book -->
+          <ellipse cx="346" cy="255" rx="60" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="346" y="259" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Return Book</text>
+
+          <!-- Patron stick figure (left, primary actor) -->
+          <circle cx="62" cy="90" r="13" fill="none" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="62" y1="103" x2="62" y2="140" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="40" y1="120" x2="84" y2="120" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="62" y1="140" x2="44" y2="165" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="62" y1="140" x2="80" y2="165" stroke="#4a3220" stroke-width="1.5"/>
+          <text x="62" y="182" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="600" fill="#4a3220">Patron</text>
+
+          <!-- Admin stick figure (left, below Patron) -->
+          <circle cx="62" cy="232" r="13" fill="none" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="62" y1="245" x2="62" y2="282" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="40" y1="262" x2="84" y2="262" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="62" y1="282" x2="44" y2="305" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="62" y1="282" x2="80" y2="305" stroke="#4a3220" stroke-width="1.5"/>
+          <text x="62" y="308" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="600" fill="#4a3220">Admin</text>
+
+          <!-- Inheritance: Admin IS-A Patron (hollow arrowhead pointing to Patron) -->
+          <line x1="62" y1="219" x2="62" y2="196" stroke="#4a3220" stroke-width="1.5"
+                marker-end="url(#uc-inherit)"/>
+
+          <!-- Associations: Patron → Search Catalogue -->
+          <line x1="75" y1="100" x2="191" y2="75" stroke="#4a3220" stroke-width="1.4"/>
+          <!-- Patron → Borrow Book -->
+          <line x1="75" y1="115" x2="148" y2="162" stroke="#4a3220" stroke-width="1.4"/>
+          <!-- Admin → Return Book -->
+          <line x1="75" y1="245" x2="286" y2="252" stroke="#4a3220" stroke-width="1.4"/>
+
+          <!-- Legend annotations -->
+          <text x="62" y="198" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="9" fill="#7a6a56" font-style="italic">IS-A</text>
+        </svg>
+      </div>
+
       <!-- 5 -->
       <h2 id="relationships">Advanced Relationships</h2>
       <p>To prevent diagrams from becoming overly complex, three advanced relationship types are used:</p>
@@ -208,12 +278,80 @@
         <li><strong>Notation:</strong> Solid line with a <strong>hollow arrowhead</strong> pointing to the generalized (parent) element.</li>
       </ul>
 
+      <!-- Generalization diagram -->
+      <div class="diagram-box">
+        <div class="diagram-label">Figure 2 — Generalization: Admin IS-A Patron (hollow arrowhead points to parent)</div>
+        <svg viewBox="0 0 340 130" width="100%" style="max-width:340px;display:block;margin:0 auto;" aria-label="Generalization relationship diagram">
+          <defs>
+            <marker id="g-inherit" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
+              <polygon points="0,0 11,5 0,10" fill="#faf7f2" stroke="#4a3220" stroke-width="1.4"/>
+            </marker>
+          </defs>
+
+          <!-- Patron actor -->
+          <circle cx="80" cy="35" r="13" fill="none" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="80" y1="48" x2="80" y2="78" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="60" y1="62" x2="100" y2="62" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="80" y1="78" x2="64" y2="100" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="80" y1="78" x2="96" y2="100" stroke="#4a3220" stroke-width="1.5"/>
+          <text x="80" y="118" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" font-weight="600" fill="#4a3220">Patron</text>
+
+          <!-- Admin actor -->
+          <circle cx="260" cy="35" r="13" fill="none" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="260" y1="48" x2="260" y2="78" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="240" y1="62" x2="280" y2="62" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="260" y1="78" x2="244" y2="100" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="260" y1="78" x2="276" y2="100" stroke="#4a3220" stroke-width="1.5"/>
+          <text x="260" y="118" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" font-weight="600" fill="#4a3220">Admin</text>
+
+          <!-- Inheritance arrow: Admin → Patron (child to parent, hollow arrowhead at parent) -->
+          <line x1="247" y1="35" x2="103" y2="35" stroke="#4a3220" stroke-width="1.5"
+                marker-end="url(#g-inherit)"/>
+
+          <!-- Label -->
+          <text x="175" y="28" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="10" fill="#7a6a56" font-style="italic">IS-A (generalization)</text>
+        </svg>
+      </div>
+
       <h3>&laquo;include&raquo; (Inclusion)</h3>
       <p>Indicates that one use case <strong>requires another as a mandatory sub-process</strong>.</p>
       <ul>
         <li><em>Example:</em> "Checkout" &laquo;include&raquo;s "Process Payment" — you cannot check out without processing payment.</li>
         <li><strong>Notation:</strong> Dashed arrow pointing <em>to</em> the included use case.</li>
       </ul>
+
+      <!-- Include diagram -->
+      <div class="diagram-box">
+        <div class="diagram-label">Figure 3 — «include»: arrow points TO the mandatory sub-process</div>
+        <svg viewBox="0 0 400 90" width="100%" style="max-width:400px;display:block;margin:0 auto;" aria-label="Include relationship diagram">
+          <defs>
+            <marker id="inc-arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <path d="M0,0 L9,4 L0,8" fill="none" stroke="#8a6030" stroke-width="1.6"/>
+            </marker>
+          </defs>
+
+          <!-- Checkout -->
+          <ellipse cx="100" cy="45" rx="68" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="100" y="49" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">Checkout</text>
+
+          <!-- Process Payment -->
+          <ellipse cx="300" cy="45" rx="82" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="300" y="49" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">Process Payment</text>
+
+          <!-- Dashed arrow Checkout → Process Payment -->
+          <line x1="168" y1="45" x2="209" y2="45" stroke="#8a6030" stroke-width="1.5"
+                stroke-dasharray="5,3" marker-end="url(#inc-arr)"/>
+
+          <!-- Stereotype label -->
+          <text x="188" y="37" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="10" fill="#8a6030">«include»</text>
+        </svg>
+      </div>
 
       <h3>&laquo;extend&raquo; (Extension)</h3>
       <p>Indicates that one use case can <strong>optionally continue the process</strong> of another.</p>
@@ -222,12 +360,126 @@
         <li><strong>Notation:</strong> Dashed arrow pointing <em>from</em> the extension use case <em>to</em> the base use case.</li>
       </ul>
 
+      <!-- Extend diagram -->
+      <div class="diagram-box">
+        <div class="diagram-label">Figure 4 — «extend»: arrow points TO the base use case (extension is optional)</div>
+        <svg viewBox="0 0 420 90" width="100%" style="max-width:420px;display:block;margin:0 auto;" aria-label="Extend relationship diagram">
+          <defs>
+            <marker id="ext-arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <path d="M0,0 L9,4 L0,8" fill="none" stroke="#8a6030" stroke-width="1.6"/>
+            </marker>
+          </defs>
+
+          <!-- Apply Coupon (extension) -->
+          <ellipse cx="110" cy="45" rx="80" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="110" y="49" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">Apply Coupon</text>
+
+          <!-- Checkout (base) -->
+          <ellipse cx="320" cy="45" rx="68" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="320" y="49" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">Checkout</text>
+
+          <!-- Dashed arrow Apply Coupon → Checkout (extension → base) -->
+          <line x1="190" y1="45" x2="243" y2="45" stroke="#8a6030" stroke-width="1.5"
+                stroke-dasharray="5,3" marker-end="url(#ext-arr)"/>
+
+          <!-- Stereotype label -->
+          <text x="216" y="37" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="10" fill="#8a6030">«extend»</text>
+        </svg>
+      </div>
+
       <div class="callout tip">
         <div class="callout-label">include vs. extend — Quick Rule</div>
         <ul>
           <li><strong>&laquo;include&raquo;</strong> → mandatory step, arrow points <em>to</em> what is included.</li>
           <li><strong>&laquo;extend&raquo;</strong> → optional behaviour, arrow points <em>to</em> the base use case being extended.</li>
         </ul>
+      </div>
+
+      <!-- Combined reference diagram -->
+      <h3>All Three Relationships Together</h3>
+      <p>The diagram below shows all three relationship types in one example — useful for exam revision.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Figure 5 — Complete example: generalization, «include», and «extend» in one diagram</div>
+        <svg viewBox="0 0 580 340" width="100%" style="max-width:580px;display:block;margin:0 auto;" aria-label="Combined UML relationship diagram">
+          <defs>
+            <marker id="c-inherit" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
+              <polygon points="0,0 11,5 0,10" fill="#faf7f2" stroke="#4a3220" stroke-width="1.4"/>
+            </marker>
+            <marker id="c-open" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+              <path d="M0,0 L9,4 L0,8" fill="none" stroke="#8a6030" stroke-width="1.6"/>
+            </marker>
+          </defs>
+
+          <!-- System boundary -->
+          <rect x="145" y="10" width="360" height="322" rx="4"
+                fill="none" stroke="#6088a8" stroke-width="1.8"/>
+          <text x="325" y="7" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="700" fill="#6088a8" letter-spacing="0.08em">SHOP SYSTEM</text>
+
+          <!-- Use case: Browse Products -->
+          <ellipse cx="325" cy="65" rx="84" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="325" y="69" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Browse Products</text>
+
+          <!-- Use case: Checkout -->
+          <ellipse cx="255" cy="180" rx="66" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="255" y="184" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Checkout</text>
+
+          <!-- Use case: Process Payment (included by Checkout) -->
+          <ellipse cx="255" cy="295" rx="82" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="255" y="299" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Process Payment</text>
+
+          <!-- Use case: Apply Coupon (extends Checkout) -->
+          <ellipse cx="435" cy="180" rx="72" ry="22" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="435" y="184" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" fill="#2c2218">Apply Coupon</text>
+
+          <!-- Patron actor -->
+          <circle cx="65" cy="100" r="13" fill="none" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="65" y1="113" x2="65" y2="150" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="44" y1="130" x2="86" y2="130" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="65" y1="150" x2="47" y2="174" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="65" y1="150" x2="83" y2="174" stroke="#4a3220" stroke-width="1.5"/>
+          <text x="65" y="191" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="600" fill="#4a3220">Customer</text>
+
+          <!-- VIP actor (inherits Customer) -->
+          <circle cx="65" cy="260" r="13" fill="none" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="65" y1="273" x2="65" y2="310" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="44" y1="290" x2="86" y2="290" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="65" y1="310" x2="47" y2="325" stroke="#4a3220" stroke-width="1.5"/>
+          <line x1="65" y1="310" x2="83" y2="325" stroke="#4a3220" stroke-width="1.5"/>
+          <text x="65" y="335" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="600" fill="#4a3220">VIP Customer</text>
+
+          <!-- Generalization: VIP → Customer (hollow arrowhead at Customer) -->
+          <line x1="65" y1="247" x2="65" y2="207" stroke="#4a3220" stroke-width="1.5"
+                marker-end="url(#c-inherit)"/>
+          <text x="80" y="230" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="9" fill="#7a6a56" font-style="italic">IS-A</text>
+
+          <!-- Associations -->
+          <line x1="78" y1="110" x2="241" y2="72" stroke="#4a3220" stroke-width="1.4"/>
+          <line x1="78" y1="128" x2="189" y2="175" stroke="#4a3220" stroke-width="1.4"/>
+
+          <!-- «include»: Checkout → Process Payment (dashed, ↓) -->
+          <line x1="255" y1="202" x2="255" y2="270" stroke="#8a6030" stroke-width="1.5"
+                stroke-dasharray="5,3" marker-end="url(#c-open)"/>
+          <text x="263" y="240" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="10" fill="#8a6030">«include»</text>
+
+          <!-- «extend»: Apply Coupon → Checkout (dashed, ←) -->
+          <line x1="363" y1="180" x2="322" y2="180" stroke="#8a6030" stroke-width="1.5"
+                stroke-dasharray="5,3" marker-end="url(#c-open)"/>
+          <text x="335" y="171" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="10" fill="#8a6030">«extend»</text>
+        </svg>
       </div>
 
       <!-- 6 -->
@@ -299,6 +551,63 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Traceability diagram -->
+      <h3>Traceability Diagram</h3>
+      <p>The diagram below shows how requirements map to use cases — a many-to-many relationship made explicit.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Figure 6 — Traceability: requirements (left) mapped to use cases (right)</div>
+        <svg viewBox="0 0 480 160" width="100%" style="max-width:480px;display:block;margin:0 auto;" aria-label="Traceability matrix diagram">
+
+          <!-- Requirements column header -->
+          <rect x="10" y="10" width="140" height="28" rx="3" fill="#4a3220"/>
+          <text x="80" y="28" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="600" fill="#e8ddd0">Requirements</text>
+
+          <!-- Use Cases column header -->
+          <rect x="330" y="10" width="140" height="28" rx="3" fill="#4a3220"/>
+          <text x="400" y="28" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="11" font-weight="600" fill="#e8ddd0">Use Cases</text>
+
+          <!-- FR1 box -->
+          <rect x="10" y="55" width="140" height="34" rx="3" fill="#faf7f2" stroke="#cfc0a4" stroke-width="1.2"/>
+          <text x="80" y="76" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">FR1</text>
+
+          <!-- FR2 box -->
+          <rect x="10" y="110" width="140" height="34" rx="3" fill="#faf7f2" stroke="#cfc0a4" stroke-width="1.2"/>
+          <text x="80" y="131" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">FR2</text>
+
+          <!-- UC1 box -->
+          <rect x="330" y="38" width="140" height="34" rx="3" fill="#faf7f2" stroke="#cfc0a4" stroke-width="1.2"/>
+          <text x="400" y="59" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">UC1: View</text>
+
+          <!-- UC2 box -->
+          <rect x="330" y="83" width="140" height="34" rx="3" fill="#faf7f2" stroke="#cfc0a4" stroke-width="1.2"/>
+          <text x="400" y="104" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">UC2: Post</text>
+
+          <!-- UC3 box -->
+          <rect x="330" y="128" width="140" height="34" rx="3" fill="#faf7f2" stroke="#cfc0a4" stroke-width="1.2"/>
+          <text x="400" y="149" text-anchor="middle" font-family="'Helvetica Neue',Arial,sans-serif"
+                font-size="12" fill="#2c2218">UC3: Delete</text>
+
+          <!-- Arrows: FR1 → UC1 -->
+          <line x1="150" y1="68" x2="325" y2="52" stroke="#7a9a58" stroke-width="1.5"/>
+          <!-- FR1 → UC2 -->
+          <line x1="150" y1="72" x2="325" y2="97" stroke="#7a9a58" stroke-width="1.5"/>
+          <!-- FR2 → UC3 -->
+          <line x1="150" y1="125" x2="325" y2="143" stroke="#c49040" stroke-width="1.5"/>
+
+          <!-- Arrow dots at FR end -->
+          <circle cx="150" cy="68" r="3" fill="#7a9a58"/>
+          <circle cx="150" cy="72" r="3" fill="#7a9a58"/>
+          <circle cx="150" cy="125" r="3" fill="#c49040"/>
+        </svg>
       </div>
 
       <div class="callout key">
