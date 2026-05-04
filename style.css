@@ -519,6 +519,70 @@ hr {
   border-radius: 20px;
 }
 
+/* ── Interactive Diagrams ─────────────────────────────────── */
+.diagram-box {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0 1.75rem;
+  overflow-x: auto;
+}
+.diagram-label {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+.diagram-box svg { display: block; }
+
+.git-dag-controls {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+}
+.dag-btn {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.38em 0.95em;
+  border-radius: 4px;
+  border: 1.5px solid var(--accent);
+  background: var(--bg-white);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.dag-btn:hover:not(:disabled) { background: var(--accent); color: #f5ede0; }
+.dag-btn:disabled { opacity: 0.35; cursor: default; }
+.dag-step-counter {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.dag-desc-box {
+  background: var(--note-bg);
+  border-left: 3px solid var(--note-border);
+  border-radius: 0 4px 4px 0;
+  padding: 0.65rem 1rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.88rem;
+  color: var(--note-text);
+  min-height: 2.6rem;
+  line-height: 1.6;
+}
+.dag-desc-box code {
+  font-size: 0.83em;
+  background: rgba(0,0,0,0.07);
+  border: none;
+  padding: 0.1em 0.3em;
+}
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .sidebar {

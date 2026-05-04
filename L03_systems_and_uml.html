@@ -179,14 +179,245 @@
       <h3>Class Diagram — In Focus</h3>
       <p>Shows the <strong>static</strong> structure of a system. It includes the system's classes, their attributes, their methods (operations), and the relationships between them (like inheritance and associations). Domain models are a special case of class diagrams — they show only classes and relationships, without operations.</p>
 
+      <div class="diagram-box">
+        <div class="diagram-label">Example — Class Diagram (Shape hierarchy)</div>
+        <svg viewBox="0 0 580 270" style="width:100%;max-width:580px">
+          <defs>
+            <marker id="cls-inherit" markerWidth="12" markerHeight="10" refX="11" refY="5" orient="auto">
+              <polygon points="0 0, 11 5, 0 10" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+            </marker>
+            <marker id="cls-assoc" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#8a6030"/>
+            </marker>
+          </defs>
+
+          <!-- Shape (parent) -->
+          <rect x="195" y="20" width="180" height="105" rx="3" fill="#faf7f2" stroke="#8a6030" stroke-width="1.8"/>
+          <rect x="195" y="20" width="180" height="28" rx="3" fill="#e8e0d0" stroke="#8a6030" stroke-width="1.8"/>
+          <rect x="195" y="47" width="180" height="1" fill="#cfc0a4"/>
+          <rect x="195" y="47" width="180" height="38" fill="none" stroke="none"/>
+          <line x1="195" y1="85" x2="375" y2="85" stroke="#cfc0a4" stroke-width="1"/>
+          <text x="285" y="39" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="12" font-weight="700" fill="#4a3220">Shape</text>
+          <text x="201" y="62" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">- colour: String</text>
+          <text x="201" y="76" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">- x, y: int</text>
+          <text x="201" y="98" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">+ area(): float</text>
+          <text x="201" y="112" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">+ draw(): void</text>
+
+          <!-- Circle (child) -->
+          <rect x="40" y="175" width="165" height="80" rx="3" fill="#faf7f2" stroke="#8a6030" stroke-width="1.8"/>
+          <rect x="40" y="175" width="165" height="28" rx="3" fill="#e8e0d0" stroke="#8a6030" stroke-width="1.8"/>
+          <line x1="40" y1="202" x2="205" y2="202" stroke="#cfc0a4" stroke-width="1"/>
+          <line x1="40" y1="225" x2="205" y2="225" stroke="#cfc0a4" stroke-width="1"/>
+          <text x="122" y="193" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="12" font-weight="700" fill="#4a3220">Circle</text>
+          <text x="46" y="215" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">- radius: float</text>
+          <text x="46" y="239" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">+ area(): float</text>
+
+          <!-- Rectangle (child) -->
+          <rect x="365" y="175" width="175" height="80" rx="3" fill="#faf7f2" stroke="#8a6030" stroke-width="1.8"/>
+          <rect x="365" y="175" width="175" height="28" rx="3" fill="#e8e0d0" stroke="#8a6030" stroke-width="1.8"/>
+          <line x1="365" y1="202" x2="540" y2="202" stroke="#cfc0a4" stroke-width="1"/>
+          <line x1="365" y1="225" x2="540" y2="225" stroke="#cfc0a4" stroke-width="1"/>
+          <text x="452" y="193" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="12" font-weight="700" fill="#4a3220">Rectangle</text>
+          <text x="371" y="215" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">- width, height: float</text>
+          <text x="371" y="239" font-family="Courier New,monospace" font-size="10.5" fill="#4a3220">+ area(): float</text>
+
+          <!-- Inheritance arrows (open triangle toward parent) -->
+          <!-- Circle → Shape -->
+          <line x1="122" y1="175" x2="240" y2="125" stroke="#8a6030" stroke-width="1.5" marker-end="url(#cls-inherit)"/>
+          <!-- Rectangle → Shape -->
+          <line x1="452" y1="175" x2="330" y2="125" stroke="#8a6030" stroke-width="1.5" marker-end="url(#cls-inherit)"/>
+
+          <!-- «extends» labels -->
+          <text x="165" y="153" font-family="Helvetica Neue,Arial,sans-serif" font-size="9.5" fill="#7a6a56" font-style="italic">extends</text>
+          <text x="358" y="153" font-family="Helvetica Neue,Arial,sans-serif" font-size="9.5" fill="#7a6a56" font-style="italic">extends</text>
+        </svg>
+      </div>
+
       <h3>Use Case Diagram — In Focus</h3>
       <p>Illustrates how external entities (<strong>actors</strong>) interact with the system, highlighting the user's goals and the system's high-level functionality. Think of it as the "menu" of what the system can do.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Example — Use Case Diagram (Library System)</div>
+        <svg viewBox="0 0 660 320" style="width:100%;max-width:660px">
+          <!-- System boundary -->
+          <rect x="150" y="20" width="360" height="280" rx="4" fill="none" stroke="#8a6030" stroke-width="1.8" stroke-dasharray="7 4"/>
+          <text x="330" y="14" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" font-weight="700" fill="#8a6030">Library Management System</text>
+
+          <!-- Actor: Student (left) -->
+          <circle cx="62" cy="95" r="12" fill="none" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="62" y1="107" x2="62" y2="145" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="62" y1="120" x2="38" y2="135" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="62" y1="120" x2="86" y2="135" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="62" y1="145" x2="44" y2="165" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="62" y1="145" x2="80" y2="165" stroke="#4a3220" stroke-width="1.8"/>
+          <text x="62" y="180" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" font-weight="700" fill="#4a3220">Student</text>
+
+          <!-- Actor: Librarian (right) -->
+          <circle cx="598" cy="155" r="12" fill="none" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="598" y1="167" x2="598" y2="205" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="598" y1="180" x2="574" y2="195" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="598" y1="180" x2="622" y2="195" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="598" y1="205" x2="580" y2="225" stroke="#4a3220" stroke-width="1.8"/>
+          <line x1="598" y1="205" x2="616" y2="225" stroke="#4a3220" stroke-width="1.8"/>
+          <text x="598" y="240" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" font-weight="700" fill="#4a3220">Librarian</text>
+
+          <!-- Use cases -->
+          <!-- Browse Catalogue -->
+          <ellipse cx="285" cy="80" rx="90" ry="26" fill="#f5ede0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="285" y="84" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Browse Catalogue</text>
+
+          <!-- Borrow Book -->
+          <ellipse cx="285" cy="160" rx="82" ry="26" fill="#f5ede0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="285" y="164" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Borrow Book</text>
+
+          <!-- Return Book -->
+          <ellipse cx="285" cy="245" rx="80" ry="26" fill="#f5ede0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="285" y="249" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Return Book</text>
+
+          <!-- Add New Book -->
+          <ellipse cx="450" cy="120" rx="82" ry="26" fill="#f5ede0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="450" y="124" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Add New Book</text>
+
+          <!-- Manage Members -->
+          <ellipse cx="450" cy="200" rx="88" ry="26" fill="#f5ede0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="450" y="204" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Manage Members</text>
+
+          <!-- Connections: Student → use cases -->
+          <line x1="88" y1="115" x2="195" y2="76" stroke="#7a6a56" stroke-width="1.3"/>
+          <line x1="88" y1="130" x2="203" y2="158" stroke="#7a6a56" stroke-width="1.3"/>
+          <line x1="88" y1="145" x2="205" y2="242" stroke="#7a6a56" stroke-width="1.3"/>
+
+          <!-- Connections: Librarian → use cases -->
+          <line x1="574" y1="162" x2="532" y2="128" stroke="#7a6a56" stroke-width="1.3"/>
+          <line x1="574" y1="172" x2="538" y2="200" stroke="#7a6a56" stroke-width="1.3"/>
+        </svg>
+      </div>
 
       <h3>Sequence Diagram — In Focus</h3>
       <p>Represents object interactions within a <strong>specific scenario</strong>, mapping the chronological order of messages exchanged over time. Each vertical lifeline represents an object; horizontal arrows represent messages.</p>
 
+      <div class="diagram-box">
+        <div class="diagram-label">Example — Sequence Diagram (User Login Flow)</div>
+        <svg viewBox="0 0 600 310" style="width:100%;max-width:600px">
+          <defs>
+            <marker id="seq-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#4a3220"/>
+            </marker>
+            <marker id="seq-return" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#7a6a56"/>
+            </marker>
+          </defs>
+
+          <!-- Participant boxes -->
+          <rect x="30" y="12" width="90" height="30" rx="3" fill="#e8e0d0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="75" y="32" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" font-weight="700" fill="#4a3220">Browser</text>
+
+          <rect x="245" y="12" width="100" height="30" rx="3" fill="#e8e0d0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="295" y="32" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" font-weight="700" fill="#4a3220">API Server</text>
+
+          <rect x="470" y="12" width="100" height="30" rx="3" fill="#e8e0d0" stroke="#8a6030" stroke-width="1.5"/>
+          <text x="520" y="32" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" font-weight="700" fill="#4a3220">Database</text>
+
+          <!-- Lifelines -->
+          <line x1="75" y1="42" x2="75" y2="300" stroke="#cfc0a4" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <line x1="295" y1="42" x2="295" y2="300" stroke="#cfc0a4" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <line x1="520" y1="42" x2="520" y2="300" stroke="#cfc0a4" stroke-width="1.2" stroke-dasharray="5 4"/>
+
+          <!-- Activation bars -->
+          <rect x="70" y="75" width="10" height="190" rx="1" fill="#d4b896" opacity="0.6"/>
+          <rect x="290" y="100" width="10" height="140" rx="1" fill="#d4b896" opacity="0.6"/>
+          <rect x="515" y="130" width="10" height="60" rx="1" fill="#d4b896" opacity="0.6"/>
+
+          <!-- Message 1: Browser → API: POST /login -->
+          <line x1="80" y1="90" x2="290" y2="90" stroke="#4a3220" stroke-width="1.4" marker-end="url(#seq-arrow)"/>
+          <text x="185" y="84" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="#4a3220">POST /login {email, password}</text>
+
+          <!-- Message 2: API → DB: SELECT user -->
+          <line x1="300" y1="130" x2="515" y2="130" stroke="#4a3220" stroke-width="1.4" marker-end="url(#seq-arrow)"/>
+          <text x="408" y="124" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="#4a3220">SELECT * FROM users WHERE email=?</text>
+
+          <!-- Message 3: DB → API: user record (return, dashed) -->
+          <line x1="515" y1="165" x2="300" y2="165" stroke="#7a6a56" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#seq-return)"/>
+          <text x="408" y="159" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="#7a6a56" font-style="italic">user record</text>
+
+          <!-- Message 4: API → Browser: JWT token (return, dashed) -->
+          <line x1="290" y1="220" x2="80" y2="220" stroke="#7a6a56" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#seq-return)"/>
+          <text x="185" y="214" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="10" fill="#7a6a56" font-style="italic">200 OK {jwt_token}</text>
+
+          <!-- Message 5: Browser self note -->
+          <line x1="75" y1="260" x2="75" y2="260"/>
+          <text x="88" y="256" font-family="Helvetica Neue,Arial,sans-serif" font-size="9.5" fill="#7a6a56" font-style="italic">Store token, redirect to dashboard</text>
+          <line x1="75" y1="260" x2="140" y2="260" stroke="#cfc0a4" stroke-width="1" stroke-dasharray="3 2"/>
+
+          <!-- Step labels on left -->
+          <text x="18" y="93" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#9a7848" font-weight="700">①</text>
+          <text x="18" y="133" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#9a7848" font-weight="700">②</text>
+          <text x="18" y="168" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#9a7848" font-weight="700">③</text>
+          <text x="18" y="223" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#9a7848" font-weight="700">④</text>
+        </svg>
+      </div>
+
       <h3>State Diagram — In Focus</h3>
       <p>Models the <strong>various states</strong> an individual object can be in, and the transitions between those states triggered by specific events. Useful for objects like orders, tickets, or user accounts that have distinct lifecycle phases.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Example — State Diagram (Order Lifecycle)</div>
+        <svg viewBox="0 0 720 250" style="width:100%;max-width:720px">
+          <defs>
+            <marker id="st-arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#8a6030"/>
+            </marker>
+          </defs>
+
+          <!-- Initial dot -->
+          <circle cx="30" cy="90" r="9" fill="#4a3220"/>
+          <line x1="39" y1="90" x2="63" y2="90" stroke="#8a6030" stroke-width="1.5" marker-end="url(#st-arrow)"/>
+
+          <!-- State: New -->
+          <rect x="65" y="70" width="100" height="40" rx="20" fill="#f5ede0" stroke="#8a6030" stroke-width="1.8"/>
+          <text x="115" y="95" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">New</text>
+          <!-- New → Pending -->
+          <line x1="165" y1="90" x2="213" y2="90" stroke="#8a6030" stroke-width="1.5" marker-end="url(#st-arrow)"/>
+          <text x="189" y="83" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#7a6a56">placed</text>
+
+          <!-- State: Pending Payment -->
+          <rect x="215" y="70" width="130" height="40" rx="20" fill="#f5ede0" stroke="#8a6030" stroke-width="1.8"/>
+          <text x="280" y="95" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Pending Payment</text>
+          <!-- Pending → Confirmed -->
+          <line x1="345" y1="90" x2="393" y2="90" stroke="#8a6030" stroke-width="1.5" marker-end="url(#st-arrow)"/>
+          <text x="369" y="83" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#7a6a56">paid</text>
+
+          <!-- State: Confirmed -->
+          <rect x="395" y="70" width="105" height="40" rx="20" fill="#f5ede0" stroke="#8a6030" stroke-width="1.8"/>
+          <text x="447" y="95" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Confirmed</text>
+          <!-- Confirmed → Shipped -->
+          <line x1="500" y1="90" x2="548" y2="90" stroke="#8a6030" stroke-width="1.5" marker-end="url(#st-arrow)"/>
+          <text x="524" y="83" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#7a6a56">dispatched</text>
+
+          <!-- State: Shipped -->
+          <rect x="550" y="70" width="100" height="40" rx="20" fill="#f5ede0" stroke="#8a6030" stroke-width="1.8"/>
+          <text x="600" y="95" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#4a3220">Shipped</text>
+          <!-- Shipped → Delivered -->
+          <line x1="650" y1="90" x2="688" y2="90" stroke="#8a6030" stroke-width="1.5" marker-end="url(#st-arrow)"/>
+          <text x="669" y="83" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#7a6a56">received</text>
+
+          <!-- State: Delivered (final) -->
+          <circle cx="700" cy="90" r="14" fill="none" stroke="#4a3220" stroke-width="1.8"/>
+          <circle cx="700" cy="90" r="9" fill="#4a3220"/>
+
+          <!-- Cancelled branch (drops down from Pending) -->
+          <line x1="280" y1="110" x2="280" y2="165" stroke="#c49040" stroke-width="1.5" marker-end="url(#st-arrow)"/>
+          <text x="293" y="142" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#c49040">payment failed / cancelled</text>
+
+          <!-- State: Cancelled -->
+          <rect x="220" y="165" width="120" height="40" rx="20" fill="#f5eddc" stroke="#c49040" stroke-width="1.8"/>
+          <text x="280" y="190" text-anchor="middle" font-family="Helvetica Neue,Arial,sans-serif" font-size="11" fill="#6a4810">Cancelled</text>
+
+          <!-- Also Confirmed → Cancelled -->
+          <path d="M447 110 Q447 200 350 205" fill="none" stroke="#c49040" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#st-arrow)"/>
+          <text x="430" y="180" font-family="Helvetica Neue,Arial,sans-serif" font-size="9" fill="#c49040">user cancelled</text>
+        </svg>
+      </div>
 
       <!-- 5 -->
       <h2 id="requirements">Structuring System Requirements</h2>
