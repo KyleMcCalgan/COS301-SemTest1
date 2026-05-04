@@ -86,7 +86,7 @@
         <ol>
           <li><a href="#what-is-model">What Is a Model &amp; Domain Modelling?</a></li>
           <li><a href="#class-diagrams">UML Class Diagrams</a></li>
-          <li><a href="#relationships">Relationships &amp; Multiplicity</a></li>
+          <li><a href="#relationships">Relationships &amp; Multiplicity</a> — Association, Aggregation, Composition, Inheritance</li>
           <li><a href="#brainstorming">The Brainstorming Rules</a></li>
           <li><a href="#exercise">ClickUP Class Exercise</a></li>
         </ol>
@@ -147,11 +147,132 @@
         <li>Associations include an <strong>association name</strong>, a <strong>direction pointer</strong>, and the specific <strong>roles</strong> involved at each end.</li>
       </ul>
 
+      <div class="diagram-box">
+        <div class="diagram-label">Association — plain line with optional arrow</div>
+        <svg viewBox="0 0 340 70" width="340" height="70" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif" font-size="13">
+          <!-- Instructor box -->
+          <rect x="10" y="15" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="65" y="38" text-anchor="middle" fill="#2c2218">Instructor</text>
+          <!-- Course box -->
+          <rect x="220" y="15" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="275" y="38" text-anchor="middle" fill="#2c2218">Course</text>
+          <!-- Line -->
+          <line x1="120" y1="33" x2="216" y2="33" stroke="#8a6030" stroke-width="1.5"/>
+          <!-- Arrowhead -->
+          <polygon points="216,33 206,28 206,38" fill="#8a6030"/>
+          <!-- Label -->
+          <text x="168" y="26" text-anchor="middle" fill="#7a6a56" font-size="11" font-style="italic">teaches</text>
+        </svg>
+      </div>
+
       <h3>Aggregation</h3>
-      <p>Represents a <strong>"has-a" or "part-of"</strong> relationship. Used when possession expressions ("has", "possess") or containment expressions ("consist of", "part of") appear in the requirements.</p>
+      <p>Represents a <strong>"has-a" or "part-of"</strong> relationship. Used when possession expressions ("has", "possess") or containment expressions ("consist of", "part of") appear in the requirements. The <em>whole</em> end is marked with a <strong>hollow diamond</strong>.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Aggregation — hollow diamond at the "whole" end</div>
+        <svg viewBox="0 0 340 70" width="340" height="70" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif" font-size="13">
+          <!-- Department box -->
+          <rect x="10" y="15" width="120" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="70" y="38" text-anchor="middle" fill="#2c2218">Department</text>
+          <!-- Employee box -->
+          <rect x="210" y="15" width="120" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="270" y="38" text-anchor="middle" fill="#2c2218">Employee</text>
+          <!-- Line -->
+          <line x1="145" y1="33" x2="206" y2="33" stroke="#8a6030" stroke-width="1.5"/>
+          <!-- Hollow diamond at Department (whole) end -->
+          <polygon points="130,33 139,27 148,33 139,39" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <h3>Composition</h3>
+      <p>Composition is a <strong>strong form of aggregation</strong>. The key distinction is <strong>lifetime dependency</strong>: the part cannot exist independently of the whole. If the whole is destroyed, its parts are destroyed too.</p>
+      <ul>
+        <li><em>Example:</em> A <code>House</code> is composed of <code>Room</code>s — if the house is demolished, its rooms cease to exist as rooms.</li>
+        <li>Represented by a <strong>filled (solid) diamond</strong> at the whole end.</li>
+        <li>Language cues: "is made up of", "is composed of", "owns".</li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="callout-label">Aggregation vs. Composition</div>
+        <p><strong>Aggregation</strong> (hollow diamond): the part can exist without the whole — e.g., an Employee can exist outside a Department.<br>
+        <strong>Composition</strong> (filled diamond): the part cannot exist without the whole — e.g., a Room cannot exist without its House.</p>
+      </div>
+
+      <p>The difference shows up clearly in code. With <strong>aggregation</strong> the part is created <em>outside</em> and passed in — it outlives the whole. With <strong>composition</strong> the whole creates and owns the part internally:</p>
+
+      <pre><code>// ── AGGREGATION ──────────────────────────────────────────────
+// Employee exists independently; it is passed into Department.
+// Destroying the Department does NOT destroy the Employee.
+
+class Employee { /* ... */ };
+
+class Department {
+    Employee* manager;  // raw pointer — not owned
+
+    Department(Employee* mgr) : manager(mgr) {}
+    // No delete in destructor — Department does NOT own the Employee
+};
+
+Employee emp;                  // lives on its own (stack)
+{
+    Department dept(&emp);     // Department just holds a pointer
+}                              // dept destroyed here, emp is still alive
+
+
+// ── COMPOSITION ──────────────────────────────────────────────
+// Room is created BY House and belongs to it entirely.
+// Destroying the House destroys its Rooms.
+
+class Room { /* ... */ };
+
+class House {
+    Room bedroom;              // owned by value — part of House's memory
+
+    // No pointer needed; bedroom's lifetime IS House's lifetime
+};
+
+{
+    House house;               // bedroom created with house
+}                              // house destroyed here → bedroom destroyed too</code></pre>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Composition — filled diamond at the "whole" end</div>
+        <svg viewBox="0 0 340 70" width="340" height="70" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif" font-size="13">
+          <!-- House box -->
+          <rect x="10" y="15" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="65" y="38" text-anchor="middle" fill="#2c2218">House</text>
+          <!-- Room box -->
+          <rect x="220" y="15" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="275" y="38" text-anchor="middle" fill="#2c2218">Room</text>
+          <!-- Line -->
+          <line x1="145" y1="33" x2="216" y2="33" stroke="#8a6030" stroke-width="1.5"/>
+          <!-- Filled diamond at House (whole) end -->
+          <polygon points="120,33 129,27 138,33 129,39" fill="#8a6030" stroke="#8a6030" stroke-width="1.5"/>
+        </svg>
+      </div>
 
       <h3>Inheritance (Generalization)</h3>
       <p>Used when <strong>"X is a Y"</strong> expressions appear in the requirements. Represented by a solid line with a hollow arrowhead pointing to the parent class.</p>
+
+      <div class="diagram-box">
+        <div class="diagram-label">Inheritance — hollow triangle arrowhead pointing to parent</div>
+        <svg viewBox="0 0 340 120" width="340" height="120" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue, Arial, sans-serif" font-size="13">
+          <!-- User (parent) box -->
+          <rect x="115" y="5" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="170" y="28" text-anchor="middle" fill="#2c2218">User</text>
+          <!-- Student box -->
+          <rect x="10" y="80" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="65" y="103" text-anchor="middle" fill="#2c2218">Student</text>
+          <!-- Lecturer box -->
+          <rect x="220" y="80" width="110" height="36" rx="3" fill="#faf7f2" stroke="#9a8060" stroke-width="1.5"/>
+          <text x="275" y="103" text-anchor="middle" fill="#2c2218">Lecturer</text>
+          <!-- Lines from children to hollow triangle -->
+          <line x1="65" y1="80" x2="162" y2="41" stroke="#8a6030" stroke-width="1.5"/>
+          <line x1="275" y1="80" x2="178" y2="41" stroke="#8a6030" stroke-width="1.5"/>
+          <!-- Hollow triangle at parent end -->
+          <polygon points="170,41 162,56 178,56" fill="#faf7f2" stroke="#8a6030" stroke-width="1.5"/>
+        </svg>
+      </div>
 
       <h3>Multiplicity</h3>
       <p>Multiplicity defines the <strong>numerical constraints</strong> of a relationship. You must know these notations:</p>
@@ -190,8 +311,8 @@
             <tr><td>4</td><td>Adjectives</td><td>Attribute values</td></tr>
             <tr><td>5</td><td>Numeric values</td><td>Attribute or multiplicity values</td></tr>
             <tr><td>6</td><td>Possession expressions (has/have, possess)</td><td><strong>Aggregation</strong> or an attribute</td></tr>
-            <tr><td>7</td><td>"Consist of / part of" expressions</td><td><strong>Aggregation</strong> relationships</td></tr>
-            <tr><td>8</td><td>Containment / containing expressions</td><td>Association or aggregation</td></tr>
+            <tr><td>7</td><td>"Consist of / part of" expressions</td><td><strong>Aggregation</strong> or <strong>Composition</strong> (if the part cannot exist alone)</td></tr>
+            <tr><td>8</td><td>Containment / containing expressions</td><td>Association, aggregation, or composition</td></tr>
             <tr><td>9</td><td>"X is a Y" expressions</td><td><strong>Inheritance</strong></td></tr>
           </tbody>
         </table>
